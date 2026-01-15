@@ -1,0 +1,28 @@
+═══════════════════════════════════════════════════════════════
+  QUICK FIX FOR DATABASE CONNECTION ERROR
+═══════════════════════════════════════════════════════════════
+
+The registration is failing because PostgreSQL password is wrong.
+
+RUN THESE COMMANDS IN YOUR TERMINAL:
+
+1. Connect to PostgreSQL:
+   sudo -u postgres psql
+
+2. Inside PostgreSQL, run:
+   ALTER USER postgres WITH PASSWORD 'postgres';
+   CREATE DATABASE car_service_db;
+   GRANT ALL PRIVILEGES ON DATABASE car_service_db TO postgres;
+   \q
+
+3. Load the schema:
+   cd "/home/entro/cAR sERVICE mANAGEMENT/backend"
+   sudo -u postgres psql -d car_service_db -f database/schema.sql
+
+4. Restart backend (Ctrl+C then):
+   uvicorn app.main:app --reload
+
+That's it! Registration should work now.
+
+═══════════════════════════════════════════════════════════════
+

@@ -1,0 +1,38 @@
+services:
+  # Backend API Service (Normal Python Deployment - No Docker)
+  - type: web
+    name: car-service-api
+    env: python
+    region: oregon
+    plan: free
+    # Normal Python deployment - uses pip directly
+    buildCommand: cd backend && pip install --upgrade pip setuptools wheel && pip install -r requirements.txt
+    startCommand: cd backend && uvicorn app.main:app --host 0.0.0.0 --port $PORT --workers 1
+    envVars:
+      # Use your existing Render database URL
+      # Replace with your actual Render database URL from the dashboard
+      - key: DATABASE_URL
+        sync: false
+        value: postgresql://health_system_2pbp_user:KRAfa0heCSr0uYqW7Mi0qjZcdaBNyAtV@dpg-d5jnohq4d50c73d4pgm0-a.oregon-postgres.render.com/health_system_2pbp
+      # Generate a secure secret key (you can also set this manually in Render dashboard)
+      - key: SECRET_KEY
+        generateValue: true
+      # Update with your frontend URL after deployment
+      - key: CORS_ORIGINS
+        value: https://car-service-frontend.onrender.com
+      - key: ALGORITHM
+        value: HS256
+      - key: ACCESS_TOKEN_EXPIRE_MINUTES
+        value: "30"
+      - key: EMAIL_ENABLED
+        value: "false"
+      - key: SMTP_SERVER
+        value: smtp.gmail.com
+      - key: SMTP_PORT
+        value: "587"
+      - key: SMTP_USERNAME
+        value: ""
+      - key: SMTP_PASSWORD
+        value: ""
+      - key: FROM_EMAIL
+        value: ""

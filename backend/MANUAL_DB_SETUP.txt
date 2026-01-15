@@ -1,0 +1,52 @@
+═══════════════════════════════════════════════════════════════
+  MANUAL DATABASE SETUP - COPY AND PASTE THESE COMMANDS
+═══════════════════════════════════════════════════════════════
+
+Open a NEW terminal window and run these commands:
+
+───────────────────────────────────────────────────────────────
+STEP 1: Connect to PostgreSQL
+───────────────────────────────────────────────────────────────
+sudo -u postgres psql
+
+───────────────────────────────────────────────────────────────
+STEP 2: Run these SQL commands (copy all at once):
+───────────────────────────────────────────────────────────────
+ALTER USER postgres WITH PASSWORD 'postgres';
+CREATE DATABASE car_service_db;
+GRANT ALL PRIVILEGES ON DATABASE car_service_db TO postgres;
+ALTER USER postgres WITH SUPERUSER;
+\q
+
+───────────────────────────────────────────────────────────────
+STEP 3: Load the database schema
+───────────────────────────────────────────────────────────────
+cd "/home/entro/cAR sERVICE mANAGEMENT/backend"
+sudo -u postgres psql -d car_service_db -f database/schema.sql
+
+───────────────────────────────────────────────────────────────
+STEP 4: Restart your backend
+───────────────────────────────────────────────────────────────
+Press Ctrl+C in your backend terminal, then:
+cd backend
+source venv/bin/activate
+uvicorn app.main:app --reload
+
+───────────────────────────────────────────────────────────────
+STEP 5: Test registration
+───────────────────────────────────────────────────────────────
+Go to http://localhost:3000/register
+Try registering a customer - it should work now!
+
+═══════════════════════════════════════════════════════════════
+
+If you get "sudo: a password is required":
+  - Enter your system password when prompted
+  - Or ask your system administrator for help
+
+If you get "Peer authentication failed":
+  - Make sure you're running: sudo -u postgres psql
+  - Not just: psql
+
+═══════════════════════════════════════════════════════════════
+
