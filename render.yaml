@@ -8,7 +8,8 @@ services:
     # Normal Python deployment - uses pip directly
     # Use build script to properly set CARGO_HOME before any Rust compilation
     buildCommand: cd backend && chmod +x render-build.sh && ./render-build.sh
-    startCommand: cd backend && chmod +x render-start.sh && ./render-start.sh
+    # Simple direct start command - Render provides PORT automatically
+    startCommand: cd backend && python -m uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000} --workers 1
     envVars:
       # Set Python version to avoid 3.13 compilation issues with Rust packages
       - key: PYTHON_VERSION
