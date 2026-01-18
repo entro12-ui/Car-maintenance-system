@@ -1,18 +1,21 @@
 #!/bin/bash
-# Build script for Render deployment
+# Start script for Render deployment
 
 set -e  # Exit on error
 
-echo "🚀 Starting Render build process..."
+echo "🚀 Starting application..."
 
 # Navigate to backend directory
 cd "$(dirname "$0")"
 
-echo "📦 Installing Python dependencies..."
-pip install --upgrade pip
-pip install -r requirements.txt
+# Check if PORT is set
+if [ -z "$PORT" ]; then
+    echo "⚠️  Warning: PORT environment variable not set, defaulting to 8000"
+    export PORT=8000
+fi
 
-echo "✅ Build complete!"
+echo "📡 Starting uvicorn on 0.0.0.0:$PORT"
 
-# Note: Database initialization is already done, so we don't run init-db.py here
-# The database tables are already created on your Render database
+# Start uvicorn with explicit host and port binding
+# Use python -m uvicorn for better reliability
+exec python -m uvicorn app.main:app --host 0.0.0.0 --port "$PORT" --workers 1
