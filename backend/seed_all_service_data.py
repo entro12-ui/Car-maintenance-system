@@ -92,10 +92,16 @@ def seed_service_types(db):
         
         if existing:
             print(f"⏭️  '{service_type_data['type_name']}' already exists")
+            # Ensure existing service type is active
+            if not existing.is_active:
+                existing.is_active = True
+                print(f"   ↻ Activated: {service_type_data['type_name']}")
             existing_count += 1
         else:
-            # Create new service type
-            service_type = ServiceType(**service_type_data)
+            # Create new service type - ensure is_active is True
+            service_type_dict = service_type_data.copy()
+            service_type_dict.setdefault('is_active', True)
+            service_type = ServiceType(**service_type_dict)
             db.add(service_type)
             db.flush()
             print(f"✅ Created: {service_type_data['type_name']}")
