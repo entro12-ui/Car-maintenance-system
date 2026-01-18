@@ -25,13 +25,16 @@ app = FastAPI(
 )
 
 # CORS middleware
-cors_origins = os.getenv("CORS_ORIGINS", "http://localhost:3000,http://localhost:5173").split(",")
+cors_origins_str = os.getenv("CORS_ORIGINS", "http://localhost:3000,http://localhost:5173,https://car-service-frontend.onrender.com,https://car-maintenance-system.onrender.com")
+# Clean up origins (remove whitespace and filter empty strings)
+cors_origins = [origin.strip() for origin in cors_origins_str.split(",") if origin.strip()]
 app.add_middleware(
     CORSMiddleware,
     allow_origins=cors_origins,
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["*"],  # Allows all methods including OPTIONS
+    allow_headers=["*"],  # Allows all headers
+    expose_headers=["*"],
 )
 
 # Include routers
@@ -58,6 +61,3 @@ async def root():
 @app.get("/api/health")
 async def health_check():
     return {"status": "healthy"}
-
-
-
