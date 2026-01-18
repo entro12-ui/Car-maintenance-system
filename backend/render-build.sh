@@ -1,21 +1,29 @@
 #!/bin/bash
-# Start script for Render deployment
+# Build script for Render deployment
 
 set -e  # Exit on error
 
-echo "🚀 Starting application..."
+echo "🚀 Starting Render build process..."
+echo "Python version: $(python3 --version)"
+
+# Set CARGO_HOME and RUSTUP_HOME to writable locations BEFORE any cargo/maturin calls
+export CARGO_HOME=/tmp/.cargo
+export RUSTUP_HOME=/tmp/.rustup
+export PATH="/tmp/.cargo/bin:$PATH"
+
+# Create directories if they don't exist
+mkdir -p "$CARGO_HOME" "$RUSTUP_HOME"
 
 # Navigate to backend directory
 cd "$(dirname "$0")"
 
-# Check if PORT is set
-if [ -z "$PORT" ]; then
-    echo "⚠️  Warning: PORT environment variable not set, defaulting to 8000"
-    export PORT=8000
-fi
+echo "📦 Installing Python dependencies..."
+pip install --upgrade pip setuptools wheel
 
-echo "📡 Starting uvicorn on 0.0.0.0:$PORT"
+# Install dependencies - cargo should now use /tmp/.cargo
+pip install -r requirements.txt
 
-# Start uvicorn with explicit host and port binding
-# Use python -m uvicorn for better reliability
-exec python -m uvicorn app.main:app --host 0.0.0.0 --port "$PORT" --workers 1
+echo "✅ Build complete!"
+
+# Note: Database initialization is already done, so we don't run init-db.py here
+# The database tables are already created on your Render database
