@@ -6,13 +6,13 @@ services:
     region: oregon
     plan: free
     # Normal Python deployment - uses pip directly
-    # Set CARGO_HOME to writable location to avoid read-only filesystem issues with Rust packages
-    buildCommand: cd backend && export CARGO_HOME=/tmp/.cargo && export PATH="/tmp/.cargo/bin:$PATH" && pip install --upgrade pip setuptools wheel && pip install -r requirements.txt
+    # Set CARGO_HOME and related env vars to writable locations to avoid read-only filesystem issues
+    buildCommand: cd backend && mkdir -p /tmp/.cargo /tmp/.rustup && export CARGO_HOME=/tmp/.cargo RUSTUP_HOME=/tmp/.rustup PATH="/tmp/.cargo/bin:$PATH" && pip install --upgrade pip setuptools wheel && pip install -r requirements.txt
     startCommand: cd backend && uvicorn app.main:app --host 0.0.0.0 --port $PORT --workers 1
     envVars:
-      # Set Python version to avoid 3.13 compilation issues
+      # Set Python version to avoid 3.13 compilation issues with Rust packages
       - key: PYTHON_VERSION
-        value: "3.11.0"
+        value: "3.11.11"
       # Use your existing Render database URL
       # Replace with your actual Render database URL from the dashboard
       - key: DATABASE_URL
