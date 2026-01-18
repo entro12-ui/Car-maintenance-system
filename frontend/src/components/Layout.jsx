@@ -14,7 +14,7 @@ export default function Layout({ children }) {
   const navigate = useNavigate()
   const { user, logout, isAdmin, isCustomer, isAccountant } = useAuth()
   const [sidebarOpen, setSidebarOpen] = useState(false)
-  const [desktopSidebarExpanded, setDesktopSidebarExpanded] = useState(false)
+  const [desktopSidebarExpanded, setDesktopSidebarExpanded] = useState(true) // Start with sidebar expanded
 
   const handleLogout = () => {
     logout()
