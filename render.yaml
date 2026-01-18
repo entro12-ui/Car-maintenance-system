@@ -29,7 +29,7 @@ services:
         generateValue: true
       # Update with your frontend URL after deployment
       - key: CORS_ORIGINS
-        value: https://car-service-frontend.onrender.com
+        value: https://car-service-frontend.onrender.com,https://car-maintenance-system.onrender.com
       - key: ALGORITHM
         value: HS256
       - key: ACCESS_TOKEN_EXPIRE_MINUTES
@@ -46,3 +46,16 @@ services:
         value: ""
       - key: FROM_EMAIL
         value: ""
+
+  # Frontend Static Site
+  - type: web
+    name: car-service-frontend
+    env: static
+    region: oregon
+    plan: free
+    buildCommand: cd frontend && npm install && npm run build
+    staticPublishPath: ./frontend/dist
+    envVars:
+      # Backend API URL - points to actual deployed backend
+      - key: VITE_API_URL
+        value: https://car-maintenance-system.onrender.com/api
