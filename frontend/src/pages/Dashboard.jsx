@@ -6,7 +6,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 export default function Dashboard() {
   const { data: stats, isLoading } = useQuery({
     queryKey: ['dashboard'],
-    queryFn: () => dashboardApi.getStats(),
+    queryFn: async () => {
+      const response = await dashboardApi.getStats()
+      return response.data
+    },
   })
 
   if (isLoading) {
