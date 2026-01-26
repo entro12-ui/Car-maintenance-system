@@ -5,6 +5,7 @@ Usage: python3 create_admin.py <email> <password> [first_name] [last_name]
 """
 import sys
 import os
+import time
 from sqlalchemy.orm import Session
 
 # Add parent directory to path
@@ -31,13 +32,29 @@ def create_admin_user(email: str, password: str, first_name: str = "Admin", last
             print(f"❌ Employee with email '{email}' already exists!")
             return False
         
+        # Generate unique phone number (using timestamp to ensure uniqueness)
+        phone_base = int(time.time()) % 10000000000  # Last 10 digits of timestamp
+        phone = f"{phone_base:010d}"  # Format as 10-digit string
+        
+        # Ensure phone is unique (check and adjust if needed)
+        max_attempts = 10
+        attempt = 0
+        while db.query(Employee).filter(Employee.phone == phone).first() and attempt < max_attempts:
+            phone_base = (phone_base + 1) % 10000000000
+            phone = f"{phone_base:010d}"
+            attempt += 1
+        
+        if attempt >= max_attempts:
+            print(f"❌ Could not generate unique phone number after {max_attempts} attempts!")
+            return False
+        
         # Create employee
         employee = Employee(
             employee_code=f"ADM{db.query(Employee).count() + 1:04d}",
             first_name=first_name,
             last_name=last_name,
             email=email,
-            phone="0000000000",  # Placeholder, can be updated later
+            phone=phone,  # Unique phone number
             role="Admin",
             is_active=True
         )

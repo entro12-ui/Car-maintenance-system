@@ -143,7 +143,7 @@ export default function PendingApprovals() {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {pendingCustomers.map((customer) => (
+                {pendingCustomersList.map((customer) => (
                   <tr key={customer.customer_id} className="hover:bg-gray-50 transition-colors">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="font-medium text-gray-900">

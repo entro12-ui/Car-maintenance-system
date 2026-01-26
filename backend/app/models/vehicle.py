@@ -28,6 +28,7 @@ class Vehicle(Base):
     appointments = relationship("Appointment", back_populates="vehicle", cascade="all, delete-orphan")
     services = relationship("Service", back_populates="vehicle", cascade="all, delete-orphan")
     notifications = relationship("Notification", back_populates="vehicle")
+    proformas = relationship("Proforma", back_populates="vehicle")  # No cascade - preserve proformas as business records
 
 
 

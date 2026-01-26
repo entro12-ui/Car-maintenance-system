@@ -1,7 +1,7 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { 
   LayoutDashboard, Users, Car, Calendar, Wrench, Package, 
-  Gift, BarChart3, Menu, X, LogOut, UserCheck, ListChecks, DollarSign
+  Gift, BarChart3, Menu, X, LogOut, UserCheck, ListChecks, DollarSign, FileText
 } from 'lucide-react'
 import { useState } from 'react'
 import { useAuth } from '../contexts/AuthContext'
@@ -14,7 +14,7 @@ export default function Layout({ children }) {
   const navigate = useNavigate()
   const { user, logout, isAdmin, isCustomer, isAccountant } = useAuth()
   const [sidebarOpen, setSidebarOpen] = useState(false)
-  const [desktopSidebarExpanded, setDesktopSidebarExpanded] = useState(false)
+  const [desktopSidebarExpanded, setDesktopSidebarExpanded] = useState(true) // Start with sidebar expanded
 
   const handleLogout = () => {
     logout()
@@ -28,6 +28,7 @@ export default function Layout({ children }) {
     { path: '/vehicles', icon: Car, label: 'Vehicles' },
     { path: '/appointments', icon: Calendar, label: 'Appointments' },
     { path: '/services', icon: Wrench, label: 'Services' },
+    { path: '/proformas', icon: FileText, label: 'Proformas' },
     { path: '/service-checklists', icon: ListChecks, label: 'Service Checklists' },
     { path: '/parts', icon: Package, label: 'Parts' },
     { path: '/loyalty', icon: Gift, label: 'Loyalty' },

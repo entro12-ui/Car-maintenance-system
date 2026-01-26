@@ -19,6 +19,11 @@ def get_loyalty_status(customer_id: int, db: Session = Depends(get_db)):
     from app.models.service import Service
     from app.models.vehicle import Vehicle
     
+    # First, verify customer exists
+    customer = db.query(Customer).filter(Customer.customer_id == customer_id).first()
+    if not customer:
+        raise HTTPException(status_code=404, detail=f"Customer with ID {customer_id} not found")
+    
     loyalty = db.query(CustomerLoyalty).filter(
         CustomerLoyalty.customer_id == customer_id
     ).join(LoyaltyProgram).filter(LoyaltyProgram.is_active == True).first()

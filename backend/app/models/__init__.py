@@ -8,6 +8,7 @@ from .accountant import Accountant
 from .notification import NotificationTemplate, Notification
 from .audit import AuditLog
 from .settings import SystemSetting
+from .proforma import Proforma, ProformaItem, MarketPrice
 
 __all__ = [
     "Customer",
@@ -28,6 +29,9 @@ __all__ = [
     "Notification",
     "AuditLog",
     "SystemSetting",
+    "Proforma",
+    "ProformaItem",
+    "MarketPrice",
 ]
 
 

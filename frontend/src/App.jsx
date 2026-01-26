@@ -22,6 +22,9 @@ import AddServiceForCustomer from './pages/AddServiceForCustomer'
 import ManageServiceChecklists from './pages/ManageServiceChecklists'
 import RegisterAccountant from './pages/RegisterAccountant'
 import AccountantDashboard from './pages/AccountantDashboard'
+import Proformas from './pages/Proformas'
+import ProformaForm from './pages/ProformaForm'
+import ProformaPrint from './pages/ProformaPrint'
 
 function AppRoutes() {
   const { isAuthenticated, isAdmin, isAccountant, loading } = useAuth()
@@ -110,6 +113,41 @@ function AppRoutes() {
         <ProtectedRoute requireAdmin={true}>
           <Layout>
             <ManageServiceChecklists />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/proformas" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <Proformas />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/proformas/new" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <ProformaForm />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/proformas/:id/edit" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <ProformaForm />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/proformas/:id" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <ProformaPrint />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/proformas/:id/print" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <ProformaPrint />
           </Layout>
         </ProtectedRoute>
       } />

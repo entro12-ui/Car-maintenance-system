@@ -21,6 +21,7 @@ class Customer(Base):
     vehicles = relationship("Vehicle", back_populates="customer", cascade="all, delete-orphan")
     loyalty = relationship("CustomerLoyalty", back_populates="customer", cascade="all, delete-orphan")
     notifications = relationship("Notification", back_populates="customer")
+    proformas = relationship("Proforma", back_populates="customer")  # No cascade - preserve proformas as business records
 
 
 

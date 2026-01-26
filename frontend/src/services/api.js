@@ -1,6 +1,30 @@
 import axios from 'axios'
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api'
+// Determine API base URL based on environment
+// For local development: use localhost
+// For deployment: use VITE_API_URL from environment (set in Render)
+// Fallback to localhost if VITE_API_URL is not set
+const getApiBaseUrl = () => {
+  // Check if we're in development mode
+  const isDevelopment = import.meta.env.DEV || window.location.hostname === 'localhost'
+  
+  // If VITE_API_URL is explicitly set, use it (for deployment)
+  if (import.meta.env.VITE_API_URL) {
+    return import.meta.env.VITE_API_URL
+  }
+  
+  // For local development, use localhost
+  if (isDevelopment) {
+    return 'http://localhost:8000/api'
+  }
+  
+  // Fallback (shouldn't happen in production)
+  return 'http://localhost:8000/api'
+}
+
+const API_BASE_URL = getApiBaseUrl()
+
+console.log('API Base URL:', API_BASE_URL) // Debug log - remove in production
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -127,6 +151,23 @@ export const accountantApi = {
   updatePaymentStatus: (serviceId, data) => api.put(`/accountant/payments/${serviceId}`, data),
   getPaymentSummary: (params) => api.get('/accountant/payments/summary', { params }),
   getPendingApprovals: () => api.get('/accountant/pending-approval'),
+}
+
+// Proformas
+export const proformasApi = {
+  getAll: (params) => api.get('/proformas', { params }),
+  getById: (id) => api.get(`/proformas/${id}`),
+  create: (data) => api.post('/proformas', data),
+  update: (id, data) => api.put(`/proformas/${id}`, data),
+  delete: (id) => api.delete(`/proformas/${id}`),
+  addItem: (id, data) => api.post(`/proformas/${id}/items`, data),
+  updateItem: (id, itemId, data) => api.put(`/proformas/${id}/items/${itemId}`, data),
+  deleteItem: (id, itemId) => api.delete(`/proformas/${id}/items/${itemId}`),
+  addMarketPrice: (id, itemId, data) => api.post(`/proformas/${id}/items/${itemId}/market-prices`, data),
+  updateMarketPrice: (id, itemId, marketPriceId, data) => api.put(`/proformas/${id}/items/${itemId}/market-prices/${marketPriceId}`, data),
+  deleteMarketPrice: (id, itemId, marketPriceId) => api.delete(`/proformas/${id}/items/${itemId}/market-prices/${marketPriceId}`),
+  markPrinted: (id) => api.post(`/proformas/${id}/print`),
+  convert: (id) => api.post(`/proformas/${id}/convert`),
 }
 
 // Set up axios interceptor for token

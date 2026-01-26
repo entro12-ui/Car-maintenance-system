@@ -4,7 +4,7 @@ from app.database import engine, Base
 from app.routes import (
     customers, vehicles, appointments, services, 
     service_types, parts, loyalty, notifications, 
-    employees, dashboard, reports, auth, customer_dashboard, admin_customers, accountant
+    employees, dashboard, reports, auth, customer_dashboard, admin_customers, accountant, proformas
 )
 import os
 from dotenv import load_dotenv
@@ -25,13 +25,16 @@ app = FastAPI(
 )
 
 # CORS middleware
-cors_origins = os.getenv("CORS_ORIGINS", "http://localhost:3000,http://localhost:5173").split(",")
+cors_origins_str = os.getenv("CORS_ORIGINS", "http://localhost:3000,http://localhost:5173,https://car-service-frontend.onrender.com,https://car-maintenance-system.onrender.com")
+# Clean up origins (remove whitespace and filter empty strings)
+cors_origins = [origin.strip() for origin in cors_origins_str.split(",") if origin.strip()]
 app.add_middleware(
     CORSMiddleware,
     allow_origins=cors_origins,
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["*"],  # Allows all methods including OPTIONS
+    allow_headers=["*"],  # Allows all headers
+    expose_headers=["*"],
 )
 
 # Include routers
@@ -50,6 +53,7 @@ app.include_router(reports.router, prefix="/api/reports", tags=["Reports"])
 app.include_router(customer_dashboard.router, prefix="/api/customer", tags=["Customer Dashboard"])
 app.include_router(admin_customers.router, prefix="/api/admin/customers", tags=["Admin Customer Management"])
 app.include_router(accountant.router, prefix="/api/accountant", tags=["Accountant"])
+app.include_router(proformas.router, prefix="/api", tags=["Proformas"])
 
 @app.get("/")
 async def root():
