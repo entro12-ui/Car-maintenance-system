@@ -1,0 +1,2793 @@
+HillMaster-SRV User’s Manual V4.1
+
+HillMaster-SRV User’s manual
+Version 4.10
+
+Garage (Workshop) Management Module
+
+HillMark Ethiopia
+Private Limited Company
+
+2019
+
+Copy right © 2019 by HillMark Ethiopia Plc.
+All rights reserved
+
+HillMark Ethiopia
+
+CONTENTS
+1
+
+INTRODUCTION .............................................................................................................................. 5
+
+2
+
+GETTING STARTED .......................................................................................................................... 7
+
+3
+
+FILE MENU ...................................................................................................................................... 9
+3.1 COMPANY SETUP .................................................................................................................................. 9
+3.2 GL ACCOUNTS SETUP ........................................................................................................................... 15
+3.2.1
+Parts tab: .............................................................................................................................. 15
+3.2.2
+Fuel & Lubricants: ................................................................................................................. 16
+3.2.3
+Labor: .................................................................................................................................... 17
+3.2.4
+Miscelaneous: ....................................................................................................................... 18
+3.2.5
+Other charges: ...................................................................................................................... 19
+3.2.6
+Sublet works: ........................................................................................................................ 21
+3.3 LETTER OR MEMO TEMPLATE SETUP........................................................................................................ 22
+
+4
+
+MAINTENANCE MENU .................................................................................................................. 23
+4.1 GLOBAL PARAMETER ............................................................................................................................ 24
+4.2 NAME VALUE PARAMETER ..................................................................................................................... 24
+4.3 JOB ORDER ........................................................................................................................................ 26
+4.4 CUSTOMER MAINTENANCE ................................................................................................................... 29
+4.5 PLATE NUMBER MAINTENANCE .............................................................................................................. 30
+4.6 CANCELLED JOBS REGISTRY .................................................................................................................... 31
+4.7 LABOR TYPES ...................................................................................................................................... 32
+4.8 OTHER CHARGES SETUP ........................................................................................................................ 33
+4.9 FUEL & LUBRICANTS ............................................................................................................................ 33
+4.10
+MISCELLANEOUS CHARGE TYPES ........................................................................................................ 34
+4.11
+SUBLET WORK TYPE MAINTENANCE .................................................................................................... 34
+4.12
+CONSUMABLE CHARGES SETUP .......................................................................................................... 35
+4.13
+SUBLET WORK SUPPLIER MAINTENANCE .............................................................................................. 36
+4.14
+BLOCKING & RELEASING JOB ORDERS .................................................................................................. 37
+4.15
+VEHICLE MODEL SETUP .................................................................................................................... 38
+4.16
+JOB TYPE PER HOUR RATE SETUP ........................................................................................................ 40
+
+5
+
+ENQUIRY MENU ............................................................................................................................ 43
+
+6
+
+TRANSACTION............................................................................................................................... 44
+6.1 ITEM ISSUE......................................................................................................................................... 45
+6.2 ITEM ISSUE FROM RESERVE .................................................................................................................... 45
+6.3 GARAGE ISSUE REQUISITION .................................................................................................................. 46
+6.4 LABOR CHARGE ENTRY .......................................................................................................................... 47
+6.5 MISCELANEOUS CHARGE ENTRY.............................................................................................................. 48
+6.6 LUBRICANT & FUEL CHARGE ENTRY ......................................................................................................... 49
+6.7 SUBLET WORK CHARGE ENTRY ................................................................................................................ 50
+6.8 OTHER CHARGES ENTRY ........................................................................................................................ 51
+6.9 REQUEST FOR RETURN .......................................................................................................................... 52
+6.10
+APPROVE REQUEST FOR RETURN ........................................................................................................ 54
+6.11
+SUBLET ORDER ENTRY ...................................................................................................................... 54
+6.12
+SUBLET ORDER APPROVAL ................................................................................................................ 55
+6.13
+SUBLET ORDER RECEIVING ................................................................................................................ 56
+
+HillMaster-SRV User’s Manual
+
+Page 2 of 100
+
+HillMark Ethiopia
+7
+
+GARAGE INVOICE .......................................................................................................................... 58
+7.1 PERFORMA INVOICE ............................................................................................................................. 58
+7.2 CASH INVOICE .................................................................................................................................... 59
+7.3 CREDIT INVOICE .................................................................................................................................. 60
+7.4 INVOICE BY ITM ................................................................................................................................. 61
+7.5 DISCOUNT RATE ENTRY ......................................................................................................................... 62
+7.6 CREDIT NOTE ..................................................................................................................................... 63
+7.7 CANCEL / RETURN GARAGE INVOICE ........................................................................................................ 63
+7.8 CLEAR UN-COLLECTED SALES ORDER ........................................................................................................ 64
+7.9 CANCEL VRV ENTRY ............................................................................................................................ 65
+7.10
+JOB ESTIMATION ............................................................................................................................ 66
+7.11
+ADVANCED BOOKING ...................................................................................................................... 68
+
+8
+
+UTILITIES ....................................................................................................................................... 69
+8.1 CLOSE JOB ORDER ............................................................................................................................... 70
+8.2 JOB ORDER QUALITY CHECK SHEET........................................................................................................... 71
+8.3 REOPEN JOB ORDER ............................................................................................................................ 71
+8.4 DELIVER JOB ORDER ............................................................................................................................ 72
+8.5 RECEIVE ASSEMBLED JOB....................................................................................................................... 74
+8.6 COPY INVOICED JOB ORDER .................................................................................................................. 74
+8.7 SPLIT JOB ORDER ................................................................................................................................. 74
+8.8 SPLIT JOB ORDER – AI .......................................................................................................................... 75
+8.9 PAIRING JOB ORDER ............................................................................................................................. 75
+8.10
+JOURNALIZE TRANSACTION ............................................................................................................... 76
+8.11
+JOURNAL LISTING ............................................................................................................................ 77
+8.12
+POSTING JOURNALS TO GL ............................................................................................................... 78
+8.13
+CALCULATOR ................................................................................................................................. 78
+
+9
+
+SETUP ........................................................................................................................................... 79
+9.1
+9.2
+9.3
+9.4
+9.5
+9.6
+
+10
+
+TASKS............................................................................................................................................ 85
+10.1
+10.2
+10.3
+10.4
+10.5
+10.6
+10.7
+10.8
+10.9
+10.10
+10.11
+10.12
+10.13
+
+11
+
+APPLICATION PARAMETER FOR ESTIMATIONS ............................................................................................ 79
+WORKING HOUR SETUP ........................................................................................................................ 80
+WORKING CALENDAR SETUP .................................................................................................................. 81
+WORKGROUP SETUP ............................................................................................................................ 81
+TECHNICIAN SETUP .............................................................................................................................. 82
+JOB TYPE ALLOWED BY USER .................................................................................................................. 83
+
+ABSENT ENTRY............................................................................................................................... 86
+DISPATCH JOB TO SECTION ............................................................................................................... 86
+RECEIVE DISPATCHED JOB ................................................................................................................ 87
+JOB CLOCK IN ................................................................................................................................ 88
+JOB CLOCK OUT ............................................................................................................................. 89
+TRANSFER CHARGE CODE BY TECHNICIAN ............................................................................................ 90
+JOB TRANSFER TO STATION ............................................................................................................... 91
+CHANGE JOB ORDER STATION ............................................................................................................ 91
+UPDATE LAST CLOCK-OUT REASON ..................................................................................................... 91
+TECHNICIAN ENQUIRY ...................................................................................................................... 92
+IN / OUT ENQUIRY .......................................................................................................................... 93
+END OF WORKING DAY CHECK-OUT .................................................................................................... 94
+CUSTOMER NOTIFICATION ENTRY ....................................................................................................... 94
+
+REPORTS ....................................................................................................................................... 96
+
+HillMaster-SRV User’s Manual
+
+Page 3 of 100
+
+HillMark Ethiopia
+11.1
+11.2
+11.3
+11.4
+11.5
+11.6
+
+LISTING REPORTS ............................................................................................................................ 97
+GARAGE SALES REPORTS .................................................................................................................. 97
+GARAGE PRODUCTIVITY REPORTS ....................................................................................................... 98
+OTHER REPORTS ............................................................................................................................. 99
+CUSTOME REPORTS ......................................................................................................................... 99
+USER DEFINED REPORTS ................................................................................................................. 100
+
+HillMaster-SRV User’s Manual
+
+Page 4 of 100
+
+HillMark Ethiopia
+
+1
+
+Introduction
+
+HillMaster-SRV is a member of HillMaster-ERP business software that is used for
+managing garage (Workshop) operations of a business organization. It can be used with
+other HillMaster-ERP modules in an integrated scenario. Specifically, the HillMaster-POS
+accredited by ERCA is used in a fully integrated environment with the HillMaster-SRV.
+
+Recommenced System requirements for Server
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Processor: Intel® Xeon® processor E5-2600 v4 product family
+Operating System: Microsoft® Windows Server® 2008 R2 and above
+Availability: ECC memory, Hot-plug hard drives, Hot-plug redundant cooling, Hotplug redundant power, iDRAC8, Internal Dual SD Module, Single Device Data
+Correction
+(SDDC)
+Spare Rank, Tool-less chassis, Support for high availability clustering and
+virtualization
+Proactive systems management alerts, iDRAC8 with Lifecycle Controller
+Chipset: Intel C610 series chipset
+Communications: Dual-port 1GB NIC
+Drive Bays: Internal hard drive bay and hot-plug backplane: Up to 8 x 3.5” HDD:
+SAS, SATA, Near-line SAS SSD: SAS, SATA
+Embedded Hypervisor (Optional)
+Optional supported hypervisors: Microsoft® Windows Server® 2012, with HyperV® Citrix® XenServer® VMware® vSphere® ESXiTM
+Memory: 32GB
+Network Controller: 2 x 1Gb
+RAID Controllers: Internal: PERC S130, ERC H330, PERC H730, PERC H730P ;
+Storage: 4 x 500GB Hot Plug SAS Hard Drives;
+
+Recommended System requirements for Workstations
+
+
+
+
+
+
+
+
+
+Operating system: Windows 10 Pro 64
+Processor family: 8th Generation Intel® Core™ i7 processor
+Processor: Intel® Core™ i7 8700K with Intel® UHD Graphics 630
+Number of processors: 1
+Memory: 8 GB
+Memory Slots: 4 DIMM
+Storage: Internal drive bays - Two 3.5"; Two M.2 NVME 2280 SSD
+External drive bays: Two 5.25"
+
+HillMaster-SRV User’s Manual
+
+Page 5 of 100
+
+HillMark Ethiopia
+
+
+
+
+
+
+
+
+
+
+Internal drive: 256 GB SATA SSD
+Additional storage: HP SD 4 Media Card Reader
+Storage controller: Integrated SATA
+Optical drive: HP Slim DVD-Writer
+Display and Graphics: Integrated
+Compatible displays: 17” Flat Screen
+Communications: LAN Integrated Intel® I219-LM PCIe® GbE
+Audio: Internal mono speaker
+Bundles: Keyboard, USB Optical Mouse
+
+UPS
+
+
+Uninteruptable Power Suply Unit for Server 2.2KVA
+
+Laserjet Printer:
+
+
+Minimum of one Laserjet printer for each site location
+
+HillMaster-SRV User’s Manual
+
+Page 6 of 100
+
+HillMark Ethiopia
+
+2 Getting Started
+The installation of the application should be performed by a trained system
+administrator or HillMark Ethiopia. All HillMaster-ERP modules installed on the server
+for a client uses one login. After login with valid user name and password, the user can
+then select the specific module determined by the access privilege granted to him or
+her.
+
+After login, the user should:
+
+
+
+
+
+Click on the “Application” and all the HillMaster-ERP modules installed will be
+listed;
+The user gets the fillowing page showing the list of installed modules;
+Click on the “Service Master 4.1” for HillMaster-SRV;
+
+HillMaster-SRV User’s Manual
+
+Page 7 of 100
+
+HillMark Ethiopia
+
+Clicking on “Service Master 4.1” should render the following Main Menu lists
+
+A main menu component may give sub menus and you should click on the component that is
+relevant for your operation.
+
+HillMaster-SRV User’s Manual
+
+Page 8 of 100
+
+HillMark Ethiopia
+
+3 File Menu
+The file menu contains three sub menu components for setting up company information, General
+Ledger account numbers and garage estimation letter setups.
+
+3.1 Company Setup
+The company setup page contains different tabs. Some of the data values are automatically
+pulled from the System Administration module and will not allow you to change them within this
+module. The different tabs should be filled with relevant values for the system to properly behave
+when performing operations that use these values.
+
+Company Tab:
+
+HillMaster-SRV User’s Manual
+
+Page 9 of 100
+
+HillMark Ethiopia
+
+On this page, you may update and save the following non read only fields:
+
+Current Period: Select the current period (month) from the list and save
+Budget Year:
+Select the current budget year from the list and save
+Taken Done:
+If the conversion data has been imported, this will automatically be
+ticked.
+Is Branch:
+If this implementation is on a branch site, this check box will be tiched.
+Update customer from GL:
+If this is checked, then new customer creation can only be
+performed on the General Ledger module and will be linked to
+this service module to update customers automatically.
+
+Shop/Branch: This where you select the location of your operation from the available lists.
+Default product group:
+This is where you select the default product group to
+automatically appear for the selected Shop/Branch location.
+
+HillMaster-SRV User’s Manual
+
+Page 10 of 100
+
+HillMark Ethiopia
+Allow to sell over branch stock balance:
+
+If not ticked, the system will restrict you to sell
+only balances available in your Shop store.
+Allow to sell over company stock balance:
+If not ticked, the system will restrict you to sell
+only balances available in your Company store balance.
+Update aging on Credit sales:
+If “Yes” the system will automatically updates the aging
+on the general ledger for credit sales.
+
+Lead time + safty stock factor:
+
+The number of months required as a lead time for stock
+replenishment.
+Pricing method:
+Select one from the list of pricing methods used by the company. These
+pricing methods should first be setup by a user that has the right to do this.
+VAT: Set VAT percentage applicable. This is normally 15%
+Customer number supplier: Specify the starting number to be used by the system for
+Supplier number.
+Adjustment number: Specify the starting number to be used by the sytem for adjustments
+Adjustment transaction prefix: Specify the prefix to be used for adjustment transactions
+Sales return with invoice number: Specify the starting number to be used by the sytem for
+Sales return invoice.
+Sales return transaction prefix:
+Specify the prefix to be used for sales return
+transactions
+Cash walkin customer number:
+Specify the starting number to be used by the sytem for
+walkin customers
+Transfer: Specify the starting number to be used by the sytem for Transfers
+
+Application Tab:
+In this tab, the system displays names and paths to the different data of the application and
+database. The image you see at the bottom appears in the show image and will appear on the
+report headers.
+
+HillMaster-SRV User’s Manual
+
+Page 11 of 100
+
+HillMark Ethiopia
+
+You can delete this image and replace it by another image to be used as a logo.
+To do this you need to load the new image and then save image.
+Address Tab:
+
+Specify values that describ your company address in the 3 line fields provided.
+
+Email Setting Tab:
+
+HillMaster-SRV User’s Manual
+
+Page 12 of 100
+
+HillMark Ethiopia
+
+This should be filled by the system administrator. It is used for setting up commercial messages
+or other relevant informations that should appear in the footer of the automatic email messages
+generated and sent by the system.
+SMS Setting Tab:
+This should be filled by the system administrator. It is used for setting up commercial messages
+or other relevant informations that should appear in the footer of the automatic SMS messages
+generated and sent by the system.
+
+HillMaster-SRV User’s Manual
+
+Page 13 of 100
+
+HillMark Ethiopia
+
+Default Tab:
+This page is used for defining prefixes, next starting numbers, maximum length of the reference
+number excluding prefixes for selected transaction types. Option to append current budget year
+and current month to the end of the transactions specified can be enabled by ticking the check
+box.
+
+HillMaster-SRV User’s Manual
+
+Page 14 of 100
+
+HillMark Ethiopia
+
+3.2 GL Accounts setup
+This page covers setup data organized in to the following tabs. Each tab should be setup with
+relevant data.
+
+3.2.1
+
+Parts tab:
+
+Setup of fields defined here involves selection of relevant value from the selection lists. These
+selection lists should therefore be setup in the proper section of the installation.
+
+Parts category:
+
+Parts are setup in to main and sub groups in the HillMaster-COSS module
+to which this service module is linked. You Selects the main or sub group
+of parts stock for hich you shall setup the associated accounts for
+segrigating parts used for garage service.
+Repair service type: The available service types setup in the “Maintenance” menu of this
+module and will be listed here. You should select and setup accounts for
+each repair or service types.
+Section:
+Available sections in the garage shall be setup in the “Setup” menu of this
+module will be listed here. You should select and setup accounts for each
+maintenance section.
+Type of job: Available job types in the garage shall be setup in the “Maintenance” menu of
+this module and will be listed here. You should select and setup accounts for
+each maintenance section
+HillMaster-SRV User’s Manual
+
+Page 15 of 100
+
+HillMark Ethiopia
+Location:
+
+Available garage locations are setup in the global parameter and will be listed
+here. You should select and setup accounts for each locations.
+Stock account:
+These are accounts maintained in the COA by finance. Appropriate
+account should be selected and maitained preferably by finance user.
+WIP Account:
+These are accounts maintained in the COA by finance. Appropriate
+account should be selected and maitained preferably by finance user.
+CGS account: These are accounts maintained in the COA by finance. Appropriate account
+should be selected and maitained preferably by finance user.
+Sales account:
+These are accounts maintained in the COA by finance. Appropriate
+account should be selected and maitained preferably by finance user.
+Discount account:
+These are accounts maintained in the COA by finance. Appropriate
+account should be selected and maitained preferably by finance user.
+VAT account:
+These are accounts maintained in the COA by finance.
+Appropriate account should be selected and maitained preferably by
+finance user.
+
+3.2.2
+
+Fuel & Lubricants:
+
+Setup of fields defined here involves selection of relevant value from the selection lists. These
+selection lists should therefore be setup in the proper section of the installation.
+
+Fuel & Lub type:
+
+Fuel & Lub types are setup in to the Maintenance part of this module
+and is listed here. You should select and maintain the associated
+accounts for segrigating fuel & lub used for garage services.
+Repair service type: The available service types setup in the “Maintenance” menu of this
+module and will be listed here. You should select and setup accounts for
+each repair or service types.
+Section:
+Available sections in the garage shall be setup in the “Setup” menu of this
+module will be listed here. You should select and setup accounts for each
+maintenance section.
+
+HillMaster-SRV User’s Manual
+
+Page 16 of 100
+
+HillMark Ethiopia
+Type of job:
+
+Available job types in the garage shall be setup in the “Maintenance” menu of
+this module and will be listed here. You should select and setup accounts for
+each maintenance section
+Location:
+Available garage locations are setup in the global parameter and will be listed
+here. You should select and setup accounts for each locations.
+Stock account:
+These are accounts maintained in the COA by finance. Appropriate
+account should be selected and maitained preferably by finance user.
+WIP Account:
+These are accounts maintained in the COA by finance. Appropriate
+account should be selected and maitained preferably by finance user.
+CGS account: These are accounts maintained in the COA by finance. Appropriate account
+should be selected and maitained preferably by finance user.
+Sales account:
+These are accounts maintained in the COA by finance. Appropriate
+account should be selected and maitained preferably by finance user.
+Discount account:
+These are accounts maintained in the COA by finance. Appropriate
+account should be selected and maitained preferably by finance user.
+VAT account:
+These are accounts maintained in the COA by finance.
+Appropriate account should be selected and maitained preferably by
+finance user.
+3.2.3
+
+Labor:
+
+Setup of fields defined here involves selection of relevant value from the selection lists. These
+selection lists should therefore be setup in the proper section of the installation.
+
+Labor type:
+
+Labor types are setup in the Maintenance part of this module and are
+listed here. You should select and maintain the associated accounts for
+segrigating labor types used for garage services.
+Repair service type: The available service types setup in the “Maintenance” menu of this
+module and will be listed here. You should select and setup accounts for
+each repair or service types.
+HillMaster-SRV User’s Manual
+
+Page 17 of 100
+
+HillMark Ethiopia
+Section:
+
+Available sections in the garage shall be setup in the “Setup” menu of this
+module will be listed here. You should select and setup accounts for each
+maintenance section.
+Type of job: Available job types in the garage shall be setup in the “Maintenance” menu of
+this module and will be listed here. You should select and setup accounts for
+each maintenance section
+Location:
+Available garage locations are setup in the global parameter and will be listed
+here. You should select and setup accounts for each locations.
+Stock account:
+These are accounts maintained in the COA by finance. Appropriate
+account should be selected and maitained preferably by finance user.
+WIP Account:
+These are accounts maintained in the COA by finance. Appropriate
+account should be selected and maitained preferably by finance user.
+CGS account: These are accounts maintained in the COA by finance. Appropriate account
+should be selected and maitained preferably by finance user.
+Sales account:
+These are accounts maintained in the COA by finance. Appropriate
+account should be selected and maitained preferably by finance user.
+Discount account:
+These are accounts maintained in the COA by finance. Appropriate
+account should be selected and maitained preferably by finance user.
+VAT account:
+These are accounts maintained in the COA by finance.
+Appropriate account should be selected and maitained preferably by
+finance user.
+
+3.2.4
+
+Miscelaneous:
+
+Setup of fields defined here involves selection of relevant value from the selection lists. These
+selection lists should therefore be setup in the proper section of the installation.
+
+Miscelaneous charge types: These types are setup in the Maintenance part of this module
+and are listed here. You should select and maintain the associated
+accounts for segrigating miscelaneous charge types used for garage
+services.
+HillMaster-SRV User’s Manual
+
+Page 18 of 100
+
+HillMark Ethiopia
+Repair service type: The available service types setup in the “Maintenance” menu of this
+module and will be listed here. You should select and setup accounts for
+each repair or service types.
+Section:
+Available sections in the garage shall be setup in the “Setup” menu of this
+module will be listed here. You should select and setup accounts for each
+maintenance section.
+Type of job: Available job types in the garage shall be setup in the “Maintenance” menu of
+this module and will be listed here. You should select and setup accounts for
+each maintenance section
+Location:
+Available garage locations are setup in the global parameter and will be listed
+here. You should select and setup accounts for each locations.
+Stock account:
+These are accounts maintained in the COA by finance. Appropriate
+account should be selected and maitained preferably by finance user.
+WIP Account:
+These are accounts maintained in the COA by finance. Appropriate
+account should be selected and maitained preferably by finance user.
+CGS account: These are accounts maintained in the COA by finance. Appropriate account
+should be selected and maitained preferably by finance user.
+Sales account:
+These are accounts maintained in the COA by finance. Appropriate
+account should be selected and maitained preferably by finance user.
+Discount account:
+These are accounts maintained in the COA by finance. Appropriate
+account should be selected and maitained preferably by finance user.
+VAT account: These are accounts maintained in the COA by finance. Appropriate account
+should be selected and maitained preferably by finance user.
+
+3.2.5 Other charges:
+Setup of fields defined here involves selection of relevant value from the selection lists. These
+selection lists should be setup in the proper section of the installation first.
+
+HillMaster-SRV User’s Manual
+
+Page 19 of 100
+
+HillMark Ethiopia
+Other charge types: These types are setup in the Maintenance part of this module and are
+listed here. You should select and maintain the associated accounts for
+segrigating miscelaneous charge types used for garage services.
+Repair service type: The available service types setup in the “Maintenance” menu of this
+module and will be listed here. You should select and setup accounts for
+each repair or service types.
+Section:
+Available sections in the garage shall be setup in the “Setup” menu of this
+module will be listed here. You should select and setup accounts for each
+maintenance section.
+Type of job: Available job types in the garage shall be setup in the “Maintenance” menu of
+this module and will be listed here. You should select and setup accounts for
+each maintenance section
+Location:
+Available garage locations are setup in the global parameter and will be listed
+here. You should select and setup accounts for each locations.
+Stock account:
+These are accounts maintained in the COA by finance. Appropriate
+account should be selected and maitained preferably by finance user.
+WIP Account:
+These are accounts maintained in the COA by finance. Appropriate
+account should be selected and maitained preferably by finance user.
+CGS account: These are accounts maintained in the COA by finance. Appropriate account
+should be selected and maitained preferably by finance user.
+Sales account:
+These are accounts maintained in the COA by finance. Appropriate
+account should be selected and maitained preferably by finance user.
+Discount account:
+These are accounts maintained in the COA by finance. Appropriate
+account should be selected and maitained preferably by finance user.
+VAT account: These are accounts maintained in the COA by finance. Appropriate account
+should be selected and maitained preferably by finance user.
+
+HillMaster-SRV User’s Manual
+
+Page 20 of 100
+
+HillMark Ethiopia
+
+3.2.6 Sublet works:
+Setup of fields defined here involves selection of relevant value from the selection lists. These
+selection lists should therefore be setup in the proper section of the installation.
+
+Other charge types: These types are setup in the Maintenance part of this module and are
+listed here. You should select and maintain the associated accounts for
+segrigating charges for sub let works used for garage services.
+Repair service type: The available service types setup in the “Maintenance” menu of this
+module and will be listed here. You should select and setup accounts for
+each repair or service types.
+Section:
+Available sections in the garage shall be setup in the “Setup” menu of this
+module will be listed here. You should select and setup accounts for each
+maintenance section.
+Type of job: Available job types in the garage shall be setup in the “Maintenance” menu of
+this module and will be listed here. You should select and setup accounts for
+each maintenance section
+Location:
+Available garage locations are setup in the global parameter and will be listed
+here. You should select and setup accounts for each locations.
+Stock account:
+These are accounts maintained in the COA by finance. Appropriate
+account should be selected and maitained preferably by finance user.
+WIP Account:
+These are accounts maintained in the COA by finance. Appropriate
+account should be selected and maitained preferably by finance user.
+CGS account: These are accounts maintained in the COA by finance. Appropriate account
+should be selected and maitained preferably by finance user.
+Sales account:
+These are accounts maintained in the COA by finance. Appropriate
+account should be selected and maitained preferably by finance user.
+Discount account:
+These are accounts maintained in the COA by finance. Appropriate
+account should be selected and maitained preferably by finance user.
+
+HillMaster-SRV User’s Manual
+
+Page 21 of 100
+
+HillMark Ethiopia
+VAT account: These are accounts maintained in the COA by finance. Appropriate account
+should be selected and maitained preferably by finance user.
+
+3.3 Letter or Memo template setup
+This setup should be performed only be technical user or the professional HillMaster-ERP
+implementer. Therefore, it is purposely omited in the description of this user’s manual.
+
+HillMaster-SRV User’s Manual
+
+Page 22 of 100
+
+HillMark Ethiopia
+
+4 Maintenance menu
+
+HillMaster-SRV User’s Manual
+
+Page 23 of 100
+
+HillMark Ethiopia
+
+4.1 Global parameter
+The global parameter page is used for setting up different lookup values. These lookup values
+will appear in different parts of the system as a selection list. New values for specified
+parameters are created and maintained here. The table below for example shows different values
+for Car model. New models can be added here.
+
+4.2 Name value parameter
+Name value parameter page is used to define the different values that a given parameter can
+assume. A user should not change the values once it is setup without the consent of the system
+implementer.
+
+Among important parameters for garage service business are the following since they are
+required for opening job order cards:
+
+Repair /
+Service
+type:
+
+This setup is performd within the Maintenace menu of this system. Each service type should be
+created with identifying Id, description, rate applicable if supplied by your company, rate applied
+if supplied by other company, and the likes.
+
+Garage
+invoice
+types:
+Vehicle
+Make-in:
+
+Garage invoice types are created in the global parameter setup contained in the maintenance
+menu. This includes Cash, Credit or Internal units.
+Vehicle make-in data is created in the global parameter setup contained in the maintenance
+menu. When you open a new job, this data is available as a selection. If not created first it will
+not appear in the selection list and should be created first to open the job card. This includes
+Cash, Credit or Internal units.
+
+HillMaster-SRV User’s Manual
+
+Page 24 of 100
+
+HillMark Ethiopia
+Model
+types:
+
+Garage
+locations:
+Types of
+Jobs:
+
+Repair
+sections:
+
+Vehicle
+classes:
+Job card
+receiver:
+
+This setup is performd within the Maintenace menu of this system. Each Vehicle model
+
+type should be created with identifying code, description, model group and job types applicable
+to the created model type.
+Garage locations, if your company has different locations, are created in the global parameter
+setup contained in the maintenance menu. The locations setup here will appear as a selection list
+when opening job cards.
+The different types of jobs performed in your company’s garage should be created in the
+maintenance menu of the system. When you open a new job, this data is available as a selection.
+If not created first it will not appear in the selection list and should be created first to open the
+job card.
+This setup is performd within the Maintenace menu -> model setup -> repair section tab of this
+system.
+
+Each maintenance section should be created with identifying code, section name and job types
+performed in the created section.
+Setup this data with-in the global parameter of the maintenance menu.
+Setup this from the global parameter of the maintenance menu
+
+HillMaster-SRV User’s Manual
+
+Page 25 of 100
+
+HillMark Ethiopia
+
+4.3 Job Order
+New job orders are opened from this page. The page has different tabs for maintaining general
+information, other information, repair details, informing client, job text and audit log for each job
+that is created on the system. Click on the proper tab and record the data required in the
+appropriate fields. The general info tab and job text/charge tab must be filled for any new job.
+
+Note: Opening of Job Order for vehicle plate numbers or customers included in the blocked list is
+not possible. It should be first released from the block list.
+
+General information tab:
+This page is used for maintaining general information for the job opened. To open new Job order
+do the following:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Click on “Refresh” to clear data fields;
+Click on “New” and the system will assign a new Job order number;
+Chassis number: Type in the Chassis number of the vehicle.
+Plate number: Type in the plate number of the vehicle.
+Repair/Service type: Select the repair or service type from the selection list. These repair
+or service types should be maintained in to the system to be listed here.
+Invoice type: Select if the payment for the job is to be made in cash or on credit.
+Sub ledger: If the invoice type is “Credit” the customer name and sub ledger should be
+selected from the list. It is not required if invoice type is cash.
+Customer: If the invoice type is “Credit” the customer name and sub ledger should be
+selected from the list. It is not required if invoice type is cash.
+Address: Type customer address
+Model/Serial number: Type in the model number of the vehicle.
+FR Date:
+Make: Type the make of the Vehicle
+Engine Number: Type in the Engine number of the vehicle.
+Millage in KM: Type in the Kilometer reading
+Opening date: Type in the opening date. The system will automatically take current date
+if not selected.
+Expected finish date: Type in the expected finish date. The system will automatically take
+current date if not selected.
+Model type: Choose from the selection list of available model types. If new, it should be
+created first.
+
+HillMaster-SRV User’s Manual
+
+Page 26 of 100
+
+HillMark Ethiopia
+
+
+
+
+
+
+
+
+
+
+
+
+Garage location: Select the location at which the job is opened from the selection list
+Supplied by Us or Others: Indicate by ticking the check box to mark if the vehicle is
+supplied by your company or others.
+Type of job: Select the service type from the selection list. If new, it should be created
+first.
+Color code: This data is required for Auto Assembly line setup. You fill in the color code
+of the vehicle to be assembled or just put “-“for other operations.
+Trim code: This data is required for Auto Assembly line setup. You fill in relevant data of
+the vehicle to be assembled or just put “-“for other operations.
+Repair order number: This data is required for Auto Assembly line setup. You fill in the
+relevant data of the vehicle to be assembled or just put “-“ for other operations.
+Opened for repair section: This data is required for Auto Assembly line setup. You fill in
+the relevant data of the vehicle to be assembled or just put “-“ for other operations.
+Location: This data is required for Auto Assembly line setup. You fill in the relevant data
+of the vehicle to be assembled or just put “-“ for other operations.
+Received by: Type the staff that has received the vehicle from the customer.
+Invoice to Name: If the invoice type selected for this job is “Cash” the customer name,
+TIN, sub city, Woreda, Telephone number and House number should be specified here
+as this data will appear in the invoice.
+
+HillMaster-SRV User’s Manual
+
+Page 27 of 100
+
+HillMark Ethiopia
+
+
+
+
+
+
+
+
+
+
+Invoice to TIN: If the invoice type selected for this job is “Cash” the customer name,
+TIN, sub city, Woreda, Telephone number and House number should be specified here
+as this data will appear in the invoice.
+Invoice to telephone: If the invoice type selected for this job is “Cash” the customer
+name, TIN, sub city, Woreda, Telephone number and House number should be specified
+here as this data will appear in the invoice.
+Invoice to sub city: If the invoice type selected for this job is “Cash” the customer name,
+TIN, sub city, Woreda, Telephone number and House number should be specified here
+as this data will appear in the invoice.
+Invoice to Woreda: If the invoice type selected for this job is “Cash” the customer name,
+TIN, sub city, Woreda, Telephone number and House number should be specified here
+as this data will appear in the invoice.
+Invoice to House number: If the invoice type selected for this job is “Cash” the customer
+name, TIN, sub city, Woreda, Telephone number and House number should be specified
+here as this data will appear in the invoice.
+
+Other information:
+This page is not applicable to this version of the system.
+
+Repair details:
+This page is not applicable to this version of the system.
+
+Informing client:
+This page is used to setup the method by which the client is contacted or notified on completion
+of the job.
+ Tick the selected check box and capture the address and then save your data
+
+Job text tab:
+This page is used to list and save all the jobs to be performed on the job opened by labor code.
+Each labor code represents a job text which means task to be performed. Only labor codes that
+are set for the model will be available for selection in the list.
+
+HillMaster-SRV User’s Manual
+
+Page 28 of 100
+
+HillMark Ethiopia
+
+
+
+
+Select the charge code and click on enter;
+Click on “Add” button to add to the job text;
+
+Audit log tab:
+This page is used to review all actions performed for this job by authorized user.
+
+4.4 Customer Maintenance
+
+HillMaster-SRV User’s Manual
+
+Page 29 of 100
+
+HillMark Ethiopia
+Customers are created in the general ledger module and pulled to the service module. This page
+is used only if the HillMaster-COGL is not implemented.
+ Click on the “Refresh” button to clear data from the fields;
+ Click on “New” to create a new customer;
+ Fill the fields in the general information section with relevant data as follows:
+ Sub ledger number: type the sub ledger number applicable to this customer in the COA;
+ TIN: type the customer TIN number, should be 10 or 13 digits;
+ Customer name: Name of the customer;
+ Contact: type the name of contact person in the company;
+ Address: fill the address fields with relevant data;
+ Price list: Select the price type that is used for the created customer;
+The bottom part of the page is where you setup the GL account numbers and other data for this
+customer:
+
+
+
+
+
+
+GL Tab: Setup account numbers in the COA for this customer including customer type
+and whether credit is allowed or not.
+Other info tab: Specify the specific address details for the customer created
+Local Address: For customer based in Ethiopia
+Foreign address: If the customer is based outside of Ethiopia
+
+4.5 Plate number maintenance
+This page is used to record vehicles that belong to the company. These vehicles are treated as
+internal owned by the company for which standard invoices may not be printed like that of
+external customers and treatment of costs of spare parts issued to jobs and labor costs for
+internal vehicles can be different.
+
+
+Click on “Add New” record;
+
+HillMaster-SRV User’s Manual
+
+Page 30 of 100
+
+HillMark Ethiopia
+
+
+
+
+
+
+
+
+Fillin the plat number;
+Fillin the Owner name. Normally this is company Name of Employee working for the
+company;
+Type the Department name,
+Tick in the check box if the vehicle uses deseil fuel;
+Specify valid account number for the department to which the vehicle belongs;
+Finally click on update;
+
+4.6 Cancelled Jobs registry
+This page is used for registering cancelled jobs for different reasons. The job should be closed for
+registering them as cancelled jobs.
+
+
+
+Select the job order number to register as cancelled from the list;
+
+HillMaster-SRV User’s Manual
+
+Page 31 of 100
+
+HillMark Ethiopia
+
+
+Click on save record. The record will appear the grid
+
+4.7 Labor types
+This page has two parts. The first part is used to maintain the different labor types also called
+Operation Codes with relevant details.
+
+
+
+
+
+
+
+
+
+Labor code: Assign a code to the labor type or operation code you create;
+Taxable: Tick the check box if the labor type is subject to VAT tax;
+Select the section to which this labor type is applicable or used;
+Description: Type description for the created labor code;
+Allowed for: Select the operation for which this labor type can be applied;
+Sub category: Select the sub category of the labor type created;
+Rate/Hour: Specify the per hour rate for charging to jobs;
+
+The second part is where you assign the labor code to the different model groups maintained in
+the system already.
+
+
+
+
+You can select the Model group from the selection list and then specify the Hours
+required which will be used for billing the job and then click on “Add” button;
+If this labor code is applicable to model groups, then specify the hours required and then
+click on “Add for all model group” button;
+
+HillMaster-SRV User’s Manual
+
+Page 32 of 100
+
+HillMark Ethiopia
+
+4.8 Other charges setup
+This page is used for creating charges that may be treated as other charges.
+
+
+
+
+Click on “New”
+Assign Charge Code for the charge type to be created;
+Tick if it is taxable. Normally all charge types are taxable;
+
+
+
+
+
+
+
+
+Specify the Job type for which this charge type is applicable;
+Type the description for the charge type for the created charge code;
+Select the section that is relevant for this charge type if specified;
+Specify the unit of measure, unit price and unit costs for the created charge type;
+Select the sub category applicable for this charge code;
+Click on “Save” button when you are done and the charge code you created will appear
+in the grid.
+
+4.9 Fuel & lubricants
+This page is used for creating fuel and lubricants that may be used for the job during
+maintenance operation in terms of code and description with associated unit price and unit cost.
+
+
+
+
+
+
+
+Click on “Refresh” button
+Click on “New” button;
+Assign a code to the fuel; or lubricant item you want to create;
+Tick in the check box if it taxable item;
+Select the section to which this code may be applicable;
+
+HillMaster-SRV User’s Manual
+
+Page 33 of 100
+
+HillMark Ethiopia
+
+
+
+
+
+
+Type the description of the lubricant or fuel you are creating;
+Specify the unit of measure;
+Specify the unit price per unit of measure specified;
+Specify the unit cost per unit of measure specified;
+Save your entry and the item created will be added to the grid;
+
+4.10 Miscellaneous charge types
+This page is used for creating the different miscellaneous charge types used for the maintenance
+operation in terms of code and description with associated unit price and unit cost.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Click on “Refresh” button
+Click on “New” button;
+Assign a code to the miscellaneous charge item you want to create;
+Tick in the check box if it taxable item;
+Select the job type to which this code may be applicable;
+Select the section applicable to this charge code;
+Type the description of the lubricant or fuel you are creating;
+Specify the unit of measure;
+Specify the unit price per unit of measure specified;
+Specify the unit cost per unit of measure specified;
+Select the sub category to which this charge type is applicable;
+Save your entry and the item created will be added to the grid;
+
+4.11 Sublet work type maintenance
+This page is used for creating the different sublet work types with associated sublet work code,
+description, unit price and unit cost for each sublet work supplier. The sublet work suppliers
+should be created first so that they will be available in the selection list.
+
+HillMaster-SRV User’s Manual
+
+Page 34 of 100
+
+HillMark Ethiopia
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Click on “Refresh” button
+Click on “New” button;
+Assign a code to the sublet work type you want to create;
+Tick in the check box if it taxable item;
+Select the job type to which this code may be applicable;
+Select the section applicable to this charge code;
+Type the description of the sublet work type identified by the code you are creating;
+Specify the unit of measure;
+Specify the unit price per unit of measure specified;
+Specify the unit cost per unit of measure specified;
+Select the sub category to which this charge type is applicable;
+Select the sublet work supplier providing the created sublet work type;
+Save your entry and the item created will be added to the grid;
+
+4.12 Consumable charges setup
+This page is used to setup charge codes for consumables that are not treated by parts issue to
+job. Some business’s also call it “Small Materials (SM)”. It is calculated as specified percentage of
+the total non-parts value applied to a job. The percentage is assumed to decline as the total nonparts value grows. We setup this charge code here either to apply to all jobs or only to selected
+job categories.
+
+HillMaster-SRV User’s Manual
+
+Page 35 of 100
+
+HillMark Ethiopia
+
+4.13 Sublet work supplier maintenance
+This page is used to create the different sublet work suppliers with their details including the
+account numbers assigned to these suppliers in the company’s Chart of Account.
+
+HillMaster-SRV User’s Manual
+
+Page 36 of 100
+
+HillMark Ethiopia
+
+4.14 Blocking & releasing job orders
+This page is used for setting jobs that should be blocked or authorized for release because of
+various reasons. This can be made by specifying customer name or by plate number.
+Blocking by plate number:
+
+
+
+
+
+
+
+Click on “Refresh” button;
+Click on “New”
+Specify the plate number that you are blocking for job opening or job closing if it is
+already opened;
+Specify the customer name and reason for blocking the specified plate number;
+Show by ticking in the check box what stage you are blocking;
+Click on the save button and the plate number specified will appear in the grid;
+
+Blocking by customer name:
+
+
+
+
+
+
+
+Click on “Refresh” button;
+Click on “New”
+Specify the plate number that you are blocking for job opening or job closing if it is
+already opened;
+Specify the customer name and reason for blocking the specified plate number;
+Show by ticking in the check box what stage you are blocking;
+Click on the save button and the plate number specified will appear in the grid;
+
+HillMaster-SRV User’s Manual
+
+Page 37 of 100
+
+HillMark Ethiopia
+
+4.15 Vehicle model setup
+This page is used for creating vehicle models serviced and maintained in your garage. The page
+provides different tabs for setting up model groups, models, repair sections and maintenance
+sections if your setup is organized accordingly.
+
+Model group setup:
+
+HillMaster-SRV User’s Manual
+
+Page 38 of 100
+
+HillMark Ethiopia
+Model setup:
+
+Repair section setup:
+
+Maintenance section setup:
+
+HillMaster-SRV User’s Manual
+
+Page 39 of 100
+
+HillMark Ethiopia
+
+4.16 Job type per hour rate setup
+This page is used to setup price rates per hour for the defferent job types performed by the
+different units of the garage service. The page provides three tabs. The first tab is for setting up
+rate per hour for the different job types of the garage.
+
+Rate per hour by sections
+
+
+
+The different job types like repair or service in a service department of a garage in terms
+of ID and Description (job type description) in the first two columns of the grid. The top
+row shows the rates to applied as follows:
+
+o Default per hour rate for vehicles supplied by your company where there is no
+price lists defined;
+
+o Default per hour rate for vehicles supplied by others;
+o Item codes of general consumable items (small materials used in every operation
+o
+o
+
+of the selected job type using one charge code) These could be different by job
+type or could also be the same or one charge code for all job types;
+The per hour unit cost of labor charges normally used for posting WIP for labor
+chanrges;
+The department to which the specified job type of the garage belongs to;
+
+HillMaster-SRV User’s Manual
+
+Page 40 of 100
+
+HillMark Ethiopia
+o The Starting station (S/Station); Ending station (E/Station) and Transfer allowed
+o
+
+fields are applicable only to an assebmly line operation which doesn’t apply to
+purely garage service operation;
+Take from third paty field is used to specify if the labor rate (flat rate) is to be
+taken from manufacturer’s supplied sources where it is compatible with current
+version of HillMaster-SRV;
+
+Charge category tab:
+This tab is used for defining price discounts for each charge type category. There are five charge
+type categories available on the system as a default setting as listed in the page.
+
+Labor price list tab:
+To setup price list:
+ Click on “Add New” button and the system will give you interface window where you
+specify price list id, descrption and rate per hour;
+
+
+The price setup in this page will over ride the default price. To enable this feature “Take labor
+rate from price list” in the name value parameter setuo should be set to yes.
+
+HillMaster-SRV User’s Manual
+
+Page 41 of 100
+
+HillMark Ethiopia
+Note: If you are using the labor price list setup here, the rate will be the same for vehicles
+supplied by your company and supplied by others.
+
+HillMaster-SRV User’s Manual
+
+Page 42 of 100
+
+HillMark Ethiopia
+
+5 Enquiry Menu
+The enquiry menu is used to retrieve any information on the jobs that have been accepted for
+action. There are sub menus, which are used for information retrieval organized logically.
+
+In this menu there are several sub menu tasks that can be accessed by a user that have valid
+access privelege. Each sub menu will give a page where, you can enquire in to the summary or
+details of a transaction, or job, based on entering a locator in the appropruate data field or using
+criteria. The details of how to use for each page is purposely omited from this manual as it is a
+streight forward activity.
+
+HillMaster-SRV User’s Manual
+
+Page 43 of 100
+
+HillMark Ethiopia
+
+6 Transaction
+This page is used to process all types of transactions of garage activities like issuance of items,
+entry of labor transactions, miscellaneous entries, lubricants entries, local purchase entries and
+item reserve entries and other tasks as shown below.
+
+HillMaster-SRV User’s Manual
+
+Page 44 of 100
+
+HillMark Ethiopia
+
+6.1
+
+Item issue
+
+Item issue can be performed for active job order numbers created on the system.
+
+
+
+Click on “Refresh” to clear any data from the fields;
+Click on “Add New” and the system will automatically assign issue number if it is set to
+be generated automatically by the system. Otherwise, the user should specify the issue
+number from the preprinted document being used.
+ Select the sales person that is processing the item issue for this job;
+ Select the job order number to which the cost of the item to be issued is going to be
+charged.
+Note: The job order number should exist in the selection list and must also be clocked-in for
+a technician. Otherwise, the system will either give a warning message before finalizing issue
+or totally block issue to jobs that have not been clocked-in for technician.
+
+
+
+
+
+
+
+
+
+6.2
+
+Select the requisition number from the selection if the parts to be issued is based on a
+requisition;
+Customer name and address data supplied by the customer when job is opened will be
+displayed here. If there is errors on the address data corrections should be made on the
+job card details;
+
+Select the store from where to fulfill the requested item issue;
+Select the item to issue and quantity to issue. The system will show available quantities
+of that item on the selected store. If it is “0” it means you should select another store or
+transfer the item from another store to your store before processing the issue.
+Save your entry and repeat the procedure if you are issuing more items;
+If you finish recording all the items for this job order, then click on “Finish Issue
+Voucher”
+The system will print a Garage Issue Voucher for the transaction processed.
+
+Item issue from reserve
+
+HillMaster-SRV User’s Manual
+
+Page 45 of 100
+
+HillMark Ethiopia
+Processing this transaction requires prior recording of item reserved either for a job or customer
+on the HillMaster-COSS module. If there is no reserve transaction, the system will give you a
+message.
+To process garage issue from reserve:
+ Click on “Refresh”
+ Click on “Add New”
+ Select the sales person
+ System will automatically generate issue voucher number;
+ Select Job card number. The relevant details for the job card will appear in the fields;
+ Click on “Reserve” tab at the bottom and the list of part numbers reserved for this job
+order are listed,
+ Copy the item code of the part number you want to issue and past it in the Item code
+field of the interface;
+ Click on “Save Record”
+ Repeat the procedure if you want to issue more item numbers from the reserve for this
+job;
+ Finally, click on “Finish Issue Voucher” and the system will print the issue voucher for
+you;
+
+
+
+6.3
+
+The grid shows items reserved, items arrived and items supplied from reserve;
+
+Garage issue requisition
+
+Garage issue requires recording and approval of issue requisition first. To record issue
+requisitions:
+
+
+
+
+
+
+
+
+
+Click on “Refresh”
+Click on “Add New” the system will automatically assign requisition number and pick
+current date as requisition date;
+Select Job card number.
+Select the item code that you are requesting for this job;
+Specify the quantity to request;
+Specify any remark you may want to make for the item requested;
+Click on “Save” button;
+Repeat the procedure if you are requesting more items for this job order;
+
+HillMaster-SRV User’s Manual
+
+Page 46 of 100
+
+HillMark Ethiopia
+
+
+
+6.4
+
+Finally, tick in the “Finalized” check box and click “Finish”. The system will print the issue
+requisition voucher for you;
+
+Labor charge entry
+
+This page is used for recording the labor used by charge type for jobs that have been worked on
+by a technician. If there are no technicians clocked-in for this job, you will not be able to record
+the charge types.
+ Click on “Refresh” to clear the fields;
+ Click on “Add New”;
+ Select the job order number for which you are recording labor charges. The service to be
+charged must have been completed and the technician clocked-out for recording the
+labor charge;
+ Select the order number and the details of the order will be populated in some of the
+fields;
+ Select the charge code of the labor charge to be recorded and it will appear in the right
+side window of the screen;
+
+
+
+Click on the “Save” button and the labor charge recorded will appear in the lower part
+grid of the screen with the standard hours set for the labor type and associated costs to
+be charged to the job;
+
+HillMaster-SRV User’s Manual
+
+Page 47 of 100
+
+HillMark Ethiopia
+
+
+
+
+6.5
+
+If you are recording labor charge entry of other types for the same job, then select the
+charge code and repeat the procedures;
+If the labor charge to be applied is to be shared among different technicians, percentage
+of distribution should be specified before saving labor charge entry;
+
+Miscelaneous charge entry
+
+This page is used for recording miscellaneous charges to be applied to a job. These
+miscellaneous charge types should be available on the system. If new, they should first be
+maintained on the system.
+
+
+
+
+
+
+
+Click on “Refresh” to clear the fields;
+Click on “Add New”;
+Select the job order number for which you are recording miscellaneous charges. The
+order details will be populated in the relevant fields;
+Select the Miscellaneous charge type to be applied to the selected job order number. The
+standard amount to be charged will appear in the fields;
+Click on “Save” button and the charge will be updated to the job and appears in the grid;
+If you are charging more miscellaneous charges, repeat the same procedure;
+
+HillMaster-SRV User’s Manual
+
+Page 48 of 100
+
+HillMark Ethiopia
+
+6.6
+
+Lubricant & fuel charge entry
+
+This page is used for recording lubricant and fuel charges to be applied to a job. These charge
+types should be available on the system. If new, they should first be maintained on the system.
+
+
+
+
+
+
+
+
+Click on “Refresh” to clear the fields;
+Click on “Add New”;
+Select the job order number for which you are recording miscellaneous charges. The
+order details will be populated in the relevant fields;
+Select the Miscellaneous charge type to be applied to the selected job order number. The
+standard amount to be charged will appear in the fields;
+Specify quantity to be charged;
+Click on “Save” button and the charge will be updated to the job and appears in the grid;
+If you are charging more miscellaneous charges, repeat the same procedure;
+
+HillMaster-SRV User’s Manual
+
+Page 49 of 100
+
+HillMark Ethiopia
+
+6.7
+
+Sublet work charge entry
+
+This page is used for recording sublet works to be charged to a job. These charge types should
+be available on the system. If new, they should first be maintained on the system.
+
+
+
+
+
+
+
+
+Click on “Refresh” to clear the fields;
+Click on “Add New”;
+Select the job order number for which you are recording sublet work charges. The order
+details will be populated in the relevant fields;
+Select the sublet work charge type to be applied to the selected job order number. The
+standard amount to be charged will appear in the fields;
+Specify quantity to be charged;
+Click on “Save” button and the charge will be updated to the job and appears in the grid;
+If you are charging more sublet work charges, repeat the same procedure;
+
+HillMaster-SRV User’s Manual
+
+Page 50 of 100
+
+HillMark Ethiopia
+
+6.8
+
+Other charges entry
+
+This page is used for recording other charges to be applied to a job. These charge types should
+be available on the system. If new, they should first be maintained on the system.
+
+
+
+
+
+
+
+
+Click on “Refresh” to clear the fields;
+Click on “Add New”;
+Select the job order number for which you are recording other charges. The order details
+will be populated in the relevant fields;
+Select the other charge type to be applied to the selected job order number. The
+standard amount to be charged will appear in the fields;
+Specify quantity to be charged;
+Click on “Save” button and the charge will be updated to the job and appears in the grid;
+If you are charging more other charges, repeat the same procedure;
+
+HillMaster-SRV User’s Manual
+
+Page 51 of 100
+
+HillMark Ethiopia
+
+6.9
+
+Request for return
+
+This page is used for returning item issued with MRV for valid reasons. The job and MRV should
+exist for recording the requisition to return.
+
+HillMaster-SRV User’s Manual
+
+Page 52 of 100
+
+HillMark Ethiopia
+
+
+
+
+
+
+
+
+
+
+
+Click on “Refresh” to clear the fields;
+Click on “Add New” and the system will assign a return requisition reference number;
+Select the MRV reference number by which the original issue was recorded;
+Specify valid reason from the selection list;
+Select the authority to whom the return is to be made;
+Select the invoice number reference and the system will display the order number and
+other details of the order;
+Click on “Accept” to request a return for the selected item;
+Repeat the procedure to include more item returns for this order;
+When you are done with adding the items, click on “Finish” and the requisition will be
+routed to the approver;
+
+HillMaster-SRV User’s Manual
+
+Page 53 of 100
+
+HillMark Ethiopia
+
+6.10 Approve request for return
+This page is used for approving any requested returns. The page has 2 windows. The first one on
+the left shows lists of request for returns awaiting approval. The second, on the right shows the
+details of specific request when double clicked on the left windows list.
+
+The approver has the right to either “Approve” return or “Reject / Cancel” the requisition for
+return.
+
+6.11 Sublet order entry
+This page is used for recording a sublet work required for a specified job order number. The
+supplier and the sublet work type should exist on the system. Otherwise, they should first be
+maintained before processing this operation.
+
+HillMaster-SRV User’s Manual
+
+Page 54 of 100
+
+HillMark Ethiopia
+
+
+
+
+
+
+
+Save your entry when you are done with recording one type of sublet work order;
+Repeat the procedure if there is another sublet work required for this job order;
+When you are done, click on the “Finish” button;
+You can preview the sublet work orderes you have created for the job order;
+
+6.12 Sublet order approval
+This page is used for approving finalized sublet work orders created on the system. Sublet work
+orders can only be sent to sublet work supplier when approved.
+
+
+Click on the list of sublet work orders created on the system from the left windows lists.
+The details of the selected sublet work order including for which job order they have
+been created will appear in the right window fields;
+
+HillMaster-SRV User’s Manual
+
+Page 55 of 100
+
+HillMark Ethiopia
+
+
+
+Click on “Approve” to approve or click on “Return” to rout it back to the requester or click
+on “”Reject” to cancel the sublet work order all together. The action of the approver will
+automatically update the following tabs: “Approved order”, “Rejected Order” or
+“Cancelled order”.
+
+6.13 Sublet order receiving
+This page is used for recording the receiving of sublet work order from a supplier when
+completed.
+
+HillMaster-SRV User’s Manual
+
+Page 56 of 100
+
+HillMark Ethiopia
+
+
+
+
+
+
+All sublet work orders approved will be listed and the sublet work order number to be
+received should be double clicked. The details of the sublet work order will appear in the
+right window fields and grid;
+Specify the Delivery Order number of the supplier;
+Click on “Save” to record the receiving of the order;
+
+HillMaster-SRV User’s Manual
+
+Page 57 of 100
+
+HillMark Ethiopia
+
+7 Garage Invoice
+This menu provides all the interface pages required for processing invoices of cash or credit sales
+transactions, Proforma invoice for estimations or processing of services performed for company
+owned vehicles normally called internal ITM.
+
+7.1 Performa Invoice
+This page is used for printing a Proforma invoice for a job that is already completed and closed.
+It is used for customers that require a Proforma invoice to prepare payments. You can directly
+use the cash or credit invoice page of the system for a customer that doesn’t require Proforma
+invoice of completed job.
+
+
+
+Click on “Refresh” button to clear previous data from the fields;
+Select the job number from the list. Jobs that are closed will appear in the selection list.
+You can’t perform this operation for jobs that have not been closed.
+
+HillMaster-SRV User’s Manual
+
+Page 58 of 100
+
+HillMark Ethiopia
+
+
+
+Click on the “Print invoice” button. The amount that will appear in the printed invoice
+should be the same as what you see in the total amount field of this page.
+
+7.2 Cash Invoice
+This page is used for printing a cash sales invoice for a job that is already completed and closed.
+
+
+
+Click on “Refresh” button to clear previous data from the fields;
+Select the job number from the list. Jobs that are closed and have not been invoiced yet
+and where the payment type used for job opening was set to be “cash” will appear in the
+selection list. You can’t perform this operation for jobs that have not been closed.
+
+
+
+HillMaster-SRV User’s Manual
+
+Page 59 of 100
+
+HillMark Ethiopia
+
+
+
+Click on “Print invoice” button and the system will produce garage cash sales proof list.
+The print invoice command will automatically send the invoice details to the HillMasterPOS module used by the cashier for printing of Fiscal Invoice and Attachment document
+in compliance with the tax law of Ethiopia.
+
+7.3 Credit Invoice
+This page is used for printing a cash sales invoice for a job that is already completed and closed.
+
+
+
+Click on “Refresh” button to clear previous data from the fields;
+Select the job number from the list. Jobs that are closed and have not been invoiced yet
+and where the payment type used for job opening was set to be “credit” will appear in
+the selection list. You can’t perform this operation for jobs that have not been closed.
+
+HillMaster-SRV User’s Manual
+
+Page 60 of 100
+
+HillMark Ethiopia
+
+
+
+Click on “Print invoice” button and the system will produce garage credit sales proof list.
+The print invoice command will automatically send the invoice details to the HillMasterPOS module used by the cashier for printing of Fiscal Invoice and Attachment document
+in compliance with the tax law of Ethiopia.
+
+7.4 Invoice by ITM
+This page is used for printing an internal invoice or charge document for internal vehicles opened
+by the company itself. These vehicles should be registered on the system as company owned
+vehicles in terms of plate numbers and in addition the invoicing method should be specified as
+ITM when opening Job order.
+
+
+
+Click on “Refresh” button to clear previous data from the fields;
+Select the job number from the list. Jobs that are closed and have not been invoiced yet
+and where the payment type used for job opening was set to be “ITM” will appear in the
+selection list. You can’t perform this operation for jobs that have not been closed.
+
+HillMaster-SRV User’s Manual
+
+Page 61 of 100
+
+HillMark Ethiopia
+
+
+
+Click on “Print Preview” button and the system will produce garage ITM invoice proof list.
+The print invoice command will automatically charge the invoice amount to the
+department expense specified on the COA.
+
+7.5 Discount rate entry
+This page is used to setup a discount rate for one time by specifying the job order number or for
+a customer as a standing procedure that applies to all jobs that are opened in the name of the
+beneficiary customer.
+Discount by Job order:
+ Select the job order number from the list;
+ Specify the percentages allowed for this job by different charge category;
+ Should specify at least the authority that has approved this discount in the remark field;
+ Finally, click on the “Save record” command button;
+
+HillMaster-SRV User’s Manual
+
+Page 62 of 100
+
+HillMark Ethiopia
+
+Discount by Customer:
+
+
+
+
+
+
+
+Select the customer from the list. Customer should exist in the customer list;
+Specify the percentages allowed for this job by different charge category;
+Should specify at least the authority that has approved this discount in the remark field;
+Specify the duration for which the discount remains valid.
+Finally, click on the “Save record” command button;
+
+7.6 Credit Note
+This sub menu is used to prepare credit note.
+
+7.7 Cancel / Return garage invoice
+HillMaster-SRV User’s Manual
+
+Page 63 of 100
+
+HillMark Ethiopia
+This page is used for processing cancellation or returning of garage invoices that have been
+processed.
+
+
+
+
+
+
+
+Click on “Refresh” to clear previous data from the fields;
+Select the invoice number to be cancelled from the list. The associated details for the
+invoice selected will be displayed.
+
+Specify the reason for the return and the supporting letter reference number authorizing
+the return;
+Finally click on the “Cancel / Return” button;
+
+7.8 Clear un-collected sales order
+This page is used for clearing the garage sales orders processed on system but has not been
+printed and collected by the cashier from the customer. To synchronize the sales amounts
+between this module and the POS module used by the cashier, every sales that have been
+processed but not collected on the same day by the cashier should be cleared using this feature.
+ Specify the date range for this transaction for the “From” and “To” fields;
+
+HillMaster-SRV User’s Manual
+
+Page 64 of 100
+
+HillMark Ethiopia
+
+
+
+
+
+Click on the “Show un-collected sales order” button and the system will list all the sales
+transactions that have not been collected by the cashier for the specified date range in
+the grid;
+Select the transactions you want to clear (there is also option for clearing all);
+Click on the “Clear selected sales orders” and they will be cleared. The cleared
+transactions will be cleared from the grid;
+You can see on the print “preview” if required;
+
+7.9 Cancel VRV entry
+This page is used to cancel an already prepared Vehicle Release Voucher.
+
+
+
+
+
+Click on “Refresh” to clear data fields from previous data;
+Select the VRH from the list. If the list is empty it could mean Vehicle release voucher
+has not been prepared for the job. For existing VRV, the details will be displayed;
+Click on “Cancel Delivery”;
+You should then have to reprocess VRV for the job from the Utility menu;
+
+HillMaster-SRV User’s Manual
+
+Page 65 of 100
+
+HillMark Ethiopia
+
+7.10 Job Estimation
+This page is used for processing garage job estimations for various reasons (External estimation,
+Insurance claim estimation, internal estimation or Template estimation). The page provides
+different tabs for maintaining “general information”; “Parts”; “Labor”; “Fuel & Lubes”;
+“Miscellaneous charges”; “Sublet charges” and “Other charges”
+
+
+
+
+
+
+Click on “Refresh” button to clear data fields from previous data;
+Click on “Add New” and the system will automatically assign estimation number and
+update estimation date and the general information tab will be active by default;
+Complete all the fields in the general information tab with relevant data. The chassis
+number and plate number can be browsed for existing data or type value if new;
+Click on “Save” button to save your entry for the general information tab before starting
+data capture for the other tabs;
+Open any relevant tab for the estimation;
+
+HillMaster-SRV User’s Manual
+
+Page 66 of 100
+
+HillMark Ethiopia
+o
+o
+o
+
+Within each tab start by clicking on the “Refresh” button in the tab;
+Click on “Add New” button in the selected tab;
+Select the item, labor, fuel & lube … etc and then click on the “Add” button in
+the selected tab for item you add;
+
+o
+
+
+
+
+You can preview the estimation sheet for checking;
+Finally if everything is acceptable, then tick the “Finalized” tickbox and Click on “Save”
+button on the top;
+
+HillMaster-SRV User’s Manual
+
+Page 67 of 100
+
+HillMark Ethiopia
+
+7.11 Advanced booking
+This page is used for recording of advanced service bookings for customers. The booking could
+be customer initiated or picked from the systems scheduled service reminder.
+ Click on “Refresh” to clear data fields from previous data;
+ Click on “Add New” and the system will automatically assign appointment number;
+ Set the appointment date;
+ Fill all the relevant fields with relevant values;
+ Click on “Save” button when you are done. The system will add the vehicle in to the grid
+with its details;
+
+
+
+The system will automatically send reminder message to the customer when the
+appointment date is due;
+
+HillMaster-SRV User’s Manual
+
+Page 68 of 100
+
+HillMark Ethiopia
+
+8 Utilities
+The utility page is used for performing different tasks listed in the sub menus.
+
+HillMaster-SRV User’s Manual
+
+Page 69 of 100
+
+HillMark Ethiopia
+
+8.1 Close Job Order
+This page is used to close job orders that have been completed so that they can be invoiced and
+delivered to the customer.
+ Select the job order that you are going to close and the system will display the details for
+the job selected;
+
+
+
+Specify the tester, the test method used and any remarks if any in the spaces provided;
+
+
+
+System will validate if the job has been returned from other sections. If not, the system
+will not allow you to close the job order.
+The system will ask you to print job statement for your review and do so depending on
+your confirmation type;
+
+
+
+HillMaster-SRV User’s Manual
+
+Page 70 of 100
+
+HillMark Ethiopia
+
+8.2 Job order quality check sheet
+This page is used to record at least the mandatory quality check sheet against which each job
+opened should be checked before they are released for delivery to customer.
+
+
+
+
+
+Select the job order number for which you are performing the quality check;
+Tick in the appropriate for checks that has been performed for the selected job order and
+save you entry;
+
+8.3 Reopen Job Order
+This page is used for re-opening closed jobs for various reasons.
+
+HillMaster-SRV User’s Manual
+
+Page 71 of 100
+
+HillMark Ethiopia
+
+
+
+Select the job order number you want to re-open. The system will display the details of
+the job selected;
+Click on “Reopen Job Order” and the system will re-open the job order for you. You
+should close the job after processing any adjustments for which the job was re-opened;
+
+8.4 Deliver Job Order
+This page is used for preparing Vehicle Release Voucher for the customer. The customer must
+have paid the invoice for processing this task or should have a letter authorizing the release
+(usually for credit customers).
+
+
+
+Click on “Refresh” button to clear previous data from the fields;
+Select the job order number for which you are preparing VRV. And the system will
+display the details of the job order;
+
+
+
+Click on “Deliver Job order” button and the system will pop-up a separate page where
+you should record other relevant details;
+In the new page, specify the following details in the relevant fields specified for this
+purpose: Delivered by name; Payment receipt number for the job; other reference
+number if approved credit customer; authorized by name; customer name and ID
+number; the procedures identified by tick marks should also be administered and
+appropriately ticked;
+Type remarks if any in the space provided;
+
+
+
+
+
+HillMaster-SRV User’s Manual
+
+Page 72 of 100
+
+HillMark Ethiopia
+
+
+
+
+Finally “Save” your VRN (Vehicle Release Voucher, which will be used by the customer as
+a gate pass.
+You may “Print preview” the VRV that would be given the customer;
+
+HillMaster-SRV User’s Manual
+
+Page 73 of 100
+
+HillMark Ethiopia
+
+8.5 Receive assembled job
+This page is used for assembly line operation only.
+
+8.6 Copy Invoiced Job Order
+This page is used when there is an item or charge type is found in the invoice that actually has
+not been used for the job. The procedure will create the same job order number with a character
+appended at the end to differentiate it from the original one. You will then return all the invoiced
+items or charge codes using negative sign except for the wrongly charged items or charge codes.
+You will then process a credit not for the new job order copied.
+
+8.7 Split job order
+This page is used for splitting job order before invoicing so that separate invoices can be
+generated for the total job. The reason could be for sharing of costs especially that should be
+covered by customer and part that would be covered by insurance.
+
+HillMaster-SRV User’s Manual
+
+Page 74 of 100
+
+HillMark Ethiopia
+
+
+
+
+
+
+
+Select the job order (that has not been invoiced yet) to be split and the charge types
+applied to this job will be listed in the grid;
+Tick the charge code that you want to go in to the new job order (identified with the
+same job order number but has a character appended to it;
+Click on “Transfer to new Job” and the charge type will appear in the newly copied job
+order number and removed from the original job order;
+You should specify the name of the customer for the new job order number copied;
+
+8.8 Split job order – AI
+This page is used for splitting job order after invoicing so that total cost for the job could be
+shared between the customer and another party.
+
+
+
+
+
+
+Select the job order (that has not been invoiced yet) to be split and the charge types
+applied to this job will be listed in the grid;
+Tick the charge code that you want to go in to the new job order (identified with the
+same job order number but has a character appended to it;
+Click on “Transfer to new Job” and the charge type will appear in the newly copied job
+order number and removed from the original job order;
+You should specify the name of the customer for the new job order number copied;
+
+8.9 Pairing job order
+This page is used for pairing two job orders may be because they both belong to the same
+customer or any other reason for that matter. These jobs need to be completed around the same
+time for delivery together.
+
+
+
+
+Click on “Refresh” button to clear previous data from data fields;
+Select the two jobs that are to be paired;
+Click on the “Pair” button;
+
+HillMaster-SRV User’s Manual
+
+Page 75 of 100
+
+HillMark Ethiopia
+
+8.10 Journalize transaction
+This page is used when you want to journalize garage sales transactions either by date range or
+invoice number range. Transactions are organized by type and you could only journalize one
+transaction type at a time.
+
+
+
+
+Tick in the radio button of the transaction type you want to journalize;
+Specify the date range for the transactions;
+
+HillMaster-SRV User’s Manual
+
+Page 76 of 100
+
+HillMark Ethiopia
+
+
+
+Click on “Journalize transaction” and the system will journalize selected transaction type
+for the specified period and give you a confirmation when successfully completed.
+There is a command for “Remove orphan journals” which will remove all orphan journals
+used in this module. Orphan journals are ….
+
+8.11 Journal listing
+This page is used to generate listing of journals using your criteria: reference number range,
+journal type and period. There are also radio buttons that can be used to further filter your
+listing.
+
+
+
+
+
+
+
+Tick the radio buttons based on your filtration requirement;
+Specify the reference range with starting and ending reference number from the
+selection list;
+Specify the journal type and the period for which you are listing the journals;
+You can give journal number and any narration in the fields provided;
+When you are done, click on the “Print preview” and the system will generate the journal
+listing based on the selections you made.
+
+HillMaster-SRV User’s Manual
+
+Page 77 of 100
+
+HillMark Ethiopia
+
+8.12 Posting journals to GL
+Posting of garage sales journals is to be performed from the HillMark-COSS module side
+
+8.13 Calculator
+This page activates a standard calculator that you may use for computing some numerical values
+while you are processing input or output transactions.
+
+HillMaster-SRV User’s Manual
+
+Page 78 of 100
+
+HillMark Ethiopia
+
+9 Setup
+This menu is used to maintain different parameters that are helpful for effectively performing
+different tasks.
+
+9.1 Application parameter for estimations
+This page is used for setting up standard terms and conditions that should appear on every
+garage estimations. System will display standard values that has been setup already. You can
+change these values by clicking on “New” and then write the new value for the parameter and
+save it.
+
+
+
+
+
+
+Advance payment percentage:
+The percentage of advance payment for the
+work estimated if it has to be converted to order;
+Advance payment if exceeds:
+The minimum order amount beyond which
+advance payment is mandatory;
+Advance required with-in: The number of days in which the advance payment should
+be made after placing the order. Work on the order normally starts after the advance
+payment is received;
+Parking fee per day: The amount to be charged as a parking fee per day while the
+vehicle is in the garage;
+Parking fee will start from: When will the parking fee start counting. Normally after
+the completion and notice is served to the customer about the completion of job;
+
+HillMaster-SRV User’s Manual
+
+Page 79 of 100
+
+HillMark Ethiopia
+
+9.2 Working hour setup
+This page is used for setting up working hours as applicable to the entire garage operation for
+morning working hours, morning coffee break start; morning coffee break finish; lunch start;
+lunch finish; afternoon coffee break start; afternoon coffee break finish; end of day work finish.
+
+Depending on the working hour settup, the system will calculate effective working hours available
+per day.
+
+HillMaster-SRV User’s Manual
+
+Page 80 of 100
+
+HillMark Ethiopia
+
+9.3 Working calendar setup
+This page is used for setting up working calendar for the year as applicable to the entire garage
+operation. The days on which the garage is not working including weekends and public Holydays
+are marked by click on the date of the month. The day will turn red on the calendar.
+
+
+
+
+
+
+
+As you select a month of a year and update the days as non-working, the system will
+calculate and update the effective working hours for the period accordingly. Associated
+productivity reports will also use this data setup here.
+Select the year and month for which you are updating working day;
+Right click on the day of the month that you are setting as working or non-working. The
+system will set the day as non-working if it was initially working day or set it to working if
+it was initially non-working day;
+Continue the procedure until you setup for the entire year;
+Click on “Calculate working hours – Month” or “Calculate working hour – year” and the
+system will update the effective working hours for the month and year. Note: you can
+see the updated working hours after you exist from the page and reload the page.
+
+9.4 Workgroup setup
+This page provides two tabs. The first tab is used for setup of a segmentation of operation by
+department, section and unit. While the second tab is used for creating different stations
+normally used for assembly line operation.
+
+HillMaster-SRV User’s Manual
+
+Page 81 of 100
+
+HillMark Ethiopia
+
+9.5 Technician setup
+This page is used to create technicians by the departments or units they belong to and whether
+they are active, on payroll, to whom they report. It also has a field for recording date of
+employment and date of termination which would be used for calculation of productivity and
+efficiency reports of technicians. This data may be pulled automatically for companies that are
+using HillMaster-HRM (Human Resource Management module).
+
+HillMaster-SRV User’s Manual
+
+Page 82 of 100
+
+HillMark Ethiopia
+
+9.6 Job type allowed by user
+
+This page provides two tabs. The first tab is used to setup the sections or units that a selected
+user can have access.
+
+
+
+Select the user from the list, and the different departments setup on the system for the
+garage module will be dispayed in the grid;
+Tick the unit to which access by the selected user is to be granted and save your entry;
+
+HillMaster-SRV User’s Manual
+
+Page 83 of 100
+
+HillMark Ethiopia
+The second tab is used to see the list of the users with allowed work units;
+
+HillMaster-SRV User’s Manual
+
+Page 84 of 100
+
+HillMark Ethiopia
+
+10 Tasks
+
+HillMaster-SRV User’s Manual
+
+Page 85 of 100
+
+HillMark Ethiopia
+
+10.1 Absent Entry
+This page is used for recording absent time or over time worked by technician in terms of date,
+hours and reason. Jobs can’t be clocked-in for the technicians when they are on absence as
+recorded on the system. The page provides two tabs “Absence” and “Over time”. Select the
+appropriate tab before recording data. To do this:
+Absence tab:
+1.
+2.
+3.
+4.
+5.
+6.
+7.
+
+Click on “Refresh” button to clear all the fields;
+Click on “Add New” to create a new record;
+Specify the date;
+Select the technician from the list;
+Select the absence type from the list;
+Specify the absence hour. It should be a maximum of 7 hours for a day;
+Click on “Save record” button;
+
+The procedure is the same for recording over time worked by technician.
+
+10.2 Dispatch Job to Section
+Job orders opened should be dispatched to the different sections before work begins on the job.
+Clock-in job to technicians is not possible unless the job is first dispatched.
+To do this:
+1. Click on “Refresh” to clear all the fields for fresh entry;
+2. Click on “Add New” button;
+3. Select the job order number to dispatch to sections setup on the system. The job order
+details will appear in the appropriate fields;
+4. Select the section to dispatch to. Normally if the job is opened for specified section, it will
+appear as a single selection. However, if the job is setup to be worked on in different
+sections, these sections will appear in the selection list and you should select to which
+section the job should be dispatched first;
+5. The dispatch date and time will automatically be filled by the system as current time.
+HillMaster-SRV User’s Manual
+
+Page 86 of 100
+
+HillMark Ethiopia
+6. Specify any remarks if any in the provided field and then
+7. Click on the “Save” button before you finish;
+
+Note: Only jobs dispatched to sections can be clocked-in for a technician.
+
+10.3 Receive Dispatched Job
+This page is used for recording the receiving of job orders by the designated section of the
+garage service. Jobs received in the section can then be clocked-in for technician by the section
+foreman. Finally, when the job is completed, it has to be received from sections in order to be
+able to close the job. To do this:
+1. Click on “Refresh” to clear the data in the fields;
+2. Select the job order number to be received by the section. All the relevant data
+maintained for the job will appear in the appropriate fields;
+3. Specify the Vehicle location, where it is parked so that it can be easily located by the
+technician when job is clocked-in;
+4. Click on the “Received dispatched Job” button to record receipt;
+
+HillMaster-SRV User’s Manual
+
+Page 87 of 100
+
+HillMark Ethiopia
+
+10.4 Job Clock In
+This page is used for clocking-in job for a technician. Note that only jobs that have been opened,
+then dispatched to sections and received by the section can be clock-in for a technician.
+To do this:
+1. Click on “Refresh” to clear the data in the fields;
+2. Click on “Add New”;
+3. Select the job order number to Clock-in for a technician. All the relevant data maintained
+for the job will appear in the appropriate fields;
+4. Select the technician to assign for this job order. List of technicians in this section will
+appear in the selection list;
+5. Write any remark in the field provided;
+6. Select the task that the technician is going to perform on this job. All the job texts
+(Charge types) specified for this job order by the customer hen hob was opened will
+appear in the selection list. If new tasks (charge types) are discovered in the process, it
+should be communicated to the customer and then added to the job text of the job
+order. You can’t assign the same technician if he is already clocked-in for another job at
+the same time since it is practically impossible. If needed, he should be clocked-out from
+the first job;
+7. Click on the “Save” button;
+
+HillMaster-SRV User’s Manual
+
+Page 88 of 100
+
+HillMark Ethiopia
+
+Note: Clock-in should be performed for each job text that has been specified on job opening
+before the job is declared complete.
+
+10.5 Job Clock Out
+This page is used for recording of the completion of work assigned to the technician or parking of
+the job for reasons to be specified. When the job is clocked-out, the technician can be assigned
+to another job. When the job is clocked-out, it can be clocked-in for another job text (charge
+type. To do this:
+1. Click on “Refresh” to clear data from fields;
+2. Select the job order number to clock-out. The job text (charge type) worked on for the
+selected job appears in the grid. Double click on the job text that you want to clock out
+and all the relevant fields for the job order will be populated;
+3. Write any remark if any in the remark field provided;
+4. Specify the reason for clock-out;
+5. Finally click on the “Clock out” button;
+
+HillMaster-SRV User’s Manual
+
+Page 89 of 100
+
+HillMark Ethiopia
+
+10.6 Transfer charge code by Technician
+This page is used to specify the charge percentages for to be assigned for a technician that is
+clocked-in to different operations the selected job order.
+ Select the job order from the list and details maintained for the job will be populated;
+ Select the technician from the list. All technicians that have clocked-in and clocked-out
+will appear in the selection list;
+ Select the beginning operation (Job text) created for the selected job and worked on by
+the selected technician;
+ Select the last operation (job text) created for the job and worked on by the selected
+technician for the “To” field;
+ Specify the percentage allocation for the selected technician;
+
+HillMaster-SRV User’s Manual
+
+Page 90 of 100
+
+HillMark Ethiopia
+
+
+Click on “Save” button when you are done.
+
+10.7 Job transfer to Station
+You may not have this functionality in your system. This feature of the system is used only if
+there is an assembly operation. Assembly uses lines organzed in different stations and the job
+progresses from the beginning all through the finish stations in a line flow. There is a separate
+manual for these busineses, and therefore, it has been purposely omited from this users manual.
+
+10.8 Change job order station
+You may not have this functionality in your system. This feature of the system is used only if
+there is an assembly operation. Assembly uses lines organzed in different stations and the job
+progresses from the beginning all through the finish stations in a line flow. There is a separate
+manual for these busineses, and therefore, it has been purposely omited from this users manual.
+
+10.9 Update last clock-out reason
+This page is used for recording a chsnge in the reason for the last clock-out of a job.
+
+
+
+
+
+Click on the “Refresh” button to clear previous data from the data fields;
+Click on “Add New” and the system will update the current transaction dates;
+Select the job order for which you are going to change the last clock-out reason. The
+details for the job will appear in the appropriate fields including the last clock-out reason
+recorded for this job;
+Select the new Clock-out reason from the selection list and then “Save” your entry;
+
+HillMaster-SRV User’s Manual
+
+Page 91 of 100
+
+HillMark Ethiopia
+
+
+
+The new Clock-out reason will be added to the grid;
+
+10.10
+
+Technician enquiry
+
+This page is used to enquire in to technician status as to whether he is free, see clocked-in jobs,
+list of dispatched jobs and all free technicians list so that the forman may take informed
+decisions.
+
+Free Technicians tab: Shows free technicians by section or unit.
+
+Clocked-in jobs tab: Shows jobs that are clocked-in by the sections
+
+HillMaster-SRV User’s Manual
+
+Page 92 of 100
+
+HillMark Ethiopia
+
+Dispatched jobs: Shows list of dispatched jobs by section with other relevant
+details.
+
+All free technicians tab: Shows list of all free technicians with other relevant
+details.
+
+10.11
+
+In / Out enquiry
+
+This page is used to see the jobs that have been clocked-in or clocked-out by technician, job
+order or sales specifying a date range. You can also expand the list by ticking to include closed or
+WIP jobs. Each information is organized in a separate tab.
+
+HillMaster-SRV User’s Manual
+
+Page 93 of 100
+
+HillMark Ethiopia
+
+
+
+Click on the “Load Data” after specifing your selections and date ranges.
+
+10.12
+
+End of working day check-out
+
+This page is used by the forman responsible for clocking-out technicians at the end of days work.
+The technicians are not required to clock-out. The clock-out time is read from the standared set
+in to the system.
+ Click on “Clock-out all jobs”
+
+10.13
+
+Customer notification entry
+
+This page is used for recording any notifications that are made with the customer. The
+notification should be selected from the notice types. If new type of notice is required it should
+be first maintained in the system so that it will appear in the selection list.
+
+HillMaster-SRV User’s Manual
+
+Page 94 of 100
+
+HillMark Ethiopia
+
+
+
+
+
+
+
+Select the job order number;
+Specify the notice date and the contact to whom the notice has been made;
+Seoect the notice type from the list;
+Write any remark if any in the field provided for remark;
+Save your entry when completed;
+
+HillMaster-SRV User’s Manual
+
+Page 95 of 100
+
+HillMark Ethiopia
+
+11 Reports
+This menu lists the dozens of reports that can be generated from the system in to six groups:
+Listings, garage sales, productivity, others, custom and user defined reports.
+
+HillMaster-SRV User’s Manual
+
+Page 96 of 100
+
+HillMark Ethiopia
+
+11.1 Listing reports
+This page list all the standared listing reports in terms of report name and report id. The report
+that can be produced is generated when you double click on the report name.
+
+11.2 Garage sales reports
+This page list all the standared garage sales reports in terms of report name and report id. The
+report that can be produced is generated when you double click on the report name.
+HillMaster-SRV User’s Manual
+
+Page 97 of 100
+
+HillMark Ethiopia
+
+11.3 Garage productivity reports
+This page list all the standared garage sales reports in terms of report name and report id. The
+report that can be produced is generated when you double click on the report name.
+
+HillMaster-SRV User’s Manual
+
+Page 98 of 100
+
+HillMark Ethiopia
+
+11.4 Other reports
+This page list all the standared garage sales reports in terms of report name and report id. The
+report that can be produced is generated when you double click on the report name.
+
+11.5 Custome reports
+This page list all the custome reports that have been setup. You can double click on the report
+type and can generate the custome report. Other custom reports can be setup by assigning
+report name and then assigning data fields that should be used for the desiered report and
+saving it on the system.
+
+
+
+
+Select the report type;
+Click on “Show report”
+
+HillMaster-SRV User’s Manual
+
+Page 99 of 100
+
+HillMark Ethiopia
+
+11.6 User defined reports
+This page list any user defined reports if any so that you can generate the report as needed.
+You can also define your own reports using the data fields available on the database.
+
+HillMaster-SRV User’s Manual
+
+100
+
+Page 100 of
+
+

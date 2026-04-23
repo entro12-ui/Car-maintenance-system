@@ -113,6 +113,14 @@ export const reportsApi = {
   getCustomersDue: (days) => api.get('/reports/customers-due', { params: { days } }),
 }
 
+// System Settings (admin-maintained lookups)
+export const systemSettingsApi = {
+  list: (params) => api.get('/settings', { params }),
+  create: (data) => api.post('/settings', data),
+  update: (id, data) => api.put(`/settings/${id}`, data),
+  remove: (id) => api.delete(`/settings/${id}`),
+}
+
 // Authentication
 export const authApi = {
   login: (formData) => api.post('/auth/login', formData, {
@@ -153,6 +161,37 @@ export const accountantApi = {
   getPendingApprovals: () => api.get('/accountant/pending-approval'),
 }
 
+// General Ledger (Accounts + Journals)
+export const glApi = {
+  // Accounts
+  listAccounts: (params) => api.get('/gl/accounts', { params }),
+  createAccount: (data) => api.post('/gl/accounts', data),
+  updateAccount: (accountId, data) => api.put(`/gl/accounts/${accountId}`, data),
+
+  // Journals
+  listJournals: (params) => api.get('/gl/journals', { params }),
+  createJournal: (data) => api.post('/gl/journals', data),
+  postJournal: (journalId) => api.post(`/gl/journals/${journalId}/post`),
+}
+
+// Enterprise Admin
+export const enterpriseAdminApi = {
+  // Memo / letter templates
+  listMemoTemplates: (params) => api.get('/admin/memo-templates', { params }),
+  createMemoTemplate: (data) => api.post('/admin/memo-templates', data),
+  updateMemoTemplate: (id, data) => api.put(`/admin/memo-templates/${id}`, data),
+
+  // User-defined reports
+  listUserDefinedReports: (params) => api.get('/admin/user-defined-reports', { params }),
+  createUserDefinedReport: (data) => api.post('/admin/user-defined-reports', data),
+  updateUserDefinedReport: (id, data) => api.put(`/admin/user-defined-reports/${id}`, data),
+
+  // GL auto-posting rules
+  listGlPostingRules: (params) => api.get('/admin/gl-posting-rules', { params }),
+  createGlPostingRule: (data) => api.post('/admin/gl-posting-rules', data),
+  updateGlPostingRule: (id, data) => api.put(`/admin/gl-posting-rules/${id}`, data),
+}
+
 // Proformas
 export const proformasApi = {
   getAll: (params) => api.get('/proformas', { params }),
@@ -168,6 +207,187 @@ export const proformasApi = {
   deleteMarketPrice: (id, itemId, marketPriceId) => api.delete(`/proformas/${id}/items/${itemId}/market-prices/${marketPriceId}`),
   markPrinted: (id) => api.post(`/proformas/${id}/print`),
   convert: (id) => api.post(`/proformas/${id}/convert`),
+}
+
+// Job Orders
+export const jobOrdersApi = {
+  list: (params) => api.get('/job-orders', { params }),
+  getById: (id) => api.get(`/job-orders/${id}`),
+  dispatch: (id, data) => api.post(`/job-orders/${id}/dispatch`, data),
+  receive: (id, data) => api.post(`/job-orders/${id}/receive`, data),
+  clockIn: (id, data) => api.post(`/job-orders/${id}/clock-in`, data),
+  listClocks: (id) => api.get(`/job-orders/${id}/clocks`),
+  clockOut: (id, clockId, data) => api.post(`/job-orders/${id}/clock-out/${clockId}`, data),
+  updateLastClockOutReason: (id, data) => api.post(`/job-orders/${id}/clocks/last/reason`, data),
+  block: (id, data) => api.post(`/job-orders/${id}/block`, data),
+  release: (id) => api.post(`/job-orders/${id}/release`),
+  deliver: (id, data) => api.post(`/job-orders/${id}/deliver`, data),
+  getQc: (id) => api.get(`/job-orders/${id}/qc`),
+  updateQc: (id, data) => api.put(`/job-orders/${id}/qc`, data),
+  vrvPrint: (id) => api.post(`/job-orders/${id}/vrv/print`),
+  vrvCancel: (id, data) => api.post(`/job-orders/${id}/vrv/cancel`, data),
+
+  // Utilities
+  close: (id) => api.post(`/job-orders/${id}/close`),
+  reopen: (id) => api.post(`/job-orders/${id}/reopen`),
+  cancel: (id) => api.post(`/job-orders/${id}/cancel`),
+  copy: (id, data) => api.post(`/job-orders/${id}/copy`, data),
+  split: (id, data) => api.post(`/job-orders/${id}/split`, data),
+  pair: (data) => api.post('/job-orders/pair', data),
+  unpair: (pairingId) => api.post(`/job-orders/unpair/${pairingId}`),
+  listPairings: (id) => api.get(`/job-orders/${id}/pairings`),
+
+  // Task enquiries
+  enquiryFreeTechnicians: () => api.get('/job-orders/enquiry/free-technicians'),
+  enquiryClockedInJobs: (section) => api.get('/job-orders/enquiry/clocked-in-jobs', { params: { section } }),
+  enquiryDispatchedJobs: (section) => api.get('/job-orders/enquiry/dispatched-jobs', { params: { section } }),
+  enquiryInOut: (params) => api.get('/job-orders/enquiry/in-out', { params }),
+  endOfDayCheckout: (data) => api.post('/job-orders/enquiry/end-of-day-checkout', data),
+}
+
+// Garage Invoices (Cash/Credit/ITM + Discount + Cancel/Return + Uncollected Clearing)
+export const garageInvoicesApi = {
+  listEligibleJobs: (invoiceType) => api.get('/garage-invoices/eligible-jobs', { params: { invoice_type: invoiceType } }),
+  create: (data) => api.post('/garage-invoices', data),
+  list: (params) => api.get('/garage-invoices', { params }),
+  getById: (id) => api.get(`/garage-invoices/${id}`),
+  cancel: (id, data) => api.post(`/garage-invoices/${id}/cancel`, data),
+  returnInvoice: (id, data) => api.post(`/garage-invoices/${id}/return`, data),
+  print: (id) => api.get(`/garage-invoices/${id}/print`),
+
+  listUncollected: (startDate, endDate) => api.get('/garage-invoices/uncollected', { params: { start_date: startDate, end_date: endDate } }),
+  clearUncollected: (startDate, endDate, data) => api.post('/garage-invoices/uncollected/clear', data, { params: { start_date: startDate, end_date: endDate } }),
+
+  createDiscountRate: (data) => api.post('/garage-invoices/discount-rates', data),
+  listDiscountRates: (params) => api.get('/garage-invoices/discount-rates', { params }),
+}
+
+// Job Order Notice Types
+export const jobOrderNoticeTypesApi = {
+  list: (params) => api.get('/job-orders/notice-types', { params }),
+  create: (data) => api.post('/job-orders/notice-types', data),
+  update: (id, data) => api.put(`/job-orders/notice-types/${id}`, data),
+}
+
+// Job Order Customer Notifications
+export const jobOrderCustomerNotificationsApi = {
+  list: (jobOrderId) => api.get(`/job-orders/${jobOrderId}/customer-notifications`),
+  create: (jobOrderId, data) => api.post(`/job-orders/${jobOrderId}/customer-notifications`, data),
+}
+
+// Job Order Inventory (MRV + Returns)
+export const jobOrderInventoryApi = {
+  // MRV
+  createIssue: (jobOrderId, data) => api.post(`/job-orders/${jobOrderId}/item-issues`, data),
+  listIssues: (jobOrderId) => api.get(`/job-orders/${jobOrderId}/item-issues`),
+  getIssue: (issueId) => api.get(`/job-orders/item-issues/${issueId}`),
+  addIssueLine: (issueId, data) => api.post(`/job-orders/item-issues/${issueId}/lines`, data),
+  finalizeIssue: (issueId) => api.post(`/job-orders/item-issues/${issueId}/finalize`),
+  cancelIssue: (issueId) => api.post(`/job-orders/item-issues/${issueId}/cancel`),
+
+  // Returns
+  createReturnRequest: (issueId, data) => api.post(`/job-orders/item-issues/${issueId}/return-requests`, data),
+  listReturnRequests: (params) => api.get('/job-orders/return-requests', { params }),
+  approveReturnRequest: (returnRequestId) => api.post(`/job-orders/return-requests/${returnRequestId}/approve`),
+  rejectReturnRequest: (returnRequestId) => api.post(`/job-orders/return-requests/${returnRequestId}/reject`),
+}
+
+// Labor Types + Job Order Labor Charges
+export const laborTypesApi = {
+  list: (params) => api.get('/job-orders/labor-types', { params }),
+  create: (data) => api.post('/job-orders/labor-types', data),
+  update: (id, data) => api.put(`/job-orders/labor-types/${id}`, data),
+}
+
+export const jobOrderLaborApi = {
+  listCharges: (jobOrderId) => api.get(`/job-orders/${jobOrderId}/labor-charges`),
+  createCharge: (jobOrderId, data) => api.post(`/job-orders/${jobOrderId}/labor-charges`, data),
+  deleteCharge: (jobOrderId, laborChargeId) =>
+    api.delete(`/job-orders/${jobOrderId}/labor-charges/${laborChargeId}`),
+}
+
+// Employees
+export const employeesApi = {
+  getMechanics: () => api.get('/employees/mechanics'),
+  list: (params) => api.get('/employees', { params }),
+  create: (data) => api.post('/employees', data),
+  update: (employeeId, data) => api.put(`/employees/${employeeId}`, data),
+  remove: (employeeId) => api.delete(`/employees/${employeeId}`),
+}
+
+// Job Order Additional Charges (Setup + Entry)
+export const otherChargeTypesApi = {
+  list: (params) => api.get('/job-orders/other-charge-types', { params }),
+  create: (data) => api.post('/job-orders/other-charge-types', data),
+  update: (id, data) => api.put(`/job-orders/other-charge-types/${id}`, data),
+}
+
+export const fuelLubricantsApi = {
+  list: (params) => api.get('/job-orders/fuel-lubricants', { params }),
+  create: (data) => api.post('/job-orders/fuel-lubricants', data),
+  update: (id, data) => api.put(`/job-orders/fuel-lubricants/${id}`, data),
+}
+
+export const miscChargeTypesApi = {
+  list: (params) => api.get('/job-orders/misc-charge-types', { params }),
+  create: (data) => api.post('/job-orders/misc-charge-types', data),
+  update: (id, data) => api.put(`/job-orders/misc-charge-types/${id}`, data),
+}
+
+export const subletWorkSuppliersApi = {
+  list: (params) => api.get('/job-orders/sublet-work-suppliers', { params }),
+  create: (data) => api.post('/job-orders/sublet-work-suppliers', data),
+  update: (id, data) => api.put(`/job-orders/sublet-work-suppliers/${id}`, data),
+}
+
+export const subletWorkTypesApi = {
+  list: (params) => api.get('/job-orders/sublet-work-types', { params }),
+  create: (data) => api.post('/job-orders/sublet-work-types', data),
+  update: (id, data) => api.put(`/job-orders/sublet-work-types/${id}`, data),
+}
+
+export const jobOrderAdditionalChargesApi = {
+  // Misc
+  listMisc: (jobOrderId) => api.get(`/job-orders/${jobOrderId}/misc-charges`),
+  createMisc: (jobOrderId, data) => api.post(`/job-orders/${jobOrderId}/misc-charges`, data),
+  deleteMisc: (jobOrderId, entryId) => api.delete(`/job-orders/${jobOrderId}/misc-charges/${entryId}`),
+
+  // Fuel & Lubricant
+  listFuel: (jobOrderId) => api.get(`/job-orders/${jobOrderId}/fuel-lubricant-charges`),
+  createFuel: (jobOrderId, data) => api.post(`/job-orders/${jobOrderId}/fuel-lubricant-charges`, data),
+  deleteFuel: (jobOrderId, entryId) => api.delete(`/job-orders/${jobOrderId}/fuel-lubricant-charges/${entryId}`),
+
+  // Sublet
+  listSublet: (jobOrderId) => api.get(`/job-orders/${jobOrderId}/sublet-work-charges`),
+  createSublet: (jobOrderId, data) => api.post(`/job-orders/${jobOrderId}/sublet-work-charges`, data),
+  deleteSublet: (jobOrderId, entryId) => api.delete(`/job-orders/${jobOrderId}/sublet-work-charges/${entryId}`),
+
+  // Other
+  listOther: (jobOrderId) => api.get(`/job-orders/${jobOrderId}/other-charges`),
+  createOther: (jobOrderId, data) => api.post(`/job-orders/${jobOrderId}/other-charges`, data),
+  deleteOther: (jobOrderId, entryId) => api.delete(`/job-orders/${jobOrderId}/other-charges/${entryId}`),
+}
+
+// Job Order Sublet Orders (Entry + Approval + Receiving)
+export const jobOrderSubletOrdersApi = {
+  // Entry (by job)
+  create: (jobOrderId, data) => api.post(`/job-orders/${jobOrderId}/sublet-orders`, data),
+  listForJob: (jobOrderId) => api.get(`/job-orders/${jobOrderId}/sublet-orders`),
+  finishForJob: (jobOrderId) => api.post(`/job-orders/${jobOrderId}/sublet-orders/finish`),
+
+  // Generic
+  update: (subletOrderId, data) => api.put(`/job-orders/sublet-orders/${subletOrderId}`, data),
+  list: (params) => api.get('/job-orders/sublet-orders', { params }),
+  getById: (subletOrderId) => api.get(`/job-orders/sublet-orders/${subletOrderId}`),
+
+  // Approval
+  approve: (subletOrderId, data) => api.post(`/job-orders/sublet-orders/${subletOrderId}/approve`, data),
+  returnToRequester: (subletOrderId, data) => api.post(`/job-orders/sublet-orders/${subletOrderId}/return`, data),
+  reject: (subletOrderId, data) => api.post(`/job-orders/sublet-orders/${subletOrderId}/reject`, data),
+  cancel: (subletOrderId, data) => api.post(`/job-orders/sublet-orders/${subletOrderId}/cancel`, data),
+
+  // Receiving
+  receive: (subletOrderId, data) => api.post(`/job-orders/sublet-orders/${subletOrderId}/receive`, data),
 }
 
 // Set up axios interceptor for token

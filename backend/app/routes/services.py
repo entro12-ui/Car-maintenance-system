@@ -5,13 +5,33 @@ from datetime import date, timedelta
 from typing import List
 from decimal import Decimal
 from app.database import get_db
-from app.models.service import Service, ServiceType, ServicePart
+from app.models.service import Service, ServiceType, ServicePart, ServiceChecklist
 from app.models.vehicle import Vehicle
 from app.models.part import PartInventory
 from app.schemas.service import ServiceCreate, ServiceUpdate, ServiceResponse
 from app.auth import get_current_admin
 
 router = APIRouter()
+
+
+def generate_service_reference_number(db: Session) -> str:
+    """Generate a unique service reference number."""
+    today = date.today()
+    date_part = today.strftime("%Y%m%d")
+
+    last_service = db.query(Service).filter(
+        Service.reference_number.like(f"SRV-{date_part}-%")
+    ).order_by(Service.service_id.desc()).first()
+
+    if last_service and last_service.reference_number:
+        try:
+            seq = int(last_service.reference_number.split("-")[-1]) + 1
+        except (ValueError, IndexError):
+            seq = 1
+    else:
+        seq = 1
+
+    return f"SRV-{date_part}-{seq:04d}"
 
 @router.post("/", response_model=ServiceResponse)
 def create_service(
@@ -39,7 +59,9 @@ def create_service(
     total_labor_cost = total_labor_hours * labor_cost_per_hour
     
     # Create service
-    service_dict = service_data.dict(exclude={"parts"})
+    service_dict = service_data.dict(exclude={"parts", "checklist_items", "checklist_status"})
+    if not service_dict.get("reference_number"):
+        service_dict["reference_number"] = generate_service_reference_number(db)
     service_dict.update({
         "next_service_mileage": next_service_mileage,
         "next_service_date": next_service_date,
@@ -52,6 +74,27 @@ def create_service(
     db.add(db_service)
     db.flush()
     
+    # Get or create a special "Inspection" part for checklist items without parts
+    inspection_part = db.query(PartInventory).filter(
+        PartInventory.part_code == "INSPECTION"
+    ).first()
+    if not inspection_part:
+        inspection_part = PartInventory(
+            part_code="INSPECTION",
+            part_name="Inspection Service",
+            description="Generic inspection service for checklist items",
+            category="Other",
+            unit_price=Decimal("0.00"),
+            cost_price=Decimal("0.00"),
+            stock_quantity=999999,
+            min_stock_level=0,
+            is_active=True,
+        )
+        db.add(inspection_part)
+        db.flush()
+
+    handled_checklist_items = set()
+
     # Add parts if provided
     total_parts_cost = Decimal("0.00")
     if service_data.parts:
@@ -62,7 +105,15 @@ def create_service(
             
             unit_price = Decimal(str(part.unit_price))
             total_price = unit_price * Decimal(str(part_data.quantity))
-            total_parts_cost += total_price
+
+            # Only charge and deduct inventory if replaced
+            if part_data.was_replaced:
+                if part.stock_quantity is not None and part.stock_quantity < part_data.quantity:
+                    raise HTTPException(
+                        status_code=400,
+                        detail=f"Insufficient stock for part '{part.part_name}' (available: {part.stock_quantity}, requested: {part_data.quantity})",
+                    )
+                total_parts_cost += total_price
             
             service_part = ServicePart(
                 service_id=db_service.service_id,
@@ -71,14 +122,35 @@ def create_service(
                 unit_price=unit_price,
                 # total_price is a generated column, don't set it
                 was_replaced=part_data.was_replaced,
-                replacement_reason=part_data.replacement_reason,
+                replacement_reason=part_data.replacement_reason if part_data.was_replaced else None,
                 checklist_item_id=part_data.checklist_item_id
             )
             db.add(service_part)
+
+            if part_data.checklist_item_id:
+                handled_checklist_items.add(part_data.checklist_item_id)
             
             # Update inventory if replaced
             if part_data.was_replaced:
                 part.stock_quantity -= part_data.quantity
+
+    # Handle checklist_status - create ServicePart entries for checked/changed items without parts
+    if service_data.checklist_status:
+        for checklist_status in service_data.checklist_status:
+            if checklist_status.checklist_item_id in handled_checklist_items:
+                continue
+
+            if checklist_status.checked or checklist_status.changed:
+                service_part = ServicePart(
+                    service_id=db_service.service_id,
+                    part_id=inspection_part.part_id,
+                    quantity=1,
+                    unit_price=Decimal("0.00"),
+                    # total_price is a generated column, don't set it
+                    was_replaced=checklist_status.changed,
+                    checklist_item_id=checklist_status.checklist_item_id,
+                )
+                db.add(service_part)
     
     # Calculate totals
     tax_rate = Decimal("15.00")

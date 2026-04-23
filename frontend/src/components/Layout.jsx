@@ -1,7 +1,7 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { 
   LayoutDashboard, Users, Car, Calendar, Wrench, Package, 
-  Gift, BarChart3, Menu, X, LogOut, UserCheck, ListChecks, DollarSign, FileText
+  Gift, BarChart3, Menu, X, LogOut, UserCheck, ListChecks, DollarSign, FileText, ClipboardList, Bell
 } from 'lucide-react'
 import { useState } from 'react'
 import { useAuth } from '../contexts/AuthContext'
@@ -28,11 +28,35 @@ export default function Layout({ children }) {
     { path: '/vehicles', icon: Car, label: 'Vehicles' },
     { path: '/appointments', icon: Calendar, label: 'Appointments' },
     { path: '/services', icon: Wrench, label: 'Services' },
+    { path: '/job-orders', icon: ClipboardList, label: 'Job Orders' },
     { path: '/proformas', icon: FileText, label: 'Proformas' },
+    { path: '/job-orders/notice-types', icon: Bell, label: 'Job Notices' },
+    { path: '/job-orders/labor-types', icon: DollarSign, label: 'Labor Types' },
+    { path: '/job-orders/additional-charges', icon: DollarSign, label: 'Additional Charges' },
+    { path: '/job-orders/sublet-orders/entry', icon: FileText, label: 'Sublet Order Entry' },
+    { path: '/job-orders/sublet-orders/approval', icon: UserCheck, label: 'Sublet Order Approval' },
+    { path: '/job-orders/sublet-orders/receiving', icon: Package, label: 'Sublet Order Receiving' },
+    { path: '/task-operations', icon: ListChecks, label: 'Task Operations' },
+    { path: '/garage-invoices/cash', icon: FileText, label: 'Cash Invoice' },
+    { path: '/garage-invoices/credit', icon: FileText, label: 'Credit Invoice' },
+    { path: '/garage-invoices/itm', icon: FileText, label: 'Invoice by ITM' },
+    { path: '/garage-invoices/credit-note', icon: FileText, label: 'Credit Note' },
+    { path: '/garage-invoices/discount-rate', icon: DollarSign, label: 'Discount Rate Entry' },
+    { path: '/garage-invoices/cancel-return', icon: FileText, label: 'Cancel/Return Invoice' },
+    { path: '/garage-invoices/clear-uncollected', icon: DollarSign, label: 'Clear Uncollected Sales' },
+    { path: '/garage-invoices/cancel-vrv', icon: FileText, label: 'Cancel VRV Entry' },
+    { path: '/garage-invoices/job-estimation', icon: FileText, label: 'Job Estimation' },
+    { path: '/garage-invoices/advanced-booking', icon: Calendar, label: 'Advanced Booking' },
+    { path: '/setup-hub', icon: ListChecks, label: 'Setup Hub' },
+    { path: '/system-settings', icon: ListChecks, label: 'System Settings' },
+    { path: '/technicians', icon: Users, label: 'Technicians' },
+    { path: '/gl/journals', icon: DollarSign, label: 'GL Journals' },
     { path: '/service-checklists', icon: ListChecks, label: 'Service Checklists' },
     { path: '/parts', icon: Package, label: 'Parts' },
     { path: '/loyalty', icon: Gift, label: 'Loyalty' },
     { path: '/reports', icon: BarChart3, label: 'Reports' },
+    { path: '/garage-reports-hub', icon: BarChart3, label: 'Garage Reports Hub' },
+    { path: '/enterprise-admin', icon: ListChecks, label: 'Enterprise Admin' },
   ]
 
   const customerMenuItems = [

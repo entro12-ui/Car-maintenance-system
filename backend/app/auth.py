@@ -10,9 +10,9 @@ from app.models.employee import UserAccount
 from app.models.customer import Customer
 from app.models.accountant import Accountant
 import os
-from dotenv import load_dotenv
+from app.env import load_backend_env
 
-load_dotenv()
+load_backend_env()
 
 SECRET_KEY = os.getenv("SECRET_KEY", "your-secret-key-change-in-production")
 ALGORITHM = "HS256"

@@ -15,6 +15,26 @@ from datetime import date, timedelta
 
 router = APIRouter()
 
+
+def generate_service_reference_number(db: Session) -> str:
+    """Generate a unique service reference number."""
+    today = date.today()
+    date_part = today.strftime("%Y%m%d")
+
+    last_service = db.query(Service).filter(
+        Service.reference_number.like(f"SRV-{date_part}-%")
+    ).order_by(Service.service_id.desc()).first()
+
+    if last_service and last_service.reference_number:
+        try:
+            seq = int(last_service.reference_number.split("-")[-1]) + 1
+        except (ValueError, IndexError):
+            seq = 1
+    else:
+        seq = 1
+
+    return f"SRV-{date_part}-{seq:04d}"
+
 @router.get("/{customer_id}/full-details")
 def get_customer_full_details(
     customer_id: int,
@@ -228,6 +248,8 @@ def add_service_for_customer(
     
     # Create service
     service_dict = service_data.dict(exclude={"parts", "checklist_items", "checklist_status"})
+    if not service_dict.get("reference_number"):
+        service_dict["reference_number"] = generate_service_reference_number(db)
     service_dict.update({
         "next_service_mileage": next_service_mileage,
         "next_service_date": next_service_date,
@@ -238,7 +260,6 @@ def add_service_for_customer(
         # Include new service record fields
         "oil_type": service_data.oil_type,
         "service_note": service_data.service_note,
-        "reference_number": service_data.reference_number,
         "branch": service_data.branch,
         "serviced_by_name": service_data.serviced_by_name or (f"{current_user.first_name} {current_user.last_name}" if hasattr(current_user, 'first_name') else None),
     })
@@ -283,6 +304,11 @@ def add_service_for_customer(
             
             # Only add to cost if replaced
             if part_data.was_replaced:
+                if part.stock_quantity is not None and part.stock_quantity < part_data.quantity:
+                    raise HTTPException(
+                        status_code=400,
+                        detail=f"Insufficient stock for part '{part.part_name}' (available: {part.stock_quantity}, requested: {part_data.quantity})",
+                    )
                 total_parts_cost += total_price
             
             service_part = ServicePart(

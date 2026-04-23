@@ -4,12 +4,13 @@ from app.database import engine, Base
 from app.routes import (
     customers, vehicles, appointments, services, 
     service_types, parts, loyalty, notifications, 
-    employees, dashboard, reports, auth, customer_dashboard, admin_customers, accountant, proformas
+    employees, dashboard, reports, auth, customer_dashboard, admin_customers, accountant, proformas, job_orders, job_order_inventory, job_order_customer_notifications, job_order_notice_types, job_order_labor, job_order_additional_charges, job_order_sublet_orders, garage_invoices, settings, gl, enterprise_admin
 )
-import os
-from dotenv import load_dotenv
 
-load_dotenv()
+import os
+from app.env import load_backend_env
+
+load_backend_env()
 
 # Create tables (only if database connection is available)
 try:
@@ -54,6 +55,18 @@ app.include_router(customer_dashboard.router, prefix="/api/customer", tags=["Cus
 app.include_router(admin_customers.router, prefix="/api/admin/customers", tags=["Admin Customer Management"])
 app.include_router(accountant.router, prefix="/api/accountant", tags=["Accountant"])
 app.include_router(proformas.router, prefix="/api", tags=["Proformas"])
+app.include_router(job_orders.router, prefix="/api/job-orders", tags=["Job Orders"])
+app.include_router(job_order_inventory.router, prefix="/api/job-orders", tags=["Job Orders"])
+app.include_router(job_order_customer_notifications.router, prefix="/api/job-orders", tags=["Job Orders"])
+app.include_router(job_order_notice_types.router, prefix="/api/job-orders", tags=["Job Orders"])
+app.include_router(job_order_labor.router, prefix="/api/job-orders", tags=["Job Orders"])
+app.include_router(job_order_additional_charges.router, prefix="/api/job-orders", tags=["Job Orders"])
+app.include_router(job_order_sublet_orders.router, prefix="/api/job-orders", tags=["Job Orders"])
+app.include_router(garage_invoices.router, prefix="/api", tags=["Garage Invoices"])
+app.include_router(settings.router, prefix="/api/settings", tags=["System Settings"])
+app.include_router(gl.router, prefix="/api/gl", tags=["General Ledger"])
+app.include_router(enterprise_admin.router, prefix="/api/admin", tags=["Enterprise Admin"])
+
 
 @app.get("/")
 async def root():

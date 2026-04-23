@@ -3,9 +3,9 @@ import os
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from typing import Optional
-from dotenv import load_dotenv
+from app.env import load_backend_env
 
-load_dotenv()
+load_backend_env()
 
 class EmailService:
     def __init__(self):

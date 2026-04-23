@@ -25,6 +25,32 @@ import AccountantDashboard from './pages/AccountantDashboard'
 import Proformas from './pages/Proformas'
 import ProformaForm from './pages/ProformaForm'
 import ProformaPrint from './pages/ProformaPrint'
+import JobOrders from './pages/JobOrders'
+import JobOrderDetail from './pages/JobOrderDetail'
+import JobOrderNoticeTypes from './pages/JobOrderNoticeTypes'
+import LaborTypes from './pages/LaborTypes'
+import AdditionalChargesSetup from './pages/AdditionalChargesSetup'
+import SubletOrderEntry from './pages/SubletOrderEntry'
+import SubletOrderApproval from './pages/SubletOrderApproval'
+import SubletOrderReceiving from './pages/SubletOrderReceiving'
+import GarageCashInvoice from './pages/GarageCashInvoice'
+import GarageCreditInvoice from './pages/GarageCreditInvoice'
+import GarageItmInvoice from './pages/GarageItmInvoice'
+import GarageDiscountRateEntry from './pages/GarageDiscountRateEntry'
+import GarageCancelReturnInvoice from './pages/GarageCancelReturnInvoice'
+import GarageClearUncollectedSales from './pages/GarageClearUncollectedSales'
+import GarageCancelVrvEntry from './pages/GarageCancelVrvEntry'
+import GarageInvoicePrint from './pages/GarageInvoicePrint'
+import SystemSettings from './pages/SystemSettings'
+import Technicians from './pages/Technicians'
+import GlJournals from './pages/GlJournals'
+import GarageSetupHub from './pages/GarageSetupHub'
+import TaskOperations from './pages/TaskOperations'
+import CreditNoteEntry from './pages/CreditNoteEntry'
+import JobEstimation from './pages/JobEstimation'
+import AdvancedBooking from './pages/AdvancedBooking'
+import GarageReportsHub from './pages/GarageReportsHub'
+import EnterpriseAdmin from './pages/EnterpriseAdmin'
 
 function AppRoutes() {
   const { isAuthenticated, isAdmin, isAccountant, loading } = useAuth()
@@ -109,10 +135,193 @@ function AppRoutes() {
           </Layout>
         </ProtectedRoute>
       } />
+      <Route path="/job-orders" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <JobOrders />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/job-orders/:id" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <JobOrderDetail />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/job-orders/notice-types" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <JobOrderNoticeTypes />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/job-orders/labor-types" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <LaborTypes />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/job-orders/additional-charges" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <AdditionalChargesSetup />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/job-orders/sublet-orders/entry" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <SubletOrderEntry />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/job-orders/sublet-orders/approval" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <SubletOrderApproval />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/job-orders/sublet-orders/receiving" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <SubletOrderReceiving />
+          </Layout>
+        </ProtectedRoute>
+      } />
+
+      <Route path="/garage-invoices/cash" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <GarageCashInvoice />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/garage-invoices/credit" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <GarageCreditInvoice />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/garage-invoices/itm" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <GarageItmInvoice />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/garage-invoices/discount-rate" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <GarageDiscountRateEntry />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/garage-invoices/cancel-return" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <GarageCancelReturnInvoice />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/garage-invoices/clear-uncollected" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <GarageClearUncollectedSales />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/garage-invoices/cancel-vrv" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <GarageCancelVrvEntry />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/garage-invoices/:id/print" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <GarageInvoicePrint />
+          </Layout>
+        </ProtectedRoute>
+      } />
       <Route path="/service-checklists" element={
         <ProtectedRoute requireAdmin={true}>
           <Layout>
             <ManageServiceChecklists />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/system-settings" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <SystemSettings />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/setup-hub" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <GarageSetupHub />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/technicians" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <Technicians />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/task-operations" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <TaskOperations />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/garage-invoices/credit-note" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <CreditNoteEntry />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/garage-invoices/job-estimation" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <JobEstimation />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/garage-invoices/advanced-booking" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <AdvancedBooking />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/garage-reports-hub" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <GarageReportsHub />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/enterprise-admin" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <EnterpriseAdmin />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/gl/journals" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <GlJournals />
           </Layout>
         </ProtectedRoute>
       } />
