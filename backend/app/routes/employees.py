@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List, Optional
+from datetime import date
 from app.database import get_db
 from app.models.employee import Employee
 
@@ -17,6 +18,13 @@ class EmployeeBase(BaseModel):
   phone: str
   role: str
   specialization: Optional[str] = None
+  work_unit: Optional[str] = None
+  supervisor_employee_id: Optional[int] = None
+  can_dispatch_job: Optional[bool] = False
+  on_payroll: Optional[bool] = False
+  payroll_no: Optional[str] = None
+  hire_date: Optional[date] = None
+  date_of_termination: Optional[date] = None
 
 
 class EmployeeCreate(EmployeeBase):
@@ -31,6 +39,13 @@ class EmployeeUpdate(BaseModel):
   role: Optional[str] = None
   specialization: Optional[str] = None
   hourly_rate: Optional[float] = None
+  work_unit: Optional[str] = None
+  supervisor_employee_id: Optional[int] = None
+  can_dispatch_job: Optional[bool] = None
+  on_payroll: Optional[bool] = None
+  payroll_no: Optional[str] = None
+  hire_date: Optional[date] = None
+  date_of_termination: Optional[date] = None
   is_active: Optional[bool] = None
 
 
@@ -38,6 +53,7 @@ class EmployeeResponse(EmployeeBase):
   employee_id: int
   hourly_rate: float
   is_active: bool
+  supervisor_name: Optional[str] = None
 
   class Config:
     orm_mode = True
@@ -57,6 +73,7 @@ def get_employees(
   if role:
     query = query.filter(Employee.role == role)
   employees = query.offset(skip).limit(limit).all()
+  by_id = {e.employee_id: e for e in employees}
   return [
     EmployeeResponse(
       employee_id=e.employee_id,
@@ -68,6 +85,18 @@ def get_employees(
       role=e.role,
       specialization=e.specialization,
       hourly_rate=float(e.hourly_rate or 0),
+      work_unit=e.work_unit,
+      supervisor_employee_id=e.supervisor_employee_id,
+      supervisor_name=(
+        f"{by_id[e.supervisor_employee_id].first_name} {by_id[e.supervisor_employee_id].last_name}".strip()
+        if e.supervisor_employee_id and by_id.get(e.supervisor_employee_id)
+        else None
+      ),
+      can_dispatch_job=bool(e.can_dispatch_job),
+      on_payroll=bool(e.on_payroll),
+      payroll_no=e.payroll_no,
+      hire_date=e.hire_date,
+      date_of_termination=e.date_of_termination,
       is_active=bool(e.is_active),
     )
     for e in employees
@@ -115,6 +144,13 @@ def create_employee(
     role=payload.role,
     specialization=payload.specialization,
     hourly_rate=payload.hourly_rate or 0.0,
+    work_unit=payload.work_unit,
+    supervisor_employee_id=payload.supervisor_employee_id,
+    can_dispatch_job=bool(payload.can_dispatch_job),
+    on_payroll=bool(payload.on_payroll),
+    payroll_no=payload.payroll_no,
+    hire_date=payload.hire_date,
+    date_of_termination=payload.date_of_termination,
     is_active=True,
   )
   db.add(employee)
@@ -130,6 +166,14 @@ def create_employee(
     role=employee.role,
     specialization=employee.specialization,
     hourly_rate=float(employee.hourly_rate or 0),
+    work_unit=employee.work_unit,
+    supervisor_employee_id=employee.supervisor_employee_id,
+    supervisor_name=None,
+    can_dispatch_job=bool(employee.can_dispatch_job),
+    on_payroll=bool(employee.on_payroll),
+    payroll_no=employee.payroll_no,
+    hire_date=employee.hire_date,
+    date_of_termination=employee.date_of_termination,
     is_active=bool(employee.is_active),
   )
 
@@ -162,11 +206,30 @@ def update_employee(
     employee.specialization = payload.specialization
   if payload.hourly_rate is not None:
     employee.hourly_rate = payload.hourly_rate
+  if payload.work_unit is not None:
+    employee.work_unit = payload.work_unit
+  if payload.supervisor_employee_id is not None:
+    employee.supervisor_employee_id = payload.supervisor_employee_id
+  if payload.can_dispatch_job is not None:
+    employee.can_dispatch_job = payload.can_dispatch_job
+  if payload.on_payroll is not None:
+    employee.on_payroll = payload.on_payroll
+  if payload.payroll_no is not None:
+    employee.payroll_no = payload.payroll_no
+  if payload.hire_date is not None:
+    employee.hire_date = payload.hire_date
+  if payload.date_of_termination is not None:
+    employee.date_of_termination = payload.date_of_termination
   if payload.is_active is not None:
     employee.is_active = payload.is_active
 
   db.commit()
   db.refresh(employee)
+  supervisor_name = None
+  if employee.supervisor_employee_id:
+    s = db.query(Employee).filter(Employee.employee_id == employee.supervisor_employee_id).first()
+    if s:
+      supervisor_name = f"{s.first_name} {s.last_name}".strip()
   return EmployeeResponse(
     employee_id=employee.employee_id,
     employee_code=employee.employee_code,
@@ -177,6 +240,14 @@ def update_employee(
     role=employee.role,
     specialization=employee.specialization,
     hourly_rate=float(employee.hourly_rate or 0),
+    work_unit=employee.work_unit,
+    supervisor_employee_id=employee.supervisor_employee_id,
+    supervisor_name=supervisor_name,
+    can_dispatch_job=bool(employee.can_dispatch_job),
+    on_payroll=bool(employee.on_payroll),
+    payroll_no=employee.payroll_no,
+    hire_date=employee.hire_date,
+    date_of_termination=employee.date_of_termination,
     is_active=bool(employee.is_active),
   )
 

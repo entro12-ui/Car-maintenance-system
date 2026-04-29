@@ -21,9 +21,36 @@ export default function GarageReportsHub() {
           <div key={g.title} className="bg-white shadow rounded-lg p-4 border">
             <h2 className="font-semibold text-gray-800">{g.title}</h2>
             <p className="text-sm text-gray-600 mt-1">{g.desc}</p>
-            <Link to="/reports" className="text-indigo-600 text-sm hover:text-indigo-800 mt-3 inline-block">
-              Open Reports
-            </Link>
+            {g.title === 'Listing Reports' && (
+              <Link to="/garage-reports-hub/listing" className="text-indigo-600 text-sm hover:text-indigo-800 mt-3 inline-block">
+                Open Listing Reports
+              </Link>
+            )}
+            {g.title === 'Garage Sales Reports' && (
+              <Link to="/garage-reports-hub/sales" className="text-indigo-600 text-sm hover:text-indigo-800 mt-3 inline-block">
+                Open Garage Sales Reports
+              </Link>
+            )}
+            {g.title === 'Garage Productivity Reports' && (
+              <Link to="/garage-reports-hub/productivity" className="text-indigo-600 text-sm hover:text-indigo-800 mt-3 inline-block">
+                Open Garage Productivity Reports
+              </Link>
+            )}
+            {g.title === 'Other Reports' && (
+              <Link to="/garage-reports-hub/others" className="text-indigo-600 text-sm hover:text-indigo-800 mt-3 inline-block">
+                Open Other Reports
+              </Link>
+            )}
+            {g.title === 'Custom Reports' && (
+              <Link to="/reports" className="text-indigo-600 text-sm hover:text-indigo-800 mt-3 inline-block">
+                Open Reports
+              </Link>
+            )}
+            {g.title === 'User Defined Reports' && (
+              <Link to="/reports" className="text-indigo-600 text-sm hover:text-indigo-800 mt-3 inline-block">
+                Open Reports
+              </Link>
+            )}
           </div>
         ))}
       </div>

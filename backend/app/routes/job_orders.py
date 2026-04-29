@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session, joinedload
 from sqlalchemy import func
 from datetime import date, datetime
@@ -12,13 +12,14 @@ from app.models.job_order import (
     JobOrderStatus, JobOrderInvoiceType, JobOrderQCStatus,
 )
 from app.models.job_order_pairing import JobOrderPairing
+from app.models.assembly_line_receive import AssemblyLineReceive
 from app.models.job_order_inventory import JobOrderItemIssue
 from app.models.vehicle import Vehicle
 from app.models.customer import Customer
 from app.models.service import ServiceType
 from app.models.employee import Employee
 from app.schemas.job_order import (
-    JobOrderCreate, JobOrderUpdate, JobOrderResponse,
+    JobOrderCreate, JobOrderUpdate, JobOrderResponse, JobOrderCloseRequest,
     JobOrderCopyRequest,
     JobOrderTaskCreate, JobOrderTaskResponse,
     JobOrderDispatchRequest, JobOrderReceiveRequest,
@@ -31,6 +32,7 @@ from app.schemas.job_order import (
     EndOfDayCheckoutRequest, EndOfDayCheckoutResponse,
     JobOrderPairRequest, JobOrderPairingResponse,
     JobOrderSplitRequest, JobOrderSplitResponse,
+    AssemblyLineReceiveCreate, AssemblyLineReceiveResponse,
 )
 
 router = APIRouter()
@@ -104,14 +106,16 @@ def _ensure_not_blocked(job_order: JobOrder):
 def _recalculate_qc_status(sheet: JobOrderQCSheet) -> str:
     if not sheet.items:
         return JobOrderQCStatus.PENDING
-    # If any item explicitly failed -> Failed
+    # Explicit fail on any line
     for item in sheet.items:
         if item.passed is False:
             return JobOrderQCStatus.FAILED
-    # If all items are True -> Passed, otherwise Pending
-    if all(item.passed is True for item in sheet.items):
-        return JobOrderQCStatus.PASSED
-    return JobOrderQCStatus.PENDING
+    # Mandatory lines must be checked (passed True) to pass overall
+    for item in sheet.items:
+        mandatory = getattr(item, "is_mandatory", True)
+        if mandatory and item.passed is not True:
+            return JobOrderQCStatus.PENDING
+    return JobOrderQCStatus.PASSED
 
 
 @router.post("/", response_model=JobOrderResponse)
@@ -150,6 +154,7 @@ def create_job_order(
         status=JobOrderStatus.OPEN,
         mileage_in_km=payload.mileage_in_km,
         remarks=payload.remarks,
+        notify_client=payload.notify_client,
         opened_date=payload.opened_date or date.today(),
         expected_finish_date=payload.expected_finish_date,
         opened_by_employee_id=getattr(current_user, "employee_id", None),
@@ -176,6 +181,8 @@ def list_job_orders(
     status: Optional[str] = None,
     vehicle_id: Optional[int] = None,
     customer_id: Optional[int] = None,
+    job_order_number: Optional[str] = None,
+    limit: int = Query(200, ge=1, le=500),
     db: Session = Depends(get_db),
 ):
     query = db.query(JobOrder).options(joinedload(JobOrder.tasks)).order_by(JobOrder.created_at.desc())
@@ -186,8 +193,46 @@ def list_job_orders(
         query = query.filter(JobOrder.vehicle_id == vehicle_id)
     if customer_id:
         query = query.filter(JobOrder.customer_id == customer_id)
+    if job_order_number:
+        qn = job_order_number.strip()
+        if qn:
+            query = query.filter(JobOrder.job_order_number == qn)
 
-    return query.all()
+    return query.limit(limit).all()
+
+
+@router.post("/assembly-line-receive", response_model=AssemblyLineReceiveResponse)
+def save_assembly_line_receive(
+    payload: AssemblyLineReceiveCreate,
+    current_user=Depends(get_current_admin),
+    db: Session = Depends(get_db),
+):
+    """HillMaster §8.5 — record which closed jobs were received under a reference / unit."""
+    ids = list(dict.fromkeys(payload.job_order_ids or []))
+    if not ids:
+        raise HTTPException(status_code=400, detail="Select at least one job order")
+
+    jobs = db.query(JobOrder).filter(JobOrder.job_order_id.in_(ids)).all()
+    if len(jobs) != len(ids):
+        raise HTTPException(status_code=404, detail="One or more job orders not found")
+
+    for j in jobs:
+        if j.status != JobOrderStatus.CLOSED:
+            raise HTTPException(
+                status_code=400,
+                detail=f"Job {j.job_order_number} is not closed; assembly receive is for closed jobs only.",
+            )
+
+    row = AssemblyLineReceive(
+        reference_no=payload.reference_no.strip(),
+        receive_date=payload.receive_date,
+        requesting_unit=payload.requesting_unit.strip(),
+        job_order_ids=ids,
+    )
+    db.add(row)
+    db.commit()
+    db.refresh(row)
+    return row
 
 
 @router.get("/{job_order_id:int}", response_model=JobOrderResponse)
@@ -830,7 +875,11 @@ def cancel_job_order(
         return job_order
 
     if job_order.status == JobOrderStatus.CLOSED:
-        raise HTTPException(status_code=400, detail="Cannot cancel a Closed job order")
+        # HillMaster-style cancelled jobs registry: closed jobs may be formally cancelled for reporting.
+        job_order.status = JobOrderStatus.CANCELLED
+        db.commit()
+        db.refresh(job_order)
+        return job_order
 
     active_clocks = db.query(JobClock).filter(
         JobClock.job_order_id == job_order_id,
@@ -862,6 +911,12 @@ def reopen_job_order(
 
     job_order.status = JobOrderStatus.OPEN
     job_order.closed_at = None
+    job_order.close_tested_by_employee_id = None
+    job_order.close_tested_on_road = False
+    job_order.close_tested_on_test_lane = False
+    job_order.close_work_description = None
+    job_order.close_send_email = False
+    job_order.close_process_remark = None
 
     db.commit()
     db.refresh(job_order)
@@ -871,6 +926,7 @@ def reopen_job_order(
 @router.post("/{job_order_id}/close", response_model=JobOrderResponse)
 def close_job_order(
     job_order_id: int,
+    payload: Optional[JobOrderCloseRequest] = None,
     current_user=Depends(get_current_admin),
     db: Session = Depends(get_db),
 ):
@@ -880,7 +936,13 @@ def close_job_order(
 
     _ensure_not_blocked(job_order)
 
-    if job_order.status not in (JobOrderStatus.RECEIVED, JobOrderStatus.DISPATCHED, JobOrderStatus.OPEN):
+    if job_order.status == JobOrderStatus.DISPATCHED:
+        raise HTTPException(
+            status_code=400,
+            detail="Job order must be received back from the section before it can be closed. Use Receive on Task Operations or job detail.",
+        )
+
+    if job_order.status not in (JobOrderStatus.RECEIVED, JobOrderStatus.OPEN):
         raise HTTPException(status_code=400, detail=f"Cannot close a {job_order.status} job order")
 
     active_clocks = db.query(JobClock).filter(
@@ -914,8 +976,24 @@ def close_job_order(
                 },
             )
 
+    if payload is not None:
+        if not payload.tested_on_road and not payload.tested_on_test_lane:
+            raise HTTPException(status_code=400, detail="Select at least one test method (On Road or On Test Lane).")
+        tech = db.query(Employee).filter(Employee.employee_id == payload.tested_by_employee_id).first()
+        if not tech:
+            raise HTTPException(status_code=404, detail="Tested By employee not found")
+        job_order.close_tested_by_employee_id = payload.tested_by_employee_id
+        job_order.close_tested_on_road = payload.tested_on_road
+        job_order.close_tested_on_test_lane = payload.tested_on_test_lane
+        job_order.close_work_description = payload.detail_work_description
+        job_order.close_send_email = payload.send_email
+        job_order.close_process_remark = payload.close_remark
+
     job_order.status = JobOrderStatus.CLOSED
-    job_order.closed_at = datetime.utcnow()
+    if payload is not None and payload.close_date:
+        job_order.closed_at = datetime.combine(payload.close_date, datetime.min.time())
+    else:
+        job_order.closed_at = datetime.utcnow()
 
     db.commit()
     db.refresh(job_order)
@@ -1111,16 +1189,29 @@ def upsert_qc_sheet(
     if payload.remarks is not None:
         sheet.remarks = payload.remarks
 
-    # Replace items by name (upsert)
+    if payload.checked_by_employee_id is not None:
+        tech = db.query(Employee).filter(Employee.employee_id == payload.checked_by_employee_id).first()
+        if not tech:
+            raise HTTPException(status_code=404, detail="checked_by_employee_id not found")
+        sheet.checked_by_employee_id = payload.checked_by_employee_id
+    elif getattr(current_user, "employee_id", None):
+        sheet.checked_by_employee_id = current_user.employee_id
+
+    incoming_names = {i.item_name for i in payload.items}
+    if payload.replace_all and payload.items:
+        for db_item in list(sheet.items):
+            if db_item.item_name not in incoming_names:
+                db.delete(db_item)
+        db.flush()
+
     existing_by_name = {i.item_name: i for i in sheet.items}
-    incoming_names = set()
     for item in payload.items:
-        incoming_names.add(item.item_name)
         if item.item_name in existing_by_name:
             db_item = existing_by_name[item.item_name]
             db_item.passed = item.passed
             db_item.remark = item.remark
             db_item.sort_order = item.sort_order
+            db_item.is_mandatory = item.is_mandatory
         else:
             db.add(JobOrderQCItem(
                 qc_sheet_id=sheet.qc_sheet_id,
@@ -1128,14 +1219,12 @@ def upsert_qc_sheet(
                 passed=item.passed,
                 remark=item.remark,
                 sort_order=item.sort_order,
+                is_mandatory=item.is_mandatory,
             ))
-
-    # Do not auto-delete items not sent (keeps history unless user explicitly manages it)
 
     db.flush()
     db.refresh(sheet)
     sheet.overall_status = _recalculate_qc_status(sheet)
-    sheet.checked_by_employee_id = getattr(current_user, "employee_id", None)
     sheet.checked_at = datetime.utcnow()
 
     db.commit()

@@ -317,6 +317,89 @@ def list_eligible_jobs(
     return out
 
 
+@router.get("/proforma-preview/{job_order_id}")
+def get_proforma_preview(
+    job_order_id: int,
+    invoice_type: str = JobOrderInvoiceType.CASH,
+    db: Session = Depends(get_db),
+    current_user=Depends(get_current_admin),
+):
+    """
+    Preview payload for proforma printing without issuing an invoice.
+    Used for closed jobs that are pending invoicing.
+    """
+    invoice_type = (invoice_type or "").strip()
+    if invoice_type not in (JobOrderInvoiceType.CASH, JobOrderInvoiceType.CREDIT, JobOrderInvoiceType.ITM):
+        raise HTTPException(status_code=400, detail="Invalid invoice_type (Cash|Credit|ITM)")
+
+    job = (
+        db.query(JobOrder)
+        .options(joinedload(JobOrder.customer), joinedload(JobOrder.vehicle))
+        .filter(JobOrder.job_order_id == job_order_id)
+        .first()
+    )
+    if not job:
+        raise HTTPException(status_code=404, detail="Job order not found")
+    if job.status != JobOrderStatus.CLOSED:
+        raise HTTPException(status_code=400, detail="Only Closed job orders can be printed as proforma")
+    if job.invoice_type != invoice_type:
+        raise HTTPException(status_code=400, detail="Job order invoice_type does not match selected sales type")
+
+    existing = (
+        db.query(GarageInvoice)
+        .filter(GarageInvoice.job_order_id == job.job_order_id)
+        .filter(GarageInvoice.status == GarageInvoiceStatus.ISSUED)
+        .first()
+    )
+    if existing:
+        raise HTTPException(status_code=400, detail="Job is already invoiced")
+
+    totals = _calculate_job_totals(db, job.job_order_id)
+    discount_rate = _get_active_discount_rate(db, job)
+    if discount_rate < 0:
+        discount_rate = Decimal("0")
+    if discount_rate > Decimal("100"):
+        discount_rate = Decimal("100")
+    discount_amount = (totals["subtotal"] * discount_rate) / Decimal("100")
+    total_amount = totals["subtotal"] - discount_amount
+
+    now = datetime.utcnow()
+    proforma_number = f"PRF-{now.strftime('%Y%m%d')}-{job.job_order_id:04d}"
+
+    customer = getattr(job, "customer", None)
+    vehicle = getattr(job, "vehicle", None)
+    customer_name = None
+    if customer:
+        customer_name = f"{customer.first_name} {customer.last_name}".strip()
+
+    return {
+        "proforma_number": proforma_number,
+        "job_order_id": job.job_order_id,
+        "job_order_number": job.job_order_number,
+        "invoice_type": invoice_type,
+        "invoice_date": now.date().isoformat(),
+        "proforma_date": now.date().isoformat(),
+        "customer_name": customer_name,
+        "customer_address": getattr(customer, "address", None),
+        "customer_tin": getattr(customer, "tin", None),
+        "customer_phone": getattr(customer, "phone", None),
+        "customer_city": getattr(customer, "city", None),
+        "vehicle_plate": getattr(vehicle, "license_plate", None),
+        "repair_type": getattr(job, "invoice_type", None),
+        "total_amount": float(total_amount),
+        "line_items_count": None,  # optional count for UI hint
+        "totals": {
+            "labor_total": float(totals["labor_total"]),
+            "parts_total": float(totals["parts_total"]),
+            "charges_total": float(totals["charges_total"]),
+            "subtotal": float(totals["subtotal"]),
+            "discount_rate": float(discount_rate),
+            "discount_amount": float(discount_amount),
+            "total_amount": float(total_amount),
+        },
+    }
+
+
 @router.post("/", response_model=GarageInvoiceResponse)
 def create_garage_invoice(
     payload: GarageInvoiceCreate,
@@ -391,6 +474,7 @@ def create_garage_invoice(
 def list_garage_invoices(
     status: Optional[str] = None,
     invoice_type: Optional[str] = None,
+    job_order_id: Optional[int] = None,
     db: Session = Depends(get_db),
     current_user=Depends(get_current_admin),
 ):
@@ -399,6 +483,8 @@ def list_garage_invoices(
         q = q.filter(GarageInvoice.status == status)
     if invoice_type:
         q = q.filter(GarageInvoice.invoice_type == invoice_type)
+    if job_order_id is not None:
+        q = q.filter(GarageInvoice.job_order_id == job_order_id)
     return q.order_by(GarageInvoice.created_at.desc()).all()
 
 

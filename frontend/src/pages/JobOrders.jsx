@@ -21,6 +21,14 @@ export default function JobOrders() {
   return (
     <div>
       <h1 className="text-3xl font-bold text-gray-800 mb-6">Job Orders</h1>
+      <div className="mb-4">
+        <Link
+          to="/work-order-creation"
+          className="inline-flex items-center rounded-md border border-indigo-600 bg-indigo-600 px-3 py-2 text-sm font-medium text-white hover:bg-indigo-700"
+        >
+          New Work Order
+        </Link>
+      </div>
 
       <div className="bg-white rounded-lg shadow-md p-6">
         <div className="overflow-x-auto">

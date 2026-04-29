@@ -20,10 +20,15 @@ class VehicleCreate(VehicleBase):
     customer_id: Optional[int] = None  # Optional for customer self-registration
 
 class VehicleUpdate(BaseModel):
+    license_plate: Optional[str] = None
+    vin: Optional[str] = None
     make: Optional[str] = None
     model: Optional[str] = None
     year: Optional[int] = None
     color: Optional[str] = None
+    engine_type: Optional[str] = None
+    transmission_type: Optional[str] = None
+    fuel_type: Optional[str] = None
     current_mileage: Optional[Decimal] = None
     next_service_mileage: Optional[Decimal] = None
 

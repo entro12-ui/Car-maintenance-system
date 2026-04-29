@@ -50,18 +50,23 @@ export default function Customers() {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex justify-between items-center mb-6 flex-wrap gap-3">
         <h1 className="text-3xl font-semibold tracking-tight">Customers</h1>
-        <Button
-          type="button"
-          onClick={() => {
-            setSelectedCustomer(null)
-            setIsModalOpen(true)
-          }}
-        >
-          <Plus size={20} />
-          <span>Add Customer</span>
-        </Button>
+        <div className="flex flex-wrap gap-2">
+          <Button type="button" variant="outline" asChild>
+            <Link to="/customers/creation">New customer (full)</Link>
+          </Button>
+          <Button
+            type="button"
+            onClick={() => {
+              setSelectedCustomer(null)
+              setIsModalOpen(true)
+            }}
+          >
+            <Plus size={20} />
+            <span>Add customer (quick)</span>
+          </Button>
+        </div>
       </div>
 
       <Card>

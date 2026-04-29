@@ -6,6 +6,7 @@ import Login from './pages/Login'
 import Register from './pages/Register'
 import Dashboard from './pages/Dashboard'
 import Customers from './pages/Customers'
+import CustomerCreation from './pages/CustomerCreation'
 import Vehicles from './pages/Vehicles'
 import Appointments from './pages/Appointments'
 import Services from './pages/Services'
@@ -36,11 +37,14 @@ import SubletOrderReceiving from './pages/SubletOrderReceiving'
 import GarageCashInvoice from './pages/GarageCashInvoice'
 import GarageCreditInvoice from './pages/GarageCreditInvoice'
 import GarageItmInvoice from './pages/GarageItmInvoice'
+import GarageProformaInvoice from './pages/GarageProformaInvoice'
 import GarageDiscountRateEntry from './pages/GarageDiscountRateEntry'
 import GarageCancelReturnInvoice from './pages/GarageCancelReturnInvoice'
 import GarageClearUncollectedSales from './pages/GarageClearUncollectedSales'
 import GarageCancelVrvEntry from './pages/GarageCancelVrvEntry'
 import GarageInvoicePrint from './pages/GarageInvoicePrint'
+import GarageInvoicesHub from './pages/GarageInvoicesHub'
+import GarageEstimationTemplate from './pages/GarageEstimationTemplate'
 import SystemSettings from './pages/SystemSettings'
 import Technicians from './pages/Technicians'
 import GlJournals from './pages/GlJournals'
@@ -50,7 +54,51 @@ import CreditNoteEntry from './pages/CreditNoteEntry'
 import JobEstimation from './pages/JobEstimation'
 import AdvancedBooking from './pages/AdvancedBooking'
 import GarageReportsHub from './pages/GarageReportsHub'
+import GarageListingReports from './pages/GarageListingReports'
+import GarageSalesReports from './pages/GarageSalesReports'
+import GarageProductivityReports from './pages/GarageProductivityReports'
+import GarageOtherReports from './pages/GarageOtherReports'
+import GarageReportRun from './pages/GarageReportRun'
 import EnterpriseAdmin from './pages/EnterpriseAdmin'
+import CompanySetup from './pages/CompanySetup'
+import WorkOrderCreation from './pages/WorkOrderCreation'
+import GlAccountSetup from './pages/GlAccountSetup'
+import GlobalParameters from './pages/GlobalParameters'
+import NameValueParameter from './pages/NameValueParameter'
+import PlateNumberMaintenance from './pages/PlateNumberMaintenance'
+import VehicleModelSetup from './pages/VehicleModelSetup'
+import SubletSupplierMaintenance from './pages/SubletSupplierMaintenance'
+import JobTypeHourlyRateSetup from './pages/JobTypeHourlyRateSetup'
+import ConsumableChargeSetup from './pages/ConsumableChargeSetup'
+import BlockReleaseJobOrder from './pages/BlockReleaseJobOrder'
+import CanceledJobsRegistry from './pages/CanceledJobsRegistry'
+import JobTypeAllowedByUser from './pages/JobTypeAllowedByUser'
+import UtilitiesHub from './pages/UtilitiesHub'
+import UtilitiesToolPage from './pages/UtilitiesToolPage'
+import SetupHub from './pages/SetupHub'
+import SetupToolPage from './pages/SetupToolPage'
+import TaskHub from './pages/TaskHub'
+import TaskToolPage from './pages/TaskToolPage'
+import ReportsHub from './pages/ReportsHub'
+import ReportsToolPage from './pages/ReportsToolPage'
+import TransactionHub from './pages/TransactionHub'
+import TransactionToolPage from './pages/TransactionToolPage'
+import EnquiryHub from './pages/EnquiryHub'
+import EnquiryToolPage from './pages/EnquiryToolPage'
+import MaintenanceHub from './pages/MaintenanceHub'
+import MaintenanceToolPage from './pages/MaintenanceToolPage'
+import FileHub from './pages/FileHub'
+import FileToolPage from './pages/FileToolPage'
+import CloseJobOrder from './pages/CloseJobOrder'
+import JobOrderQualityCheckSheet from './pages/JobOrderQualityCheckSheet'
+import ReopenJobOrder from './pages/ReopenJobOrder'
+import DeliverJobOrder from './pages/DeliverJobOrder'
+import ReceiveAssembledJob from './pages/ReceiveAssembledJob'
+import CopyJobOrder from './pages/CopyJobOrder'
+import SplitJobOrder from './pages/SplitJobOrder'
+import PairingJobOrder from './pages/PairingJobOrder'
+import JournalEntryListing from './pages/JournalEntryListing'
+import InventoryCount from './pages/InventoryCount'
 
 function AppRoutes() {
   const { isAuthenticated, isAdmin, isAccountant, loading } = useAuth()
@@ -83,6 +131,13 @@ function AppRoutes() {
         <ProtectedRoute requireAdmin={true}>
           <Layout>
             <Customers />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/customers/creation" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <CustomerCreation />
           </Layout>
         </ProtectedRoute>
       } />
@@ -139,6 +194,13 @@ function AppRoutes() {
         <ProtectedRoute requireAdmin={true}>
           <Layout>
             <JobOrders />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/work-order-creation" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <WorkOrderCreation />
           </Layout>
         </ProtectedRoute>
       } />
@@ -199,6 +261,13 @@ function AppRoutes() {
           </Layout>
         </ProtectedRoute>
       } />
+      <Route path="/garage-invoices/proforma" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <GarageProformaInvoice />
+          </Layout>
+        </ProtectedRoute>
+      } />
       <Route path="/garage-invoices/credit" element={
         <ProtectedRoute requireAdmin={true}>
           <Layout>
@@ -241,6 +310,13 @@ function AppRoutes() {
           </Layout>
         </ProtectedRoute>
       } />
+      <Route path="/garage-invoices/estimation-template" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <GarageEstimationTemplate />
+          </Layout>
+        </ProtectedRoute>
+      } />
       <Route path="/garage-invoices/:id/print" element={
         <ProtectedRoute requireAdmin={true}>
           <Layout>
@@ -262,6 +338,13 @@ function AppRoutes() {
           </Layout>
         </ProtectedRoute>
       } />
+      <Route path="/company-setup" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <CompanySetup />
+          </Layout>
+        </ProtectedRoute>
+      } />
       <Route path="/setup-hub" element={
         <ProtectedRoute requireAdmin={true}>
           <Layout>
@@ -269,10 +352,80 @@ function AppRoutes() {
           </Layout>
         </ProtectedRoute>
       } />
+      <Route path="/global-parameters" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <GlobalParameters />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/name-value-parameter" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <NameValueParameter />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/plate-number-maintenance" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <PlateNumberMaintenance />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/vehicle-model-setup" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <VehicleModelSetup />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/job-type-hourly-rate" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <JobTypeHourlyRateSetup />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/sublet-supplier-maintenance" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <SubletSupplierMaintenance />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/consumable-charge-setup" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <ConsumableChargeSetup />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/block-release-job-order" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <BlockReleaseJobOrder />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/canceled-jobs-registry" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <CanceledJobsRegistry />
+          </Layout>
+        </ProtectedRoute>
+      } />
       <Route path="/technicians" element={
         <ProtectedRoute requireAdmin={true}>
           <Layout>
             <Technicians />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/job-type-allowed-by-user" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <JobTypeAllowedByUser />
           </Layout>
         </ProtectedRoute>
       } />
@@ -311,6 +464,41 @@ function AppRoutes() {
           </Layout>
         </ProtectedRoute>
       } />
+      <Route path="/garage-reports-hub/listing" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <GarageListingReports />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/garage-reports-hub/sales" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <GarageSalesReports />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/garage-reports-hub/productivity" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <GarageProductivityReports />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/garage-reports-hub/others" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <GarageOtherReports />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/garage-reports/run/:reportId" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <GarageReportRun />
+          </Layout>
+        </ProtectedRoute>
+      } />
       <Route path="/enterprise-admin" element={
         <ProtectedRoute requireAdmin={true}>
           <Layout>
@@ -322,6 +510,202 @@ function AppRoutes() {
         <ProtectedRoute requireAdmin={true}>
           <Layout>
             <GlJournals />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/gl-account-setup" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <GlAccountSetup />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/utilities" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <UtilitiesHub />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/utilities/:slug" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <UtilitiesToolPage />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/setup" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <SetupHub />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/setup/:slug" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <SetupToolPage />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/file-hub" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <FileHub />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/file/:slug" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <FileToolPage />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/maintenance-hub" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <MaintenanceHub />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/maintenance/:slug" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <MaintenanceToolPage />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/tasks" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <TaskHub />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/tasks/:slug" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <TaskToolPage />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/transactions-hub" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <TransactionHub />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/transactions/:slug" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <TransactionToolPage />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/enquiries-hub" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <EnquiryHub />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/enquiries/:slug" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <EnquiryToolPage />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/reports-hub" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <ReportsHub />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/reports-hub/:slug" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <ReportsToolPage />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/garage-invoices-hub" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <GarageInvoicesHub />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/close-job-order" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <CloseJobOrder />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/job-order-quality-check-sheet" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <JobOrderQualityCheckSheet />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/reopen-job-order" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <ReopenJobOrder />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/deliver-job-order" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <DeliverJobOrder />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/receive-assembled-job" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <ReceiveAssembledJob />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/copy-job-order" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <CopyJobOrder />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/split-job-order" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <SplitJobOrder />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/pairing-job-order" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <PairingJobOrder />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/journal-entry-listing" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <JournalEntryListing />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/inventory-count" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <InventoryCount />
           </Layout>
         </ProtectedRoute>
       } />

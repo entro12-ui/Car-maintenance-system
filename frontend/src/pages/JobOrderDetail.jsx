@@ -340,6 +340,7 @@ export default function JobOrderDetail() {
       passed: it.passed === true ? 'pass' : it.passed === false ? 'fail' : '',
       remark: it.remark || '',
       sort_order: typeof it.sort_order === 'number' ? it.sort_order : 0,
+      is_mandatory: it.is_mandatory !== false,
     }))
     setQcItems(mapped)
   }, [qcSheet?.qc_sheet_id])
@@ -774,6 +775,7 @@ export default function JobOrderDetail() {
         passed: mapPassed(it.passed),
         remark: (it.remark || '').trim() || null,
         sort_order: Number.isFinite(Number(it.sort_order)) ? Number(it.sort_order) : 0,
+        is_mandatory: it.is_mandatory !== false,
       })),
     })
   }
@@ -789,6 +791,7 @@ export default function JobOrderDetail() {
         passed: newQcItemResult,
         remark: newQcItemRemark,
         sort_order: prev.length,
+        is_mandatory: true,
       },
     ])
     setNewQcItemName('')

@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import {
   otherChargeTypesApi,
@@ -30,6 +30,20 @@ function SectionHeader({ title, subtitle }) {
   )
 }
 
+function nextAutoCode(rows, keyName, prefix) {
+  const maxSeq = (rows || []).reduce((max, row) => {
+    const raw = String(row?.[keyName] || '').trim().toUpperCase()
+    if (!raw) return max
+    const match = raw.match(/(\d+)\s*$/)
+    if (!match) return max
+    const n = Number(match[1])
+    if (!Number.isFinite(n)) return max
+    return Math.max(max, n)
+  }, 0)
+
+  return `${prefix}-${String(maxSeq + 1).padStart(4, '0')}`
+}
+
 export default function AdditionalChargesSetup() {
   const queryClient = useQueryClient()
 
@@ -53,11 +67,13 @@ export default function AdditionalChargesSetup() {
   })
 
   const otherChargeTypes = useMemo(() => otherChargeTypesData?.data || [], [otherChargeTypesData])
+  useEffect(() => {
+    setOcCode(nextAutoCode(otherChargeTypes, 'charge_code', 'OC'))
+  }, [otherChargeTypes])
 
   const createOcMutation = useMutation({
     mutationFn: (payload) => otherChargeTypesApi.create(payload),
     onSuccess: async () => {
-      setOcCode('')
       setOcDesc('')
       setOcUom('')
       setOcPrice('')
@@ -136,11 +152,11 @@ export default function AdditionalChargesSetup() {
 
   const onCreateOc = (e) => {
     e.preventDefault()
-    const code = (ocCode || '').trim()
+    const code = (ocCode || '').trim() || nextAutoCode(otherChargeTypes, 'charge_code', 'OC')
     const desc = (ocDesc || '').trim()
     const unitPrice = Number(ocPrice)
     const unitCost = Number(ocCost)
-    if (!code || !desc) return
+    if (!desc) return
     if (!Number.isFinite(unitPrice) || unitPrice < 0) return
     if (!Number.isFinite(unitCost) || unitCost < 0) return
 
@@ -175,11 +191,13 @@ export default function AdditionalChargesSetup() {
   })
 
   const fuelItems = useMemo(() => fuelItemsData?.data || [], [fuelItemsData])
+  useEffect(() => {
+    setFlCode(nextAutoCode(fuelItems, 'item_code', 'FL'))
+  }, [fuelItems])
 
   const createFlMutation = useMutation({
     mutationFn: (payload) => fuelLubricantsApi.create(payload),
     onSuccess: async () => {
-      setFlCode('')
       setFlDesc('')
       setFlTaxable(true)
       setFlUom('')
@@ -252,11 +270,11 @@ export default function AdditionalChargesSetup() {
 
   const onCreateFl = (e) => {
     e.preventDefault()
-    const code = (flCode || '').trim()
+    const code = (flCode || '').trim() || nextAutoCode(fuelItems, 'item_code', 'FL')
     const desc = (flDesc || '').trim()
     const unitPrice = Number(flPrice)
     const unitCost = Number(flCost)
-    if (!code || !desc) return
+    if (!desc) return
     if (!Number.isFinite(unitPrice) || unitPrice < 0) return
     if (!Number.isFinite(unitCost) || unitCost < 0) return
 
@@ -291,11 +309,13 @@ export default function AdditionalChargesSetup() {
   })
 
   const miscChargeTypes = useMemo(() => miscChargeTypesData?.data || [], [miscChargeTypesData])
+  useEffect(() => {
+    setMcCode(nextAutoCode(miscChargeTypes, 'charge_code', 'MC'))
+  }, [miscChargeTypes])
 
   const createMcMutation = useMutation({
     mutationFn: (payload) => miscChargeTypesApi.create(payload),
     onSuccess: async () => {
-      setMcCode('')
       setMcDesc('')
       setMcUom('')
       setMcPrice('')
@@ -371,11 +391,11 @@ export default function AdditionalChargesSetup() {
 
   const onCreateMc = (e) => {
     e.preventDefault()
-    const code = (mcCode || '').trim()
+    const code = (mcCode || '').trim() || nextAutoCode(miscChargeTypes, 'charge_code', 'MC')
     const desc = (mcDesc || '').trim()
     const unitPrice = Number(mcPrice)
     const unitCost = Number(mcCost)
-    if (!code || !desc) return
+    if (!desc) return
     if (!Number.isFinite(unitPrice) || unitPrice < 0) return
     if (!Number.isFinite(unitCost) || unitCost < 0) return
 
@@ -499,6 +519,9 @@ export default function AdditionalChargesSetup() {
   })
 
   const workTypes = useMemo(() => workTypesData?.data || [], [workTypesData])
+  useEffect(() => {
+    setSwCode(nextAutoCode(workTypes, 'work_code', 'SW'))
+  }, [workTypes])
 
   const activeSuppliers = useMemo(() => (suppliers || []).filter((s) => s.is_active), [suppliers])
 
@@ -514,7 +537,6 @@ export default function AdditionalChargesSetup() {
   const createSwMutation = useMutation({
     mutationFn: (payload) => subletWorkTypesApi.create(payload),
     onSuccess: async () => {
-      setSwCode('')
       setSwDesc('')
       setSwTaxable(true)
       setSwUom('')
@@ -539,11 +561,11 @@ export default function AdditionalChargesSetup() {
 
   const onCreateSw = (e) => {
     e.preventDefault()
-    const code = (swCode || '').trim()
+    const code = (swCode || '').trim() || nextAutoCode(workTypes, 'work_code', 'SW')
     const desc = (swDesc || '').trim()
     const unitPrice = Number(swPrice)
     const unitCost = Number(swCost)
-    if (!code || !desc) return
+    if (!desc) return
     if (!Number.isFinite(unitPrice) || unitPrice < 0) return
     if (!Number.isFinite(unitCost) || unitCost < 0) return
 
@@ -638,7 +660,7 @@ export default function AdditionalChargesSetup() {
 
           <form onSubmit={onCreateOc} className="space-y-3">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
-              <Input value={ocCode} onChange={(e) => setOcCode(e.target.value)} placeholder="Charge Code *" />
+              <Input value={ocCode} readOnly className="bg-gray-50" placeholder="Auto Charge Code" />
               <Input value={ocDesc} onChange={(e) => setOcDesc(e.target.value)} placeholder="Description *" />
               <Input value={ocUom} onChange={(e) => setOcUom(e.target.value)} placeholder="Unit of Measure" />
               <div className="flex items-center gap-3">
@@ -658,7 +680,6 @@ export default function AdditionalChargesSetup() {
               type="submit"
               disabled={
                 createOcMutation.isPending ||
-                !(ocCode || '').trim() ||
                 !(ocDesc || '').trim() ||
                 !Number.isFinite(Number(ocPrice)) ||
                 Number(ocPrice) < 0 ||
@@ -758,7 +779,7 @@ export default function AdditionalChargesSetup() {
 
           <form onSubmit={onCreateFl} className="space-y-3">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
-              <Input value={flCode} onChange={(e) => setFlCode(e.target.value)} placeholder="Item Code *" />
+              <Input value={flCode} readOnly className="bg-gray-50" placeholder="Auto Item Code" />
               <Input value={flDesc} onChange={(e) => setFlDesc(e.target.value)} placeholder="Description *" />
               <Input value={flUom} onChange={(e) => setFlUom(e.target.value)} placeholder="Unit of Measure" />
               <div className="flex items-center gap-3">
@@ -774,7 +795,6 @@ export default function AdditionalChargesSetup() {
                   type="submit"
                   disabled={
                     createFlMutation.isPending ||
-                    !(flCode || '').trim() ||
                     !(flDesc || '').trim() ||
                     !Number.isFinite(Number(flPrice)) ||
                     Number(flPrice) < 0 ||
@@ -869,7 +889,7 @@ export default function AdditionalChargesSetup() {
 
           <form onSubmit={onCreateMc} className="space-y-3">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
-              <Input value={mcCode} onChange={(e) => setMcCode(e.target.value)} placeholder="Charge Code *" />
+              <Input value={mcCode} readOnly className="bg-gray-50" placeholder="Auto Charge Code" />
               <Input value={mcDesc} onChange={(e) => setMcDesc(e.target.value)} placeholder="Description *" />
               <Input value={mcUom} onChange={(e) => setMcUom(e.target.value)} placeholder="Unit of Measure" />
               <div className="flex items-center gap-3">
@@ -889,7 +909,6 @@ export default function AdditionalChargesSetup() {
               type="submit"
               disabled={
                 createMcMutation.isPending ||
-                !(mcCode || '').trim() ||
                 !(mcDesc || '').trim() ||
                 !Number.isFinite(Number(mcPrice)) ||
                 Number(mcPrice) < 0 ||
@@ -1073,7 +1092,7 @@ export default function AdditionalChargesSetup() {
 
           <form onSubmit={onCreateSw} className="space-y-3">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
-              <Input value={swCode} onChange={(e) => setSwCode(e.target.value)} placeholder="Work Code *" />
+              <Input value={swCode} readOnly className="bg-gray-50" placeholder="Auto Work Code" />
               <Input value={swDesc} onChange={(e) => setSwDesc(e.target.value)} placeholder="Description *" />
               <Input value={swUom} onChange={(e) => setSwUom(e.target.value)} placeholder="Unit of Measure" />
               <div className="flex items-center gap-3">
@@ -1105,7 +1124,6 @@ export default function AdditionalChargesSetup() {
               type="submit"
               disabled={
                 createSwMutation.isPending ||
-                !(swCode || '').trim() ||
                 !(swDesc || '').trim() ||
                 !Number.isFinite(Number(swPrice)) ||
                 Number(swPrice) < 0 ||

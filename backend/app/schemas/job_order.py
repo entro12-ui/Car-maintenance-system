@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from pydantic import BaseModel
-from typing import Optional, List
+from typing import Optional, List, Any, Dict
 from datetime import date, datetime
 
 
@@ -37,6 +37,8 @@ class JobOrderCreate(BaseModel):
     opened_date: Optional[date] = None
     expected_finish_date: Optional[date] = None
 
+    notify_client: Optional[Dict[str, Any]] = None
+
     tasks: Optional[List[JobOrderTaskCreate]] = []
 
 
@@ -47,11 +49,43 @@ class JobOrderUpdate(BaseModel):
     mileage_in_km: Optional[str] = None
     remarks: Optional[str] = None
     expected_finish_date: Optional[date] = None
+    notify_client: Optional[Dict[str, Any]] = None
+
+
+class JobOrderCloseRequest(BaseModel):
+    """Close Job Order utility: tester, test method, and remarks (HillMaster § workflow)."""
+
+    tested_by_employee_id: int
+    tested_on_road: bool = False
+    tested_on_test_lane: bool = False
+    detail_work_description: Optional[str] = None
+    close_remark: Optional[str] = None
+    send_email: bool = False
+    close_date: Optional[date] = None
 
 
 class JobOrderCopyRequest(BaseModel):
     customer_id: Optional[int] = None
     copy_tasks: bool = True
+
+
+class AssemblyLineReceiveCreate(BaseModel):
+    reference_no: str
+    receive_date: date
+    requesting_unit: str
+    job_order_ids: List[int]
+
+
+class AssemblyLineReceiveResponse(BaseModel):
+    assembly_receive_id: int
+    reference_no: str
+    receive_date: date
+    requesting_unit: str
+    job_order_ids: List[int]
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
 
 
 class JobOrderPairRequest(BaseModel):
@@ -93,6 +127,7 @@ class JobOrderResponse(BaseModel):
 
     mileage_in_km: Optional[str] = None
     remarks: Optional[str] = None
+    notify_client: Optional[Dict[str, Any]] = None
 
     opened_date: Optional[date] = None
     expected_finish_date: Optional[date] = None
@@ -120,6 +155,13 @@ class JobOrderResponse(BaseModel):
     vrv_printed_at: Optional[datetime] = None
 
     opened_by_employee_id: Optional[int] = None
+
+    close_tested_by_employee_id: Optional[int] = None
+    close_tested_on_road: bool = False
+    close_tested_on_test_lane: bool = False
+    close_work_description: Optional[str] = None
+    close_send_email: bool = False
+    close_process_remark: Optional[str] = None
 
     created_at: datetime
     updated_at: datetime
@@ -189,11 +231,14 @@ class JobOrderQCItemUpsert(BaseModel):
     passed: Optional[bool] = None
     remark: Optional[str] = None
     sort_order: int = 0
+    is_mandatory: bool = True
 
 
 class JobOrderQCUpsertRequest(BaseModel):
     remarks: Optional[str] = None
     items: List[JobOrderQCItemUpsert] = []
+    replace_all: bool = False
+    checked_by_employee_id: Optional[int] = None
 
 
 class JobOrderQCItemResponse(BaseModel):
@@ -203,6 +248,7 @@ class JobOrderQCItemResponse(BaseModel):
     passed: Optional[bool] = None
     remark: Optional[str] = None
     sort_order: int
+    is_mandatory: bool = True
     created_at: datetime
 
     class Config:
@@ -222,7 +268,6 @@ class JobOrderQCSheetResponse(BaseModel):
 
     class Config:
         from_attributes = True
-
 
 # Enquiry
 class TechnicianBriefResponse(BaseModel):

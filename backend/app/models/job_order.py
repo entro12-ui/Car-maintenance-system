@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Text, Date, DateTime, ForeignKey, Boolean
+from sqlalchemy import Column, Integer, String, Text, Date, DateTime, ForeignKey, Boolean, JSON
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from app.database import Base
@@ -34,6 +34,9 @@ class JobOrder(Base):
     mileage_in_km = Column(String(30), nullable=True)
     remarks = Column(Text, nullable=True)
 
+    # HillMaster-style "Inform Client With" (SMS / email / fax / phone flags + values)
+    notify_client = Column(JSON, nullable=True)
+
     opened_date = Column(Date, nullable=True)
     expected_finish_date = Column(Date, nullable=True)
 
@@ -61,6 +64,13 @@ class JobOrder(Base):
 
     opened_by_employee_id = Column(Integer, ForeignKey("employees.employee_id", ondelete="SET NULL"), nullable=True)
 
+    close_tested_by_employee_id = Column(Integer, ForeignKey("employees.employee_id", ondelete="SET NULL"), nullable=True)
+    close_tested_on_road = Column(Boolean, default=False)
+    close_tested_on_test_lane = Column(Boolean, default=False)
+    close_work_description = Column(Text, nullable=True)
+    close_send_email = Column(Boolean, default=False)
+    close_process_remark = Column(Text, nullable=True)
+
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
 
@@ -70,6 +80,7 @@ class JobOrder(Base):
     opened_by_employee = relationship("Employee", foreign_keys=[opened_by_employee_id])
     blocked_by_employee = relationship("Employee", foreign_keys=[blocked_by_employee_id])
     delivered_by_employee = relationship("Employee", foreign_keys=[delivered_by_employee_id])
+    close_tested_by_employee = relationship("Employee", foreign_keys=[close_tested_by_employee_id])
 
     tasks = relationship("JobOrderTask", back_populates="job_order", cascade="all, delete-orphan")
     clocks = relationship("JobClock", back_populates="job_order", cascade="all, delete-orphan")
@@ -149,6 +160,7 @@ class JobOrderQCItem(Base):
     passed = Column(Boolean, nullable=True)
     remark = Column(Text, nullable=True)
     sort_order = Column(Integer, default=0)
+    is_mandatory = Column(Boolean, nullable=False, default=True)
 
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 

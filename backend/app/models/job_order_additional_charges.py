@@ -19,7 +19,11 @@ class OtherChargeType(Base):
 
     other_charge_type_id = Column(Integer, primary_key=True, index=True)
     charge_code = Column(String(30), unique=True, nullable=False, index=True)
+    charge_category_code = Column(String(30), nullable=True, index=True)
     description = Column(String(200), nullable=False)
+    discount_charge_code = Column(String(40), nullable=True)
+    allow_to_journalize = Column(Boolean, nullable=False, default=False)
+    auto_create_journal = Column(Boolean, nullable=False, default=False)
     taxable = Column(Boolean, nullable=False, default=True)
 
     job_type = Column(String(50), nullable=True)
@@ -75,9 +79,20 @@ class SubletWorkSupplier(Base):
     supplier_id = Column(Integer, primary_key=True, index=True)
     supplier_name = Column(String(200), unique=True, nullable=False, index=True)
 
+    contact_person = Column(String(200), nullable=True)
     phone = Column(String(50), nullable=True)
+    fax_no = Column(String(50), nullable=True)
     email = Column(String(120), nullable=True)
     address = Column(String(250), nullable=True)
+    address_line1 = Column(String(200), nullable=True)
+    address_line2 = Column(String(200), nullable=True)
+    address_line3 = Column(String(200), nullable=True)
+    po_box = Column(String(80), nullable=True)
+
+    supplier_coa_1 = Column(String(80), nullable=True)
+    supplier_coa_2 = Column(String(80), nullable=True)
+    auto_approve_orders = Column(Boolean, nullable=False, default=False)
+    account_description = Column(String(500), nullable=True)
 
     is_active = Column(Boolean, nullable=False, default=True, index=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)

@@ -74,7 +74,39 @@ def update_vehicle(
         raise HTTPException(status_code=404, detail="Vehicle not found")
     
     update_data = vehicle_update.dict(exclude_unset=True)
+    for field in ("fuel_type", "transmission_type", "vin", "color", "engine_type"):
+        if field in update_data and update_data[field] == "":
+            update_data[field] = None
+
+    if "license_plate" in update_data and update_data["license_plate"] is not None:
+        lp = (update_data["license_plate"] or "").strip()
+        if not lp:
+            raise HTTPException(status_code=400, detail="license_plate cannot be empty")
+        existing = (
+            db.query(Vehicle)
+            .filter(Vehicle.license_plate == lp, Vehicle.vehicle_id != vehicle_id)
+            .first()
+        )
+        if existing:
+            raise HTTPException(status_code=400, detail="License plate already registered")
+        vehicle.license_plate = lp
+
+    if "vin" in update_data:
+        vin_val = update_data.get("vin")
+        if vin_val:
+            existing_vin = (
+                db.query(Vehicle)
+                .filter(Vehicle.vin == vin_val, Vehicle.vehicle_id != vehicle_id)
+                .first()
+            )
+            if existing_vin:
+                raise HTTPException(status_code=400, detail="VIN already registered")
+        vehicle.vin = vin_val
+
+    skip = {"license_plate", "vin"}
     for field, value in update_data.items():
+        if field in skip:
+            continue
         setattr(vehicle, field, value)
     
     db.commit()

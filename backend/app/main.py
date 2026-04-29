@@ -4,7 +4,7 @@ from app.database import engine, Base
 from app.routes import (
     customers, vehicles, appointments, services, 
     service_types, parts, loyalty, notifications, 
-    employees, dashboard, reports, auth, customer_dashboard, admin_customers, accountant, proformas, job_orders, job_order_inventory, job_order_customer_notifications, job_order_notice_types, job_order_labor, job_order_additional_charges, job_order_sublet_orders, garage_invoices, settings, gl, enterprise_admin
+    employees, dashboard, reports, auth, customer_dashboard, admin_customers, accountant, proformas, job_orders, job_order_inventory, job_order_customer_notifications, job_order_notice_types, job_order_labor, job_order_additional_charges, job_order_sublet_orders, garage_invoices, settings, gl, enterprise_admin, company_setup, gl_account_setup, job_type_access
 )
 
 import os
@@ -66,6 +66,9 @@ app.include_router(garage_invoices.router, prefix="/api", tags=["Garage Invoices
 app.include_router(settings.router, prefix="/api/settings", tags=["System Settings"])
 app.include_router(gl.router, prefix="/api/gl", tags=["General Ledger"])
 app.include_router(enterprise_admin.router, prefix="/api/admin", tags=["Enterprise Admin"])
+app.include_router(company_setup.router, prefix="/api", tags=["Company Setup"])
+app.include_router(gl_account_setup.router, prefix="/api/gl-account-setup", tags=["GL Account Setup"])
+app.include_router(job_type_access.router, prefix="/api", tags=["Job Type Access"])
 
 
 @app.get("/")

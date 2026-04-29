@@ -20,7 +20,7 @@ from .job_order_inventory import (
 from .job_order_customer_notification import JobOrderCustomerNotificationEntry
 from .job_order_pairing import JobOrderPairing
 from .job_order_notice_type import JobOrderNoticeType
-from .labor import LaborType, JobOrderLaborCharge
+from .labor import LaborType, LaborPriceList, LaborTypeModelGroupRate, JobOrderLaborCharge
 from .job_order_additional_charges import (
     OtherChargeType,
     FuelLubricantItem,
@@ -36,6 +36,9 @@ from .job_order_additional_charges import (
 from .garage_invoice import GarageInvoice, DiscountRateEntry
 from .job_order_sublet_orders import JobOrderSubletOrder
 from .enterprise import MemoTemplate, UserDefinedReport, GLPostingRule
+from .gl_account_setup import GLAccountSetup
+from .user_job_type_access import UserJobTypeAccess
+from .assembly_line_receive import AssemblyLineReceive
 
 __all__ = [
     "Customer",
@@ -75,6 +78,8 @@ __all__ = [
     "JobOrderPairing",
     "JobOrderNoticeType",
     "LaborType",
+    "LaborPriceList",
+    "LaborTypeModelGroupRate",
     "JobOrderLaborCharge",
     "OtherChargeType",
     "FuelLubricantItem",
@@ -89,6 +94,9 @@ __all__ = [
     "MemoTemplate",
     "UserDefinedReport",
     "GLPostingRule",
+    "GLAccountSetup",
+    "UserJobTypeAccess",
+    "AssemblyLineReceive",
 ]
 
 

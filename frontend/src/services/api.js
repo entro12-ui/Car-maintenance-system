@@ -39,6 +39,9 @@ export const customersApi = {
   getById: (id) => api.get(`/customers/${id}`),
   create: (data) => api.post('/customers', data),
   update: (id, data) => api.put(`/customers/${id}`, data),
+  delete: (id) => api.delete(`/customers/${id}`),
+  glAccountLookup: (params) => api.get('/customers/gl-account-lookup', { params }),
+  auditLog: (id, params) => api.get(`/customers/${id}/audit-log`, { params }),
   getVehicles: (id) => api.get(`/customers/${id}/vehicles`),
   getHistory: (id) => api.get(`/customers/${id}/history`),
   getPendingApproval: () => api.get('/customers/pending-approval'),
@@ -121,6 +124,13 @@ export const systemSettingsApi = {
   remove: (id) => api.delete(`/settings/${id}`),
 }
 
+// Company Setup (tabbed HillMaster-style; backed by cs.* system settings)
+export const companySetupApi = {
+  get: () => api.get('/company-setup'),
+  update: (data) => api.put('/company-setup', data),
+  auditLog: (params) => api.get('/company-setup/audit-log', { params }),
+}
+
 // Authentication
 export const authApi = {
   login: (formData) => api.post('/auth/login', formData, {
@@ -174,6 +184,14 @@ export const glApi = {
   postJournal: (journalId) => api.post(`/gl/journals/${journalId}/post`),
 }
 
+// GL Account Setup By Section and Repair Type
+export const glAccountSetupApi = {
+  options: () => api.get('/gl-account-setup/options'),
+  list: (params) => api.get('/gl-account-setup', { params }),
+  create: (data) => api.post('/gl-account-setup', data),
+  update: (setupId, data) => api.put(`/gl-account-setup/${setupId}`, data),
+}
+
 // Enterprise Admin
 export const enterpriseAdminApi = {
   // Memo / letter templates
@@ -211,8 +229,10 @@ export const proformasApi = {
 
 // Job Orders
 export const jobOrdersApi = {
-  list: (params) => api.get('/job-orders', { params }),
+  list: (params) => api.get('/job-orders', { params: params || {} }),
   getById: (id) => api.get(`/job-orders/${id}`),
+  create: (data) => api.post('/job-orders', data),
+  update: (id, data) => api.put(`/job-orders/${id}`, data),
   dispatch: (id, data) => api.post(`/job-orders/${id}/dispatch`, data),
   receive: (id, data) => api.post(`/job-orders/${id}/receive`, data),
   clockIn: (id, data) => api.post(`/job-orders/${id}/clock-in`, data),
@@ -228,7 +248,8 @@ export const jobOrdersApi = {
   vrvCancel: (id, data) => api.post(`/job-orders/${id}/vrv/cancel`, data),
 
   // Utilities
-  close: (id) => api.post(`/job-orders/${id}/close`),
+  close: (id, data) =>
+    data != null ? api.post(`/job-orders/${id}/close`, data) : api.post(`/job-orders/${id}/close`),
   reopen: (id) => api.post(`/job-orders/${id}/reopen`),
   cancel: (id) => api.post(`/job-orders/${id}/cancel`),
   copy: (id, data) => api.post(`/job-orders/${id}/copy`, data),
@@ -236,6 +257,7 @@ export const jobOrdersApi = {
   pair: (data) => api.post('/job-orders/pair', data),
   unpair: (pairingId) => api.post(`/job-orders/unpair/${pairingId}`),
   listPairings: (id) => api.get(`/job-orders/${id}/pairings`),
+  assemblyLineReceive: (data) => api.post('/job-orders/assembly-line-receive', data),
 
   // Task enquiries
   enquiryFreeTechnicians: () => api.get('/job-orders/enquiry/free-technicians'),
@@ -248,6 +270,8 @@ export const jobOrdersApi = {
 // Garage Invoices (Cash/Credit/ITM + Discount + Cancel/Return + Uncollected Clearing)
 export const garageInvoicesApi = {
   listEligibleJobs: (invoiceType) => api.get('/garage-invoices/eligible-jobs', { params: { invoice_type: invoiceType } }),
+  proformaPreview: (jobOrderId, invoiceType) =>
+    api.get(`/garage-invoices/proforma-preview/${jobOrderId}`, { params: { invoice_type: invoiceType } }),
   create: (data) => api.post('/garage-invoices', data),
   list: (params) => api.get('/garage-invoices', { params }),
   getById: (id) => api.get(`/garage-invoices/${id}`),
@@ -297,6 +321,20 @@ export const laborTypesApi = {
   list: (params) => api.get('/job-orders/labor-types', { params }),
   create: (data) => api.post('/job-orders/labor-types', data),
   update: (id, data) => api.put(`/job-orders/labor-types/${id}`, data),
+  listModelGroupRates: (laborTypeId) => api.get(`/job-orders/labor-types/${laborTypeId}/model-group-rates`),
+  createModelGroupRate: (laborTypeId, data) => api.post(`/job-orders/labor-types/${laborTypeId}/model-group-rates`, data),
+  updateModelGroupRate: (laborTypeId, rateId, data) =>
+    api.put(`/job-orders/labor-types/${laborTypeId}/model-group-rates/${rateId}`, data),
+  deleteModelGroupRate: (laborTypeId, rateId) =>
+    api.delete(`/job-orders/labor-types/${laborTypeId}/model-group-rates/${rateId}`),
+  applyAllModelGroups: (laborTypeId, data) =>
+    api.post(`/job-orders/labor-types/${laborTypeId}/model-group-rates/apply-all`, data),
+}
+
+export const laborPriceListsApi = {
+  list: (params) => api.get('/job-orders/labor-price-lists', { params }),
+  create: (data) => api.post('/job-orders/labor-price-lists', data),
+  update: (id, data) => api.put(`/job-orders/labor-price-lists/${id}`, data),
 }
 
 export const jobOrderLaborApi = {
@@ -313,6 +351,15 @@ export const employeesApi = {
   create: (data) => api.post('/employees', data),
   update: (employeeId, data) => api.put(`/employees/${employeeId}`, data),
   remove: (employeeId) => api.delete(`/employees/${employeeId}`),
+}
+
+export const jobTypeAccessApi = {
+  listUsers: () => api.get('/job-type-access/users'),
+  listJobTypes: () => api.get('/job-type-access/job-types'),
+  getUserAccess: (userId) => api.get(`/job-type-access/users/${userId}`),
+  saveUserAccess: (userId, jobTypeSettingIds) =>
+    api.put(`/job-type-access/users/${userId}`, { job_type_setting_ids: jobTypeSettingIds }),
+  listAll: () => api.get('/job-type-access/list'),
 }
 
 // Job Order Additional Charges (Setup + Entry)

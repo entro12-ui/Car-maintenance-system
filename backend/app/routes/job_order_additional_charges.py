@@ -100,7 +100,11 @@ def create_other_charge_type(
 
     row = OtherChargeType(
         charge_code=code,
+        charge_category_code=_clean_text(payload.charge_category_code) or None,
         description=desc,
+        discount_charge_code=_clean_text(payload.discount_charge_code) or None,
+        allow_to_journalize=bool(payload.allow_to_journalize),
+        auto_create_journal=bool(payload.auto_create_journal),
         taxable=bool(payload.taxable),
         job_type=_clean_text(payload.job_type) or None,
         section=_clean_text(payload.section) or None,
@@ -154,10 +158,21 @@ def update_other_charge_type(
     if "taxable" in update_data and update_data["taxable"] is not None:
         row.taxable = bool(update_data["taxable"])
 
-    for key in ("job_type", "section", "unit_of_measure", "sub_category"):
+    for key in (
+        "charge_category_code",
+        "discount_charge_code",
+        "job_type",
+        "section",
+        "unit_of_measure",
+        "sub_category",
+    ):
         if key in update_data:
             val = update_data[key]
             setattr(row, key, _clean_text(val) or None)
+
+    for key in ("allow_to_journalize", "auto_create_journal"):
+        if key in update_data and update_data[key] is not None:
+            setattr(row, key, bool(update_data[key]))
 
     if "unit_price" in update_data and update_data["unit_price"] is not None:
         if float(update_data["unit_price"]) < 0:
@@ -433,9 +448,19 @@ def create_sublet_work_supplier(
 
     row = SubletWorkSupplier(
         supplier_name=name,
+        contact_person=_clean_text(payload.contact_person) or None,
         phone=_clean_text(payload.phone) or None,
+        fax_no=_clean_text(payload.fax_no) or None,
         email=_clean_text(payload.email) or None,
         address=_clean_text(payload.address) or None,
+        address_line1=_clean_text(payload.address_line1) or None,
+        address_line2=_clean_text(payload.address_line2) or None,
+        address_line3=_clean_text(payload.address_line3) or None,
+        po_box=_clean_text(payload.po_box) or None,
+        supplier_coa_1=_clean_text(payload.supplier_coa_1) or None,
+        supplier_coa_2=_clean_text(payload.supplier_coa_2) or None,
+        auto_approve_orders=bool(payload.auto_approve_orders),
+        account_description=_clean_text(payload.account_description) or None,
         is_active=True,
     )
 
@@ -475,9 +500,25 @@ def update_sublet_work_supplier(
             raise HTTPException(status_code=400, detail="Supplier already exists")
         row.supplier_name = name
 
-    for key in ("phone", "email", "address"):
+    for key in (
+        "contact_person",
+        "phone",
+        "fax_no",
+        "email",
+        "address",
+        "address_line1",
+        "address_line2",
+        "address_line3",
+        "po_box",
+        "supplier_coa_1",
+        "supplier_coa_2",
+        "account_description",
+    ):
         if key in update_data:
             setattr(row, key, _clean_text(update_data[key]) or None)
+
+    if "auto_approve_orders" in update_data and update_data["auto_approve_orders"] is not None:
+        row.auto_approve_orders = bool(update_data["auto_approve_orders"])
 
     if "is_active" in update_data and update_data["is_active"] is not None:
         row.is_active = bool(update_data["is_active"])
