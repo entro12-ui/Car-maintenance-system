@@ -143,31 +143,31 @@ export default function EditUserDefinedReport() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
             <label className="block text-sm">
-              <span className="text-gray-600">Report Id</span>
-              <input className="w-full mt-1 border rounded px-3 py-2 bg-gray-50" value={reportId ?? ''} disabled />
+              <span className="text-muted-foreground">Report Id</span>
+              <input className="w-full mt-1 border rounded px-3 py-2 bg-muted/35" value={reportId ?? ''} disabled />
             </label>
             <label className="block text-sm">
-              <span className="text-gray-600">Report Code</span>
+              <span className="text-muted-foreground">Report Code</span>
               <input className="w-full mt-1 border rounded px-3 py-2" value={form.report_code} onChange={(e) => setForm((p) => ({ ...p, report_code: e.target.value }))} />
             </label>
             <label className="block text-sm">
-              <span className="text-gray-600">Report Group</span>
+              <span className="text-muted-foreground">Report Group</span>
               <input className="w-full mt-1 border rounded px-3 py-2" value={form.report_group} onChange={(e) => setForm((p) => ({ ...p, report_group: e.target.value }))} />
             </label>
           </div>
 
           <label className="block text-sm">
-            <span className="text-gray-600">Report Name</span>
+            <span className="text-muted-foreground">Report Name</span>
             <input className="w-full mt-1 border rounded px-3 py-2" value={form.report_name} onChange={(e) => setForm((p) => ({ ...p, report_name: e.target.value }))} />
           </label>
 
           <label className="block text-sm">
-            <span className="text-gray-600">Description</span>
+            <span className="text-muted-foreground">Description</span>
             <textarea className="w-full mt-1 border rounded px-3 py-2 min-h-[70px]" value={form.description} onChange={(e) => setForm((p) => ({ ...p, description: e.target.value }))} />
           </label>
 
           <label className="block text-sm">
-            <span className="text-gray-600">query_definition (JSON)</span>
+            <span className="text-muted-foreground">query_definition (JSON)</span>
             <textarea
               className="w-full mt-1 border rounded px-3 py-2 min-h-[180px] font-mono text-xs"
               value={form.query_definition}
@@ -177,7 +177,7 @@ export default function EditUserDefinedReport() {
 
           <div className="flex items-center gap-2">
             <input type="checkbox" checked={Boolean(form.is_active)} onChange={(e) => setForm((p) => ({ ...p, is_active: e.target.checked }))} />
-            <span className="text-sm text-gray-700">Active</span>
+            <span className="text-sm text-foreground/90">Active</span>
           </div>
 
           {error ? <div className="text-sm text-red-600">{error}</div> : null}

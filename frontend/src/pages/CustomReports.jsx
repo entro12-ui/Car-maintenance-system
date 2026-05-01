@@ -132,7 +132,7 @@ export default function CustomReports({ mode = 'custom' }) {
                     <tbody>
                       {filtered.length === 0 ? (
                         <tr>
-                          <td colSpan={3} className="py-4 px-3 text-sm text-gray-500">
+                          <td colSpan={3} className="py-4 px-3 text-sm text-muted-foreground">
                             No reports found.
                           </td>
                         </tr>
@@ -175,7 +175,7 @@ export default function CustomReports({ mode = 'custom' }) {
                   <tbody>
                     {selectedFields.length === 0 ? (
                       <tr>
-                        <td colSpan={3} className="py-4 px-3 text-sm text-gray-500">
+                        <td colSpan={3} className="py-4 px-3 text-sm text-muted-foreground">
                           No fields defined for selected report.
                         </td>
                       </tr>
@@ -205,11 +205,11 @@ export default function CustomReports({ mode = 'custom' }) {
         <div className="px-6 pb-6 space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
             <label className="block text-sm">
-              <span className="text-gray-600">From Date (optional)</span>
+              <span className="text-muted-foreground">From Date (optional)</span>
               <input type="date" className="w-full mt-1 border rounded px-3 py-2" value={fromDate} onChange={(e) => setFromDate(e.target.value)} />
             </label>
             <label className="block text-sm">
-              <span className="text-gray-600">To Date (optional)</span>
+              <span className="text-muted-foreground">To Date (optional)</span>
               <input type="date" className="w-full mt-1 border rounded px-3 py-2" value={toDate} onChange={(e) => setToDate(e.target.value)} />
             </label>
                 <div className="md:pt-6 flex gap-2 items-end">
@@ -270,7 +270,7 @@ export default function CustomReports({ mode = 'custom' }) {
             <div className="text-sm text-muted-foreground">No report selected.</div>
           )}
 
-          {status ? <div className="text-sm text-gray-700 whitespace-pre-wrap">{status}</div> : null}
+          {status ? <div className="text-sm text-foreground/90 whitespace-pre-wrap">{status}</div> : null}
         </div>
       </Card>
     </div>

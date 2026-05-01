@@ -33,8 +33,8 @@ export default function GarageProformaInvoice() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Proforma / Invoice Printing</h1>
-        <p className="text-gray-600">
+        <h1 className="text-2xl font-bold text-foreground">Proforma / Invoice Printing</h1>
+        <p className="text-muted-foreground">
           Print Proforma for a closed, uninvoiced job. Select sales type then choose a closed job number.
         </p>
       </div>
@@ -63,7 +63,7 @@ export default function GarageProformaInvoice() {
             />
             Sales Invoice
           </label>
-          <div className="mx-3 h-5 w-px bg-gray-300" />
+          <div className="mx-3 h-5 w-px bg-border" />
           <div className="text-sm font-medium">Sales Type:</div>
           {['Cash', 'Credit', 'ITM'].map((t) => (
             <label key={t} className="text-sm flex items-center gap-2">
@@ -92,13 +92,13 @@ export default function GarageProformaInvoice() {
         </div>
 
         {isLoading ? (
-          <div className="text-sm text-gray-500">Loading eligible jobs...</div>
+          <div className="text-sm text-muted-foreground">Loading eligible jobs...</div>
         ) : error ? (
           <div className="text-sm text-red-600">Failed to load eligible jobs.</div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <label className="text-sm">
-              <span className="text-gray-600">JobCard No.</span>
+              <span className="text-muted-foreground">JobCard No.</span>
               <select
                 className="w-full mt-1 border rounded px-2 py-1.5"
                 value={jobOrderId}
@@ -113,40 +113,40 @@ export default function GarageProformaInvoice() {
               </select>
             </label>
             <label className="text-sm">
-              <span className="text-gray-600">Plate No.</span>
-              <input className="w-full mt-1 border rounded px-2 py-1.5 bg-gray-50" value={p?.vehicle_plate || ''} readOnly />
+              <span className="text-muted-foreground">Plate No.</span>
+              <input className="w-full mt-1 border rounded px-2 py-1.5 bg-muted/35" value={p?.vehicle_plate || ''} readOnly />
             </label>
           </div>
         )}
 
-        {previewLoading && <div className="text-sm text-gray-500">Loading proforma preview...</div>}
+        {previewLoading && <div className="text-sm text-muted-foreground">Loading proforma preview...</div>}
         {previewError && <div className="text-sm text-red-600">{previewError?.response?.data?.detail || 'Failed to build preview'}</div>}
 
         {p && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2 border-t">
             <label className="text-sm">
-              <span className="text-gray-600">Customer Name</span>
-              <input className="w-full mt-1 border rounded px-2 py-1.5 bg-gray-50" value={p.customer_name || ''} readOnly />
+              <span className="text-muted-foreground">Customer Name</span>
+              <input className="w-full mt-1 border rounded px-2 py-1.5 bg-muted/35" value={p.customer_name || ''} readOnly />
             </label>
             <label className="text-sm">
-              <span className="text-gray-600">Address</span>
-              <input className="w-full mt-1 border rounded px-2 py-1.5 bg-gray-50" value={p.customer_address || ''} readOnly />
+              <span className="text-muted-foreground">Address</span>
+              <input className="w-full mt-1 border rounded px-2 py-1.5 bg-muted/35" value={p.customer_address || ''} readOnly />
             </label>
             <label className="text-sm">
-              <span className="text-gray-600">Prof Invoice No.</span>
-              <input className="w-full mt-1 border rounded px-2 py-1.5 bg-gray-50" value={p.proforma_number || ''} readOnly />
+              <span className="text-muted-foreground">Prof Invoice No.</span>
+              <input className="w-full mt-1 border rounded px-2 py-1.5 bg-muted/35" value={p.proforma_number || ''} readOnly />
             </label>
             <label className="text-sm">
-              <span className="text-gray-600">Proforma Date</span>
-              <input className="w-full mt-1 border rounded px-2 py-1.5 bg-gray-50" value={p.proforma_date || ''} readOnly />
+              <span className="text-muted-foreground">Proforma Date</span>
+              <input className="w-full mt-1 border rounded px-2 py-1.5 bg-muted/35" value={p.proforma_date || ''} readOnly />
             </label>
             <label className="text-sm">
-              <span className="text-gray-600">Repair Type</span>
-              <input className="w-full mt-1 border rounded px-2 py-1.5 bg-gray-50" value={p.repair_type || ''} readOnly />
+              <span className="text-muted-foreground">Repair Type</span>
+              <input className="w-full mt-1 border rounded px-2 py-1.5 bg-muted/35" value={p.repair_type || ''} readOnly />
             </label>
             <label className="text-sm">
-              <span className="text-gray-600">Total Amount</span>
-              <input className="w-full mt-1 border rounded px-2 py-1.5 bg-gray-50" value={Number(p.total_amount || 0).toFixed(2)} readOnly />
+              <span className="text-muted-foreground">Total Amount</span>
+              <input className="w-full mt-1 border rounded px-2 py-1.5 bg-muted/35" value={Number(p.total_amount || 0).toFixed(2)} readOnly />
             </label>
             <div className="md:col-span-2 text-red-600 font-semibold">
               Total Number of Line Items to be Printed is{' '}
@@ -154,8 +154,8 @@ export default function GarageProformaInvoice() {
                 (p?.totals ? ['labor_total', 'parts_total', 'charges_total'].filter((k) => Number(p.totals[k] || 0) > 0).length : 0)
               )}
             </div>
-            <div className="md:col-span-2 border rounded p-3 bg-gray-50">
-              <div className="font-semibold text-gray-700 mb-2">Customer Details</div>
+            <div className="md:col-span-2 border rounded p-3 bg-muted/35">
+              <div className="font-semibold text-foreground/90 mb-2">Customer Details</div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
                 <div>TIN: {p.customer_tin || '-'}</div>
                 <div>Tel No: {p.customer_phone || '-'}</div>

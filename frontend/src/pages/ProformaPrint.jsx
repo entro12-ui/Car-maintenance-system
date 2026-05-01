@@ -132,20 +132,20 @@ export default function ProformaPrint() {
       {/* Proforma Content */}
       <div id="proforma-content" className="bg-white p-8 shadow-lg">
         {/* Header */}
-        <div className="border-b-4 border-gray-800 pb-6 mb-8">
+        <div className="border-b-4 border-foreground pb-6 mb-8">
           <div className="flex justify-between items-start">
             <div>
-              <h1 className="text-3xl font-bold text-gray-800 mb-2">
+              <h1 className="text-3xl font-bold text-foreground mb-2">
                 BERHANU AL-ADEM Auto Solution
               </h1>
-              <div className="text-gray-600">
+              <div className="text-muted-foreground">
                 <p>Car Service Management</p>
                 <p>Professional Auto Maintenance & Repair</p>
               </div>
             </div>
             <div className="text-right">
-              <h2 className="text-2xl font-bold text-gray-800 mb-2">PROFORMA INVOICE</h2>
-              <p className="text-sm text-gray-600">Proforma #</p>
+              <h2 className="text-2xl font-bold text-foreground mb-2">PROFORMA INVOICE</h2>
+              <p className="text-sm text-muted-foreground">Proforma #</p>
               <p className="text-xl font-bold text-blue-600">{proforma.proforma_number}</p>
             </div>
           </div>
@@ -156,28 +156,28 @@ export default function ProformaPrint() {
           <div>
             {proforma.organization_name && (
               <>
-                <h3 className="font-bold text-gray-800 mb-2">Organization:</h3>
-                <p className="text-gray-700 font-semibold">{proforma.organization_name}</p>
+                <h3 className="font-bold text-foreground mb-2">Organization:</h3>
+                <p className="text-foreground/90 font-semibold">{proforma.organization_name}</p>
               </>
             )}
             {proforma.customer_name && (
               <>
-                <h3 className="font-bold text-gray-800 mb-2 mt-4">Customer Name:</h3>
-                <p className="text-gray-700 font-semibold">{proforma.customer_name}</p>
-                <p className="text-xs text-gray-500">(External Customer)</p>
+                <h3 className="font-bold text-foreground mb-2 mt-4">Customer Name:</h3>
+                <p className="text-foreground/90 font-semibold">{proforma.customer_name}</p>
+                <p className="text-xs text-muted-foreground">(External Customer)</p>
               </>
             )}
             {proforma.car_model && (
               <>
-                <h3 className="font-bold text-gray-800 mb-2 mt-4">Car Model:</h3>
-                <p className="text-gray-700 font-semibold">{proforma.car_model}</p>
+                <h3 className="font-bold text-foreground mb-2 mt-4">Car Model:</h3>
+                <p className="text-foreground/90 font-semibold">{proforma.car_model}</p>
               </>
             )}
             {/* Fallback to linked customer info if exists (from customer_id) */}
             {!proforma.customer_name && (proforma.customer_email || proforma.customer_phone) && (
               <>
-                <h3 className="font-bold text-gray-800 mb-2">Bill To:</h3>
-                <div className="text-gray-700">
+                <h3 className="font-bold text-foreground mb-2">Bill To:</h3>
+                <div className="text-foreground/90">
                   {proforma.customer_email && <p>{proforma.customer_email}</p>}
                   {proforma.customer_phone && <p>{proforma.customer_phone}</p>}
                 </div>
@@ -185,8 +185,8 @@ export default function ProformaPrint() {
             )}
           </div>
           <div>
-            <h3 className="font-bold text-gray-800 mb-2">Proforma Details:</h3>
-            <div className="text-gray-700 space-y-1">
+            <h3 className="font-bold text-foreground mb-2">Proforma Details:</h3>
+            <div className="text-foreground/90 space-y-1">
               <p><span className="font-semibold">Date:</span> {format(new Date(proforma.created_at), 'MMMM dd, yyyy')}</p>
               {proforma.valid_until && (
                 <p><span className="font-semibold">Valid Until:</span> {format(new Date(proforma.valid_until), 'MMMM dd, yyyy')}</p>
@@ -205,8 +205,8 @@ export default function ProformaPrint() {
         {/* Description */}
         {proforma.description && (
           <div className="mb-6">
-            <h3 className="font-bold text-gray-800 mb-2">Description:</h3>
-            <p className="text-gray-700">{proforma.description}</p>
+            <h3 className="font-bold text-foreground mb-2">Description:</h3>
+            <p className="text-foreground/90">{proforma.description}</p>
           </div>
         )}
 
@@ -214,44 +214,44 @@ export default function ProformaPrint() {
         <div className="mb-8">
           <table className="w-full border-collapse">
             <thead>
-              <tr className="bg-gray-100">
-                <th className="border border-gray-300 px-4 py-3 text-left font-semibold">#</th>
-                <th className="border border-gray-300 px-4 py-3 text-left font-semibold">Type</th>
-                <th className="border border-gray-300 px-4 py-3 text-left font-semibold">Item Description</th>
-                <th className="border border-gray-300 px-4 py-3 text-right font-semibold">Quantity</th>
-                <th className="border border-gray-300 px-4 py-3 text-right font-semibold">Unit Price</th>
-                <th className="border border-gray-300 px-4 py-3 text-right font-semibold">Total</th>
+              <tr className="bg-muted">
+                <th className="border border-border px-4 py-3 text-left font-semibold">#</th>
+                <th className="border border-border px-4 py-3 text-left font-semibold">Type</th>
+                <th className="border border-border px-4 py-3 text-left font-semibold">Item Description</th>
+                <th className="border border-border px-4 py-3 text-right font-semibold">Quantity</th>
+                <th className="border border-border px-4 py-3 text-right font-semibold">Unit Price</th>
+                <th className="border border-border px-4 py-3 text-right font-semibold">Total</th>
               </tr>
             </thead>
             <tbody>
               {proforma.items.map((item, index) => (
                 <>
                   <tr key={item.proforma_item_id || index}>
-                    <td className="border border-gray-300 px-4 py-3">{index + 1}</td>
-                    <td className="border border-gray-300 px-4 py-3">
+                    <td className="border border-border px-4 py-3">{index + 1}</td>
+                    <td className="border border-border px-4 py-3">
                       <span className={`px-2 py-1 text-xs font-semibold rounded ${
                         item.item_type === 'Service' ? 'bg-blue-100 text-blue-800' :
                         item.item_type === 'Part' ? 'bg-green-100 text-green-800' :
-                        'bg-gray-100 text-gray-800'
+                        'bg-muted text-foreground'
                       }`}>
                         {item.item_type || 'Other'}
                       </span>
                     </td>
-                    <td className="border border-gray-300 px-4 py-3">
+                    <td className="border border-border px-4 py-3">
                       <div>
                         <div className="font-medium">{item.item_name}</div>
                         {item.item_description && (
-                          <div className="text-sm text-gray-600">{item.item_description}</div>
+                          <div className="text-sm text-muted-foreground">{item.item_description}</div>
                         )}
                         {item.part_code && (
-                          <div className="text-xs text-gray-500">Part: {item.part_code}</div>
+                          <div className="text-xs text-muted-foreground">Part: {item.part_code}</div>
                         )}
                         {/* Market Prices */}
                         {item.market_prices && item.market_prices.length > 0 && (
-                          <div className="mt-2 pt-2 border-t border-gray-200">
-                            <div className="text-xs font-semibold text-gray-700 mb-1">Market Prices:</div>
+                          <div className="mt-2 pt-2 border-t border-border">
+                            <div className="text-xs font-semibold text-foreground/90 mb-1">Market Prices:</div>
                             {item.market_prices.map((mp, mpIndex) => (
-                              <div key={mpIndex} className="text-xs text-gray-600">
+                              <div key={mpIndex} className="text-xs text-muted-foreground">
                                 {mp.organization_name}: {new Intl.NumberFormat('en-US', {
                                   style: 'currency',
                                   currency: 'ETB',
@@ -263,14 +263,14 @@ export default function ProformaPrint() {
                         )}
                       </div>
                     </td>
-                    <td className="border border-gray-300 px-4 py-3 text-right">{item.quantity}</td>
-                    <td className="border border-gray-300 px-4 py-3 text-right">
+                    <td className="border border-border px-4 py-3 text-right">{item.quantity}</td>
+                    <td className="border border-border px-4 py-3 text-right">
                       {new Intl.NumberFormat('en-US', {
                         style: 'currency',
                         currency: 'ETB',
                       }).format(item.unit_price)}
                     </td>
-                    <td className="border border-gray-300 px-4 py-3 text-right font-semibold">
+                    <td className="border border-border px-4 py-3 text-right font-semibold">
                       {new Intl.NumberFormat('en-US', {
                         style: 'currency',
                         currency: 'ETB',
@@ -289,8 +289,8 @@ export default function ProformaPrint() {
             <table className="w-full border-collapse">
               <tbody>
                 <tr>
-                  <td className="border border-gray-300 px-4 py-2 text-right font-semibold">Subtotal:</td>
-                  <td className="border border-gray-300 px-4 py-2 text-right">
+                  <td className="border border-border px-4 py-2 text-right font-semibold">Subtotal:</td>
+                  <td className="border border-border px-4 py-2 text-right">
                     {new Intl.NumberFormat('en-US', {
                       style: 'currency',
                       currency: 'ETB',
@@ -298,10 +298,10 @@ export default function ProformaPrint() {
                   </td>
                 </tr>
                 <tr>
-                  <td className="border border-gray-300 px-4 py-2 text-right font-semibold">
+                  <td className="border border-border px-4 py-2 text-right font-semibold">
                     Tax ({proforma.tax_rate}%):
                   </td>
-                  <td className="border border-gray-300 px-4 py-2 text-right">
+                  <td className="border border-border px-4 py-2 text-right">
                     {new Intl.NumberFormat('en-US', {
                       style: 'currency',
                       currency: 'ETB',
@@ -310,8 +310,8 @@ export default function ProformaPrint() {
                 </tr>
                 {proforma.discount_amount > 0 && (
                   <tr>
-                    <td className="border border-gray-300 px-4 py-2 text-right font-semibold">Discount:</td>
-                    <td className="border border-gray-300 px-4 py-2 text-right text-red-600">
+                    <td className="border border-border px-4 py-2 text-right font-semibold">Discount:</td>
+                    <td className="border border-border px-4 py-2 text-right text-red-600">
                       - {new Intl.NumberFormat('en-US', {
                         style: 'currency',
                         currency: 'ETB',
@@ -319,9 +319,9 @@ export default function ProformaPrint() {
                     </td>
                   </tr>
                 )}
-                <tr className="bg-gray-100">
-                  <td className="border border-gray-300 px-4 py-3 text-right font-bold text-lg">Grand Total:</td>
-                  <td className="border border-gray-300 px-4 py-3 text-right font-bold text-lg text-blue-600">
+                <tr className="bg-muted">
+                  <td className="border border-border px-4 py-3 text-right font-bold text-lg">Grand Total:</td>
+                  <td className="border border-border px-4 py-3 text-right font-bold text-lg text-blue-600">
                     {new Intl.NumberFormat('en-US', {
                       style: 'currency',
                       currency: 'ETB',
@@ -336,23 +336,23 @@ export default function ProformaPrint() {
         {/* Notes */}
         {proforma.notes && (
           <div className="mb-8">
-            <h3 className="font-bold text-gray-800 mb-2">Notes:</h3>
-            <p className="text-gray-700">{proforma.notes}</p>
+            <h3 className="font-bold text-foreground mb-2">Notes:</h3>
+            <p className="text-foreground/90">{proforma.notes}</p>
           </div>
         )}
 
         {/* Stamp Area */}
-        <div className="mt-12 pt-8 border-t-2 border-dashed border-gray-400">
-          <div className="text-center text-gray-500 mb-4">
+        <div className="mt-12 pt-8 border-t-2 border-dashed border-border">
+          <div className="text-center text-muted-foreground mb-4">
             <p className="text-sm">Organization Stamp & Signature</p>
           </div>
-          <div className="h-24 border-2 border-dashed border-gray-300 rounded flex items-center justify-center">
-            <p className="text-gray-400 text-sm">[Stamp Here]</p>
+          <div className="h-24 border-2 border-dashed border-border rounded flex items-center justify-center">
+            <p className="text-muted-foreground/75 text-sm">[Stamp Here]</p>
           </div>
         </div>
 
         {/* Footer */}
-        <div className="mt-12 pt-6 border-t-2 border-gray-800 text-center text-sm text-gray-600">
+        <div className="mt-12 pt-6 border-t-2 border-foreground text-center text-sm text-muted-foreground">
           <p>Thank you for your business!</p>
           <p className="mt-2">This is a proforma invoice. Prices and availability are subject to change.</p>
           <p className="mt-1">For inquiries, please contact us.</p>

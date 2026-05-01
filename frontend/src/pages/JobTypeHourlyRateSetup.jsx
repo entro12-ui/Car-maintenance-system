@@ -145,7 +145,7 @@ export default function JobTypeHourlyRateSetup() {
               type="button"
               onClick={() => setTab(t.id)}
               className={`px-4 py-2.5 text-sm font-medium border-b-2 -mb-px ${
-                tab === t.id ? 'border-indigo-600 text-indigo-700 bg-white' : 'border-transparent text-gray-600'
+                tab === t.id ? 'border-indigo-600 text-indigo-700 bg-white' : 'border-transparent text-muted-foreground'
               }`}
             >
               {t.label}
@@ -177,7 +177,7 @@ export default function JobTypeHourlyRateSetup() {
               <div className="overflow-auto">
                 <table className="min-w-[1100px] w-full text-sm">
                   <thead>
-                    <tr className="text-left text-gray-600 border-b">
+                    <tr className="text-left text-muted-foreground border-b">
                       <th className="py-2 pr-2">Id</th>
                       <th className="py-2 pr-2">Description</th>
                       <th className="py-2 pr-2">Rate/Hr</th>
@@ -194,7 +194,7 @@ export default function JobTypeHourlyRateSetup() {
                   </thead>
                   <tbody>
                     {laborRows.map((row) => (
-                      <tr key={row.labor_type_id} className="border-b border-gray-100 hover:bg-gray-50 align-top">
+                      <tr key={row.labor_type_id} className="border-b border-border/60 hover:bg-muted/45 align-top">
                         <td className="py-2 pr-2 font-mono text-xs">{row.labor_type_id}</td>
                         <td className="py-2 pr-2 font-medium">{row.labor_type_name}</td>
                         <td className="py-2 pr-2 w-28">
@@ -315,7 +315,7 @@ export default function JobTypeHourlyRateSetup() {
               <div className="overflow-auto">
                 <table className="min-w-[1000px] w-full text-sm">
                   <thead>
-                    <tr className="text-left text-gray-600 border-b">
+                    <tr className="text-left text-muted-foreground border-b">
                       <th className="py-2 pr-2">No</th>
                       <th className="py-2 pr-2">Charge Cat Code</th>
                       <th className="py-2 pr-2">Description</th>
@@ -326,7 +326,7 @@ export default function JobTypeHourlyRateSetup() {
                   </thead>
                   <tbody>
                     {chargeRows.map((row, idx) => (
-                      <tr key={row.other_charge_type_id} className="border-b border-gray-100 hover:bg-gray-50 align-top">
+                      <tr key={row.other_charge_type_id} className="border-b border-border/60 hover:bg-muted/45 align-top">
                         <td className="py-2 pr-2 font-medium">{idx + 1}</td>
                         <td className="py-2 pr-2 w-44">
                           <Input
@@ -399,7 +399,7 @@ export default function JobTypeHourlyRateSetup() {
               <div className="overflow-auto">
                 <table className="min-w-[800px] w-full text-sm">
                   <thead>
-                    <tr className="text-left text-gray-600 border-b">
+                    <tr className="text-left text-muted-foreground border-b">
                       <th className="py-2 pr-2">No</th>
                       <th className="py-2 pr-2">PL Id</th>
                       <th className="py-2 pr-2">Description</th>
@@ -410,7 +410,7 @@ export default function JobTypeHourlyRateSetup() {
                   </thead>
                   <tbody>
                     {priceRows.map((row, idx) => (
-                      <tr key={row.labor_price_list_id} className="border-b border-gray-100 hover:bg-gray-50">
+                      <tr key={row.labor_price_list_id} className="border-b border-border/60 hover:bg-muted/45">
                         <td className="py-2 pr-2 font-medium">{idx + 1}</td>
                         <td className="py-2 pr-2 w-28">
                           <Input

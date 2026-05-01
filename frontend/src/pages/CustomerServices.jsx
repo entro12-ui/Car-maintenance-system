@@ -32,7 +32,7 @@ export default function CustomerServices() {
       <div className="flex justify-center items-center h-64">
         <div className="text-center">
           <p className="text-red-600 text-lg mb-2">Something went wrong</p>
-          <p className="text-gray-500">{error.message || 'Failed to load services'}</p>
+          <p className="text-muted-foreground">{error.message || 'Failed to load services'}</p>
         </div>
       </div>
     )
@@ -91,7 +91,7 @@ export default function CustomerServices() {
 
   return (
     <div className="h-screen flex flex-col">
-      <h1 className="text-3xl font-bold text-gray-800 mb-6">My Services</h1>
+      <h1 className="text-3xl font-bold text-foreground mb-6">My Services</h1>
 
       {selectedService ? (
         <div className="flex-1 overflow-y-auto">
@@ -116,7 +116,7 @@ export default function CustomerServices() {
                     disabled={currentServiceIndex === 0}
                     className={`p-2 rounded-lg flex items-center space-x-2 ${
                       currentServiceIndex === 0
-                        ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                        ? 'bg-muted text-muted-foreground/75 cursor-not-allowed'
                         : 'bg-primary-600 text-white hover:bg-primary-700'
                     }`}
                   >
@@ -125,12 +125,12 @@ export default function CustomerServices() {
                   </button>
                   
                   <div className="text-center">
-                    <p className="text-sm text-gray-600">Service</p>
-                    <p className="text-lg font-bold text-gray-800">
+                    <p className="text-sm text-muted-foreground">Service</p>
+                    <p className="text-lg font-bold text-foreground">
                       {currentServiceIndex + 1} of {allServices.length}
                     </p>
                     {currentDateGroup && (
-                      <p className="text-xs text-gray-500 mt-1">
+                      <p className="text-xs text-muted-foreground mt-1">
                         {currentDateGroup.formattedDate}
                       </p>
                     )}
@@ -141,7 +141,7 @@ export default function CustomerServices() {
                     disabled={currentServiceIndex === allServices.length - 1}
                     className={`p-2 rounded-lg flex items-center space-x-2 ${
                       currentServiceIndex === allServices.length - 1
-                        ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                        ? 'bg-muted text-muted-foreground/75 cursor-not-allowed'
                         : 'bg-primary-600 text-white hover:bg-primary-700'
                     }`}
                   >
@@ -151,7 +151,7 @@ export default function CustomerServices() {
                 </div>
                 
                 <div className="text-right">
-                  <p className="text-sm text-gray-600">Total Services</p>
+                  <p className="text-sm text-muted-foreground">Total Services</p>
                   <p className="text-xl font-bold text-primary-600">{allServices.length}</p>
                 </div>
               </div>
@@ -167,8 +167,8 @@ export default function CustomerServices() {
                   <div className="mb-4 pb-2 border-b-2 border-primary-200">
                     <div className="flex items-center space-x-3">
                       <Calendar className="text-primary-600" size={24} />
-                      <h2 className="text-2xl font-bold text-gray-800">{dateGroup.formattedDate}</h2>
-                      <span className="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-full">
+                      <h2 className="text-2xl font-bold text-foreground">{dateGroup.formattedDate}</h2>
+                      <span className="text-sm text-muted-foreground bg-muted px-3 py-1 rounded-full">
                         {dateGroup.services.length} {dateGroup.services.length === 1 ? 'Service' : 'Services'}
                       </span>
                     </div>
@@ -185,19 +185,19 @@ export default function CustomerServices() {
                       return (
                         <div key={service.service_id} className="bg-white rounded-lg shadow-md p-6">
               {/* Header Section */}
-              <div className="flex justify-between items-start mb-6 pb-4 border-b-2 border-gray-200">
+              <div className="flex justify-between items-start mb-6 pb-4 border-b-2 border-border">
                 <div>
-                  <h3 className="text-2xl font-bold text-gray-800">
+                  <h3 className="text-2xl font-bold text-foreground">
                     {service.vehicle.make} {service.vehicle.model}
                   </h3>
-                  <p className="text-gray-600 text-lg mt-1">{service.vehicle.license_plate}</p>
+                  <p className="text-muted-foreground text-lg mt-1">{service.vehicle.license_plate}</p>
                   <div className="flex items-center gap-4 mt-2 text-sm">
-                    <span className="text-gray-500">Service Type: <span className="font-semibold text-gray-700">{service.service_type}</span></span>
+                    <span className="text-muted-foreground">Service Type: <span className="font-semibold text-foreground/90">{service.service_type}</span></span>
                     {service.reference_number && (
-                      <span className="text-gray-500">REF: <span className="font-semibold text-gray-700">{service.reference_number}</span></span>
+                      <span className="text-muted-foreground">REF: <span className="font-semibold text-foreground/90">{service.reference_number}</span></span>
                     )}
                     {service.branch && (
-                      <span className="text-gray-500">Branch: <span className="font-semibold text-gray-700">{service.branch}</span></span>
+                      <span className="text-muted-foreground">Branch: <span className="font-semibold text-foreground/90">{service.branch}</span></span>
                     )}
                   </div>
                 </div>
@@ -219,50 +219,50 @@ export default function CustomerServices() {
 
               {/* Service Information Table */}
               <div className="mb-6">
-                <h4 className="font-semibold text-gray-800 mb-3 text-lg">Service Information</h4>
+                <h4 className="font-semibold text-foreground mb-3 text-lg">Service Information</h4>
                 <div className="overflow-x-auto">
-                  <table className="w-full border-collapse border border-gray-300">
+                  <table className="w-full border-collapse border border-border">
                     <tbody className="text-sm">
-                      <tr className="bg-gray-50">
-                        <td className="border border-gray-300 px-4 py-2 font-semibold text-gray-700 w-1/3">Service Date</td>
-                        <td className="border border-gray-300 px-4 py-2 text-gray-800">
+                      <tr className="bg-muted/35">
+                        <td className="border border-border px-4 py-2 font-semibold text-foreground/90 w-1/3">Service Date</td>
+                        <td className="border border-border px-4 py-2 text-foreground">
                           {format(new Date(service.service_date), 'MMM dd, yyyy')}
                         </td>
-                        <td className="border border-gray-300 px-4 py-2 font-semibold text-gray-700 w-1/3">Mileage at Service</td>
-                        <td className="border border-gray-300 px-4 py-2 text-gray-800">
+                        <td className="border border-border px-4 py-2 font-semibold text-foreground/90 w-1/3">Mileage at Service</td>
+                        <td className="border border-border px-4 py-2 text-foreground">
                           {service.mileage_at_service.toLocaleString()} km
                         </td>
                       </tr>
                       <tr>
-                        <td className="border border-gray-300 px-4 py-2 font-semibold text-gray-700">Next Service Mileage</td>
-                        <td className="border border-gray-300 px-4 py-2 text-gray-800">
+                        <td className="border border-border px-4 py-2 font-semibold text-foreground/90">Next Service Mileage</td>
+                        <td className="border border-border px-4 py-2 text-foreground">
                           {service.next_service_mileage.toLocaleString()} km
                         </td>
-                        <td className="border border-gray-300 px-4 py-2 font-semibold text-gray-700">Next Service Date</td>
-                        <td className="border border-gray-300 px-4 py-2 text-gray-800">
+                        <td className="border border-border px-4 py-2 font-semibold text-foreground/90">Next Service Date</td>
+                        <td className="border border-border px-4 py-2 text-foreground">
                           {service.next_service_date 
                             ? format(new Date(service.next_service_date), 'MMM dd, yyyy')
                             : 'N/A'}
                         </td>
                       </tr>
                       {service.oil_type && (
-                        <tr className="bg-gray-50">
-                          <td className="border border-gray-300 px-4 py-2 font-semibold text-gray-700">Oil Type</td>
-                          <td className="border border-gray-300 px-4 py-2 text-gray-800">{service.oil_type}</td>
+                        <tr className="bg-muted/35">
+                          <td className="border border-border px-4 py-2 font-semibold text-foreground/90">Oil Type</td>
+                          <td className="border border-border px-4 py-2 text-foreground">{service.oil_type}</td>
                           {service.service_note && (
                             <>
-                              <td className="border border-gray-300 px-4 py-2 font-semibold text-gray-700">Service Note</td>
-                              <td className="border border-gray-300 px-4 py-2 text-gray-800">{service.service_note}</td>
+                              <td className="border border-border px-4 py-2 font-semibold text-foreground/90">Service Note</td>
+                              <td className="border border-border px-4 py-2 text-foreground">{service.service_note}</td>
                             </>
                           )}
                         </tr>
                       )}
                       {service.serviced_by_name && (
                         <tr>
-                          <td className="border border-gray-300 px-4 py-2 font-semibold text-gray-700">Serviced By</td>
-                          <td className="border border-gray-300 px-4 py-2 text-gray-800">{service.serviced_by_name}</td>
-                          <td className="border border-gray-300 px-4 py-2 font-semibold text-gray-700">Payment Method</td>
-                          <td className="border border-gray-300 px-4 py-2 text-gray-800">
+                          <td className="border border-border px-4 py-2 font-semibold text-foreground/90">Serviced By</td>
+                          <td className="border border-border px-4 py-2 text-foreground">{service.serviced_by_name}</td>
+                          <td className="border border-border px-4 py-2 font-semibold text-foreground/90">Payment Method</td>
+                          <td className="border border-border px-4 py-2 text-foreground">
                             {service.payment_method || 'N/A'}
                           </td>
                         </tr>
@@ -275,42 +275,42 @@ export default function CustomerServices() {
             {/* Service Checklist - Enhanced Table */}
             {service.checklist_items && service.checklist_items.length > 0 && (
               <div className="mb-6">
-                <h4 className="font-semibold text-gray-800 mb-3 text-lg flex items-center space-x-2">
+                <h4 className="font-semibold text-foreground mb-3 text-lg flex items-center space-x-2">
                   <CheckCircle size={20} />
                   <span>Service Checklist Items</span>
                 </h4>
                 <div className="overflow-x-auto">
-                  <table className="w-full border-collapse border border-gray-300 text-sm">
+                  <table className="w-full border-collapse border border-border text-sm">
                     <thead>
-                      <tr className="bg-gray-100">
-                        <th className="border border-gray-300 px-4 py-3 text-left font-semibold text-gray-700">
+                      <tr className="bg-muted">
+                        <th className="border border-border px-4 py-3 text-left font-semibold text-foreground/90">
                           Item Name
                         </th>
                         {service.checklist_items[0]?.item_description && (
-                          <th className="border border-gray-300 px-4 py-3 text-left font-semibold text-gray-700">
+                          <th className="border border-border px-4 py-3 text-left font-semibold text-foreground/90">
                             Description
                           </th>
                         )}
-                        <th className="border border-gray-300 px-4 py-3 text-center font-semibold text-gray-700 w-32">
+                        <th className="border border-border px-4 py-3 text-center font-semibold text-foreground/90 w-32">
                           CHECKED
                         </th>
-                        <th className="border border-gray-300 px-4 py-3 text-center font-semibold text-gray-700 w-32">
+                        <th className="border border-border px-4 py-3 text-center font-semibold text-foreground/90 w-32">
                           CHANGED
                         </th>
                       </tr>
                     </thead>
                     <tbody>
                       {service.checklist_items.map((item) => (
-                        <tr key={item.checklist_id} className="hover:bg-gray-50">
-                          <td className="border border-gray-300 px-4 py-3 text-gray-800 font-medium">
+                        <tr key={item.checklist_id} className="hover:bg-muted/45">
+                          <td className="border border-border px-4 py-3 text-foreground font-medium">
                             {item.item_name}
                           </td>
                           {item.item_description && (
-                            <td className="border border-gray-300 px-4 py-3 text-gray-600 text-sm">
+                            <td className="border border-border px-4 py-3 text-muted-foreground text-sm">
                               {item.item_description}
                             </td>
                           )}
-                          <td className="border border-gray-300 px-4 py-3 text-center">
+                          <td className="border border-border px-4 py-3 text-center">
                             {item.checked ? (
                               <div className="flex items-center justify-center">
                                 <CheckCircle className="text-green-600" size={20} />
@@ -318,12 +318,12 @@ export default function CustomerServices() {
                               </div>
                             ) : (
                               <div className="flex items-center justify-center">
-                                <XCircle className="text-gray-300" size={20} />
-                                <span className="ml-2 text-gray-400">No</span>
+                                <XCircle className="text-muted-foreground/35" size={20} />
+                                <span className="ml-2 text-muted-foreground/75">No</span>
                               </div>
                             )}
                           </td>
-                          <td className="border border-gray-300 px-4 py-3 text-center">
+                          <td className="border border-border px-4 py-3 text-center">
                             {item.changed ? (
                               <div className="flex items-center justify-center">
                                 <CheckCircle className="text-green-600" size={20} />
@@ -331,8 +331,8 @@ export default function CustomerServices() {
                               </div>
                             ) : (
                               <div className="flex items-center justify-center">
-                                <XCircle className="text-gray-300" size={20} />
-                                <span className="ml-2 text-gray-400">No</span>
+                                <XCircle className="text-muted-foreground/35" size={20} />
+                                <span className="ml-2 text-muted-foreground/75">No</span>
                               </div>
                             )}
                           </td>
@@ -347,30 +347,30 @@ export default function CustomerServices() {
             {/* Parts Used - Table Format */}
             {service.parts && service.parts.length > 0 && (
               <div className="mb-6">
-                <h4 className="font-semibold text-gray-800 mb-3 text-lg flex items-center space-x-2">
+                <h4 className="font-semibold text-foreground mb-3 text-lg flex items-center space-x-2">
                   <Package size={20} />
                   <span>Parts Used</span>
                 </h4>
                 <div className="overflow-x-auto">
-                  <table className="w-full border-collapse border border-gray-300 text-sm">
+                  <table className="w-full border-collapse border border-border text-sm">
                     <thead>
-                      <tr className="bg-gray-100">
-                        <th className="border border-gray-300 px-4 py-3 text-left font-semibold text-gray-700">
+                      <tr className="bg-muted">
+                        <th className="border border-border px-4 py-3 text-left font-semibold text-foreground/90">
                           Part Name
                         </th>
-                        <th className="border border-gray-300 px-4 py-3 text-left font-semibold text-gray-700">
+                        <th className="border border-border px-4 py-3 text-left font-semibold text-foreground/90">
                           Part Code
                         </th>
-                        <th className="border border-gray-300 px-4 py-3 text-center font-semibold text-gray-700">
+                        <th className="border border-border px-4 py-3 text-center font-semibold text-foreground/90">
                           Quantity
                         </th>
-                        <th className="border border-gray-300 px-4 py-3 text-right font-semibold text-gray-700">
+                        <th className="border border-border px-4 py-3 text-right font-semibold text-foreground/90">
                           Unit Price
                         </th>
-                        <th className="border border-gray-300 px-4 py-3 text-right font-semibold text-gray-700">
+                        <th className="border border-border px-4 py-3 text-right font-semibold text-foreground/90">
                           Total Price
                         </th>
-                        <th className="border border-gray-300 px-4 py-3 text-center font-semibold text-gray-700">
+                        <th className="border border-border px-4 py-3 text-center font-semibold text-foreground/90">
                           Status
                         </th>
                       </tr>
@@ -379,36 +379,36 @@ export default function CustomerServices() {
                       {service.parts.map((part, index) => (
                         <tr 
                           key={index} 
-                          className={`hover:bg-gray-50 ${
-                            part.was_replaced ? 'bg-green-50' : 'bg-gray-50'
+                          className={`hover:bg-muted/45 ${
+                            part.was_replaced ? 'bg-green-50' : 'bg-muted/35'
                           }`}
                         >
-                          <td className="border border-gray-300 px-4 py-3 text-gray-800 font-medium">
+                          <td className="border border-border px-4 py-3 text-foreground font-medium">
                             {part.part_name}
                           </td>
-                          <td className="border border-gray-300 px-4 py-3 text-gray-600">
+                          <td className="border border-border px-4 py-3 text-muted-foreground">
                             {part.part_code}
                           </td>
-                          <td className="border border-gray-300 px-4 py-3 text-center text-gray-800">
+                          <td className="border border-border px-4 py-3 text-center text-foreground">
                             {part.quantity}
                           </td>
-                          <td className="border border-gray-300 px-4 py-3 text-right text-gray-800">
+                          <td className="border border-border px-4 py-3 text-right text-foreground">
                             ETB {part.unit_price.toLocaleString()}
                           </td>
-                          <td className="border border-gray-300 px-4 py-3 text-right font-semibold text-gray-800">
+                          <td className="border border-border px-4 py-3 text-right font-semibold text-foreground">
                             {part.was_replaced ? (
                               <span className="text-green-700">ETB {part.total_price.toLocaleString()}</span>
                             ) : (
-                              <span className="text-gray-400">-</span>
+                              <span className="text-muted-foreground/75">-</span>
                             )}
                           </td>
-                          <td className="border border-gray-300 px-4 py-3 text-center">
+                          <td className="border border-border px-4 py-3 text-center">
                             {part.was_replaced ? (
                               <span className="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs font-semibold">
                                 Replaced
                               </span>
                             ) : (
-                              <span className="px-2 py-1 bg-gray-100 text-gray-600 rounded-full text-xs font-semibold">
+                              <span className="px-2 py-1 bg-muted text-muted-foreground rounded-full text-xs font-semibold">
                                 Inspected
                               </span>
                             )}
@@ -423,49 +423,49 @@ export default function CustomerServices() {
 
             {/* Cost Breakdown - Table Format */}
             <div className="mb-6">
-              <h4 className="font-semibold text-gray-800 mb-3 text-lg flex items-center space-x-2">
+              <h4 className="font-semibold text-foreground mb-3 text-lg flex items-center space-x-2">
                 <DollarSign size={20} />
                 <span>Financial Breakdown</span>
               </h4>
               <div className="overflow-x-auto">
-                <table className="w-full border-collapse border border-gray-300 text-sm">
+                <table className="w-full border-collapse border border-border text-sm">
                   <tbody>
-                    <tr className="bg-gray-50">
-                      <td className="border border-gray-300 px-4 py-3 font-semibold text-gray-700 w-1/2">
+                    <tr className="bg-muted/35">
+                      <td className="border border-border px-4 py-3 font-semibold text-foreground/90 w-1/2">
                         Labor Cost
                       </td>
-                      <td className="border border-gray-300 px-4 py-3 text-right text-gray-800 font-semibold">
+                      <td className="border border-border px-4 py-3 text-right text-foreground font-semibold">
                         ETB {service.total_labor_cost.toLocaleString()}
                       </td>
                     </tr>
                     <tr>
-                      <td className="border border-gray-300 px-4 py-3 font-semibold text-gray-700">
+                      <td className="border border-border px-4 py-3 font-semibold text-foreground/90">
                         Parts Cost
                       </td>
-                      <td className="border border-gray-300 px-4 py-3 text-right text-gray-800 font-semibold">
+                      <td className="border border-border px-4 py-3 text-right text-foreground font-semibold">
                         ETB {service.total_parts_cost.toLocaleString()}
                       </td>
                     </tr>
                     {service.discount_amount > 0 && (
                       <tr className="bg-green-50">
-                        <td className="border border-gray-300 px-4 py-3 font-semibold text-green-700">
+                        <td className="border border-border px-4 py-3 font-semibold text-green-700">
                           Discount
                         </td>
-                        <td className="border border-gray-300 px-4 py-3 text-right text-green-700 font-semibold">
+                        <td className="border border-border px-4 py-3 text-right text-green-700 font-semibold">
                           -ETB {service.discount_amount.toLocaleString()}
                         </td>
                       </tr>
                     )}
-                    <tr className="bg-gray-50">
-                      <td className="border border-gray-300 px-4 py-3 font-semibold text-gray-700">
+                    <tr className="bg-muted/35">
+                      <td className="border border-border px-4 py-3 font-semibold text-foreground/90">
                         Tax ({service.tax_amount > 0 ? '15%' : '0%'})
                       </td>
-                      <td className="border border-gray-300 px-4 py-3 text-right text-gray-800 font-semibold">
+                      <td className="border border-border px-4 py-3 text-right text-foreground font-semibold">
                         ETB {service.tax_amount.toLocaleString()}
                       </td>
                     </tr>
                     <tr className="bg-primary-50 border-2 border-primary-300">
-                      <td className="border border-primary-300 px-4 py-3 font-bold text-gray-800 text-lg">
+                      <td className="border border-primary-300 px-4 py-3 font-bold text-foreground text-lg">
                         Grand Total
                       </td>
                       <td className="border border-primary-300 px-4 py-3 text-right font-bold text-primary-700 text-lg">
@@ -486,7 +486,7 @@ export default function CustomerServices() {
             )}
 
             {/* View Full Record Button */}
-            <div className="flex justify-end pt-4 border-t border-gray-200">
+            <div className="flex justify-end pt-4 border-t border-border">
               <button
                 onClick={() => setSelectedService(service)}
                 className="bg-primary-600 text-white px-6 py-2 rounded-lg hover:bg-primary-700 flex items-center space-x-2 font-semibold"
@@ -504,7 +504,7 @@ export default function CustomerServices() {
             </div>
           ) : (
             <div className="bg-white rounded-lg shadow-md p-12 text-center">
-              <p className="text-gray-500 text-lg">No services found</p>
+              <p className="text-muted-foreground text-lg">No services found</p>
             </div>
           )}
         </div>

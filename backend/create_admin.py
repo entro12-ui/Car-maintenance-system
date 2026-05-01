@@ -7,10 +7,8 @@ import sys
 import os
 import time
 from sqlalchemy.orm import Session
-
 # Add parent directory to path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-
 from app.database import SessionLocal
 from app.models.employee import Employee, UserAccount
 from app.auth import get_password_hash
@@ -18,24 +16,20 @@ from app.auth import get_password_hash
 def create_admin_user(email: str, password: str, first_name: str = "Admin", last_name: str = "User"):
     """Create an admin user"""
     db: Session = SessionLocal()
-    
     try:
         # Check if admin already exists
         existing_user = db.query(UserAccount).filter(UserAccount.username == email).first()
         if existing_user:
             print(f"❌ Admin user with email '{email}' already exists!")
             return False
-        
         # Check if employee with this email exists
         existing_employee = db.query(Employee).filter(Employee.email == email).first()
         if existing_employee:
             print(f"❌ Employee with email '{email}' already exists!")
             return False
-        
         # Generate unique phone number (using timestamp to ensure uniqueness)
         phone_base = int(time.time()) % 10000000000  # Last 10 digits of timestamp
         phone = f"{phone_base:010d}"  # Format as 10-digit string
-        
         # Ensure phone is unique (check and adjust if needed)
         max_attempts = 10
         attempt = 0
@@ -43,11 +37,9 @@ def create_admin_user(email: str, password: str, first_name: str = "Admin", last
             phone_base = (phone_base + 1) % 10000000000
             phone = f"{phone_base:010d}"
             attempt += 1
-        
         if attempt >= max_attempts:
             print(f"❌ Could not generate unique phone number after {max_attempts} attempts!")
             return False
-        
         # Create employee
         employee = Employee(
             employee_code=f"ADM{db.query(Employee).count() + 1:04d}",
@@ -60,7 +52,6 @@ def create_admin_user(email: str, password: str, first_name: str = "Admin", last
         )
         db.add(employee)
         db.flush()  # Get employee_id
-        
         # Create user account
         user_account = UserAccount(
             employee_id=employee.employee_id,
@@ -71,21 +62,18 @@ def create_admin_user(email: str, password: str, first_name: str = "Admin", last
         )
         db.add(user_account)
         db.commit()
-        
         print(f"✅ Admin user created successfully!")
         print(f"   Email: {email}")
         print(f"   Name: {first_name} {last_name}")
         print(f"   Role: Admin")
         print(f"   Employee ID: {employee.employee_id}")
         return True
-        
     except Exception as e:
         db.rollback()
         print(f"❌ Error creating admin user: {e}")
         return False
     finally:
         db.close()
-
 if __name__ == "__main__":
     if len(sys.argv) < 3:
         print("Usage: python3 create_admin.py <email> <password> [first_name] [last_name]")

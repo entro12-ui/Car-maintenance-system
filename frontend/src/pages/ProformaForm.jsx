@@ -256,7 +256,7 @@ export default function ProformaForm() {
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold text-gray-800">
+        <h1 className="text-3xl font-bold text-foreground">
           {isEdit ? 'Edit Proforma' : 'Create Proforma'}
         </h1>
         <Button variant="outline" onClick={() => navigate('/proformas')}>
@@ -269,13 +269,13 @@ export default function ProformaForm() {
         {/* Organization and Customer Info - For Insurance Proformas */}
         <div className="bg-white rounded-lg shadow-md p-6">
           <h2 className="text-xl font-semibold mb-4">Organization & Customer Information</h2>
-          <p className="text-sm text-gray-500 mb-4">
+          <p className="text-sm text-muted-foreground mb-4">
             For insurance proformas - The customer may be external (not in the car service system). 
             The organization sends this proforma to the insurance company for the customer.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-foreground/90 mb-1">
                 Organization Name (Insurance Company) *
               </label>
               <Input
@@ -286,7 +286,7 @@ export default function ProformaForm() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-foreground/90 mb-1">
                 Customer Name (External) *
               </label>
               <Input
@@ -295,12 +295,12 @@ export default function ProformaForm() {
                 placeholder="External customer name (not in system)"
                 required
               />
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="text-xs text-muted-foreground mt-1">
                 Customer outside the car service system - for insurance purposes
               </p>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-foreground/90 mb-1">
                 Car Model *
               </label>
               <Input
@@ -318,18 +318,18 @@ export default function ProformaForm() {
           <h2 className="text-xl font-semibold mb-4">Items</h2>
 
           {/* Add New Item */}
-          <div className="bg-gray-50 p-4 rounded-lg mb-4">
+          <div className="bg-muted/35 p-4 rounded-lg mb-4">
             <h3 className="text-sm font-medium mb-3">Add New Item</h3>
             <div className="grid grid-cols-1 md:grid-cols-7 gap-3">
               <div>
-                <label className="block text-xs text-gray-600 mb-1">Item Type *</label>
+                <label className="block text-xs text-muted-foreground mb-1">Item Type *</label>
                 <select
                   value={newItem.item_type}
                   onChange={(e) => {
                     const type = e.target.value
                     setNewItem({ ...newItem, item_type: type, part_id: type === 'Part' ? newItem.part_id : '' })
                   }}
-                  className="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  className="w-full px-2 py-1 text-sm border border-border rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
                 >
                   <option value="Service">Service/Labor</option>
                   <option value="Part">Parts/Materials</option>
@@ -337,12 +337,12 @@ export default function ProformaForm() {
                 </select>
               </div>
               <div>
-                <label className="block text-xs text-gray-600 mb-1">Part (Optional)</label>
+                <label className="block text-xs text-muted-foreground mb-1">Part (Optional)</label>
                 <select
                   value={newItem.part_id}
                   onChange={(e) => handlePartSelect(e.target.value)}
                   disabled={newItem.item_type !== 'Part'}
-                  className="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 disabled:bg-gray-100"
+                  className="w-full px-2 py-1 text-sm border border-border rounded focus:outline-none focus:ring-1 focus:ring-blue-500 disabled:bg-muted"
                 >
                   <option value="">Custom Item</option>
                   {parts?.data?.map((part) => (
@@ -353,7 +353,7 @@ export default function ProformaForm() {
                 </select>
               </div>
               <div>
-                <label className="block text-xs text-gray-600 mb-1">Item Name *</label>
+                <label className="block text-xs text-muted-foreground mb-1">Item Name *</label>
                 <Input
                   value={newItem.item_name}
                   onChange={(e) => setNewItem({ ...newItem, item_name: e.target.value })}
@@ -362,7 +362,7 @@ export default function ProformaForm() {
                 />
               </div>
               <div>
-                <label className="block text-xs text-gray-600 mb-1">Quantity</label>
+                <label className="block text-xs text-muted-foreground mb-1">Quantity</label>
                 <Input
                   type="number"
                   step="0.01"
@@ -372,7 +372,7 @@ export default function ProformaForm() {
                 />
               </div>
               <div>
-                <label className="block text-xs text-gray-600 mb-1">Unit Price *</label>
+                <label className="block text-xs text-muted-foreground mb-1">Unit Price *</label>
                 <Input
                   type="number"
                   step="0.01"
@@ -383,7 +383,7 @@ export default function ProformaForm() {
                 />
               </div>
               <div className="md:col-span-2">
-                <label className="block text-xs text-gray-600 mb-1">Description</label>
+                <label className="block text-xs text-muted-foreground mb-1">Description</label>
                 <Input
                   value={newItem.item_description}
                   onChange={(e) => setNewItem({ ...newItem, item_description: e.target.value })}
@@ -406,7 +406,7 @@ export default function ProformaForm() {
           {/* Items List */}
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead className="bg-gray-50">
+              <thead className="bg-muted/35">
                 <tr>
                   <th className="text-left py-2 px-3 text-sm font-semibold">Type</th>
                   <th className="text-left py-2 px-3 text-sm font-semibold">Item Name</th>
@@ -419,7 +419,7 @@ export default function ProformaForm() {
               <tbody>
                 {formData.items.length === 0 ? (
                   <tr>
-                    <td colSpan="6" className="text-center py-4 text-gray-500">
+                    <td colSpan="6" className="text-center py-4 text-muted-foreground">
                       No items added yet
                     </td>
                   </tr>
@@ -431,12 +431,12 @@ export default function ProformaForm() {
                     
                     return (
                       <>
-                        <tr key={index} className="border-b border-gray-200 hover:bg-gray-50">
+                        <tr key={index} className="border-b border-border hover:bg-muted/45">
                           <td className="py-2 px-3">
                             <span className={`px-2 py-1 text-xs font-semibold rounded ${
                               item.item_type === 'Service' ? 'bg-blue-100 text-blue-800' :
                               item.item_type === 'Part' ? 'bg-green-100 text-green-800' :
-                              'bg-gray-100 text-gray-800'
+                              'bg-muted text-foreground'
                             }`}>
                               {item.item_type || 'Other'}
                             </span>
@@ -454,14 +454,14 @@ export default function ProformaForm() {
                                   }
                                   setExpandedItems(newExpanded)
                                 }}
-                                className="text-gray-500 hover:text-gray-700"
+                                className="text-muted-foreground hover:text-foreground"
                               >
                                 {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
                               </button>
                               <div>
                                 <div className="font-medium">{item.item_name}</div>
                                 {item.item_description && (
-                                  <div className="text-xs text-gray-500">{item.item_description}</div>
+                                  <div className="text-xs text-muted-foreground">{item.item_description}</div>
                                 )}
                               </div>
                             </div>
@@ -490,10 +490,10 @@ export default function ProformaForm() {
                           </td>
                         </tr>
                         {isExpanded && (
-                          <tr key={`${index}-market`} className="bg-gray-50">
+                          <tr key={`${index}-market`} className="bg-muted/35">
                             <td colSpan="6" className="py-4 px-3">
                               <div className="space-y-3">
-                                <div className="flex items-center gap-2 text-sm font-semibold text-gray-700">
+                                <div className="flex items-center gap-2 text-sm font-semibold text-foreground/90">
                                   <Building2 className="w-4 h-4" />
                                   Market Prices from Other Organizations
                                 </div>
@@ -505,7 +505,7 @@ export default function ProformaForm() {
                                       <div key={mpIndex} className="flex items-center gap-2 p-2 bg-white rounded border">
                                         <div className="flex-1">
                                           <div className="font-medium text-sm">{mp.organization_name}</div>
-                                          <div className="text-xs text-gray-600">
+                                          <div className="text-xs text-muted-foreground">
                                             {new Intl.NumberFormat('en-US', {
                                               style: 'currency',
                                               currency: 'ETB',
@@ -550,7 +550,7 @@ export default function ProformaForm() {
                                 <div className="p-3 bg-white rounded border border-dashed">
                                   <div className="grid grid-cols-1 md:grid-cols-4 gap-2 mb-2">
                                     <div>
-                                      <label className="block text-xs text-gray-600 mb-1">Organization Name *</label>
+                                      <label className="block text-xs text-muted-foreground mb-1">Organization Name *</label>
                                       <Input
                                         value={itemNewMarketPrice.organization_name}
                                         onChange={(e) => {
@@ -564,7 +564,7 @@ export default function ProformaForm() {
                                       />
                                     </div>
                                     <div>
-                                      <label className="block text-xs text-gray-600 mb-1">Price *</label>
+                                      <label className="block text-xs text-muted-foreground mb-1">Price *</label>
                                       <Input
                                         type="number"
                                         step="0.01"
@@ -580,7 +580,7 @@ export default function ProformaForm() {
                                       />
                                     </div>
                                     <div>
-                                      <label className="block text-xs text-gray-600 mb-1">Notes</label>
+                                      <label className="block text-xs text-muted-foreground mb-1">Notes</label>
                                       <Input
                                         value={itemNewMarketPrice.notes}
                                         onChange={(e) => {
@@ -658,7 +658,7 @@ export default function ProformaForm() {
           <h2 className="text-xl font-semibold mb-4">Pricing</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-foreground/90 mb-1">
                 Tax Rate (%)
               </label>
               <Input
@@ -669,7 +669,7 @@ export default function ProformaForm() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-foreground/90 mb-1">
                 Discount Amount
               </label>
               <Input
@@ -682,9 +682,9 @@ export default function ProformaForm() {
           </div>
 
           {/* Totals */}
-          <div className="mt-6 pt-4 border-t border-gray-200">
+          <div className="mt-6 pt-4 border-t border-border">
             <div className="flex justify-between py-2">
-              <span className="text-gray-600">Subtotal:</span>
+              <span className="text-muted-foreground">Subtotal:</span>
               <span className="font-semibold">
                 {new Intl.NumberFormat('en-US', {
                   style: 'currency',
@@ -693,7 +693,7 @@ export default function ProformaForm() {
               </span>
             </div>
             <div className="flex justify-between py-2">
-              <span className="text-gray-600">Tax ({formData.tax_rate}%):</span>
+              <span className="text-muted-foreground">Tax ({formData.tax_rate}%):</span>
               <span className="font-semibold">
                 {new Intl.NumberFormat('en-US', {
                   style: 'currency',
@@ -702,7 +702,7 @@ export default function ProformaForm() {
               </span>
             </div>
             <div className="flex justify-between py-2">
-              <span className="text-gray-600">Discount:</span>
+              <span className="text-muted-foreground">Discount:</span>
               <span className="font-semibold text-red-600">
                 - {new Intl.NumberFormat('en-US', {
                   style: 'currency',
@@ -710,7 +710,7 @@ export default function ProformaForm() {
                 }).format(parseFloat(formData.discount_amount) || 0)}
               </span>
             </div>
-            <div className="flex justify-between py-2 pt-2 border-t border-gray-300">
+            <div className="flex justify-between py-2 pt-2 border-t border-border">
               <span className="text-lg font-bold">Grand Total:</span>
               <span className="text-lg font-bold text-blue-600">
                 {new Intl.NumberFormat('en-US', {

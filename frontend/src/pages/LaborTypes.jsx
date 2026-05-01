@@ -247,15 +247,15 @@ export default function LaborTypes() {
       <div className="bg-white border rounded-lg shadow-sm p-4 space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
           <label className="text-sm space-y-1">
-            <div className="font-medium text-gray-800">Labour Code</div>
+            <div className="font-medium text-foreground">Labour Code</div>
             <Input value={form.labor_code} onChange={(e) => setForm((f) => ({ ...f, labor_code: e.target.value }))} />
           </label>
           <label className="text-sm space-y-1 md:col-span-2">
-            <div className="font-medium text-gray-800">Description</div>
+            <div className="font-medium text-foreground">Description</div>
             <Input value={form.labor_type_name} onChange={(e) => setForm((f) => ({ ...f, labor_type_name: e.target.value }))} />
           </label>
           <label className="text-sm space-y-1">
-            <div className="font-medium text-gray-800">Allowed For</div>
+            <div className="font-medium text-foreground">Allowed For</div>
             <select
               className="w-full border rounded-md px-3 py-2 text-sm"
               value={form.allowed_for}
@@ -270,7 +270,7 @@ export default function LaborTypes() {
             </select>
           </label>
           <label className="text-sm space-y-1">
-            <div className="font-medium text-gray-800">Section</div>
+            <div className="font-medium text-foreground">Section</div>
             <select
               className="w-full border rounded-md px-3 py-2 text-sm"
               value={form.section}
@@ -285,11 +285,11 @@ export default function LaborTypes() {
             </select>
           </label>
           <label className="text-sm space-y-1">
-            <div className="font-medium text-gray-800">Rate/Hour</div>
+            <div className="font-medium text-foreground">Rate/Hour</div>
             <Input value={form.hourly_rate} onChange={(e) => setForm((f) => ({ ...f, hourly_rate: e.target.value }))} />
           </label>
           <label className="text-sm space-y-1">
-            <div className="font-medium text-gray-800">Sub Category</div>
+            <div className="font-medium text-foreground">Sub Category</div>
             <select
               className="w-full border rounded-md px-3 py-2 text-sm"
               value={form.sub_category}
@@ -304,7 +304,7 @@ export default function LaborTypes() {
             </select>
           </label>
           <label className="text-sm space-y-1">
-            <div className="font-medium text-gray-800">Price List Type</div>
+            <div className="font-medium text-foreground">Price List Type</div>
             <select
               className="w-full border rounded-md px-3 py-2 text-sm"
               value={form.price_list_type}
@@ -361,7 +361,7 @@ export default function LaborTypes() {
 
         <div className="border rounded overflow-auto">
           <table className="min-w-full text-sm">
-            <thead className="bg-gray-100 text-xs text-gray-600 uppercase">
+            <thead className="bg-muted text-xs text-muted-foreground uppercase">
               <tr>
                 <th className="px-2 py-2 text-left">No</th>
                 <th className="px-2 py-2 text-left">Labour Code</th>
@@ -375,7 +375,7 @@ export default function LaborTypes() {
               {rows.map((r, idx) => (
                 <tr
                   key={r.labor_type_id}
-                  className={`border-t cursor-pointer ${selected?.labor_type_id === r.labor_type_id ? 'bg-indigo-50' : 'hover:bg-gray-50'}`}
+                  className={`border-t cursor-pointer ${selected?.labor_type_id === r.labor_type_id ? 'bg-indigo-50' : 'hover:bg-muted/45'}`}
                   onClick={() => setSelectedId(String(r.labor_type_id))}
                 >
                   <td className="px-2 py-2">{idx + 1}</td>
@@ -397,8 +397,8 @@ export default function LaborTypes() {
 
       <div className="bg-white border rounded-lg shadow-sm p-4 space-y-3">
         <div className="flex items-center justify-between gap-2 flex-wrap">
-          <div className="text-base font-semibold text-gray-900">Model Group Assignment</div>
-          <div className="text-xs text-gray-500">{selected ? `Selected labor id: ${selected.labor_type_id}` : 'Select/save labor first'}</div>
+          <div className="text-base font-semibold text-foreground">Model Group Assignment</div>
+          <div className="text-xs text-muted-foreground">{selected ? `Selected labor id: ${selected.labor_type_id}` : 'Select/save labor first'}</div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-6 gap-2">
@@ -439,7 +439,7 @@ export default function LaborTypes() {
 
         <div className="border rounded overflow-auto">
           <table className="min-w-full text-sm">
-            <thead className="bg-gray-100 text-xs text-gray-600 uppercase">
+            <thead className="bg-muted text-xs text-muted-foreground uppercase">
               <tr>
                 <th className="px-2 py-2 text-left">Model Group</th>
                 <th className="px-2 py-2 text-left">Std. Hours</th>
@@ -452,13 +452,13 @@ export default function LaborTypes() {
             <tbody>
               {!selected ? (
                 <tr>
-                  <td colSpan={6} className="px-3 py-6 text-center text-gray-500">
+                  <td colSpan={6} className="px-3 py-6 text-center text-muted-foreground">
                     Select a labor type to manage model-group rows.
                   </td>
                 </tr>
               ) : modelRates.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="px-3 py-6 text-center text-gray-500">
+                  <td colSpan={6} className="px-3 py-6 text-center text-muted-foreground">
                     No model-group rows yet.
                   </td>
                 </tr>

@@ -233,8 +233,8 @@ export default function CompanySetup() {
 
   const keysForTab = Object.keys(LABELS[tab] || {})
   const inputClass =
-    'w-full rounded-sm border border-gray-400 bg-white px-2 py-1 text-sm shadow-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500'
-  const labelClass = 'block text-xs font-medium text-gray-700 mb-1'
+    'w-full rounded-sm border border-border bg-white px-2 py-1 text-sm shadow-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500'
+  const labelClass = 'block text-xs font-medium text-foreground/90 mb-1'
 
   const renderTextField = (section, key, options = {}) => {
     const label = LABELS[section][key]
@@ -267,11 +267,11 @@ export default function CompanySetup() {
   const renderBooleanField = (section, key, className = '') => {
     const checked = form[section]?.[key] === 'true' || form[section]?.[key] === true
     return (
-      <label key={key} className={`inline-flex items-center gap-2 text-sm font-medium text-gray-800 ${className}`}>
+      <label key={key} className={`inline-flex items-center gap-2 text-sm font-medium text-foreground ${className}`}>
         <span>{LABELS[section][key]}</span>
         <input
           type="checkbox"
-          className="rounded border-gray-400 text-indigo-600 focus:ring-indigo-500"
+          className="rounded border-border text-indigo-600 focus:ring-indigo-500"
           checked={checked}
           onChange={(e) => setField(section, key, e.target.checked ? 'true' : 'false')}
         />
@@ -311,7 +311,7 @@ export default function CompanySetup() {
           'current_period',
         ].map((key) => (
           <div key={key} className="contents">
-            <label className="text-sm text-right md:pt-1.5 text-gray-700">{LABELS.application[key]}:</label>
+            <label className="text-sm text-right md:pt-1.5 text-foreground/90">{LABELS.application[key]}:</label>
             <input
               className={`${inputClass} ${key === 'app_id' || key === 'current_period' ? 'max-w-[180px]' : ''}`}
               value={form.application?.[key] ?? ''}
@@ -380,7 +380,7 @@ export default function CompanySetup() {
 
   const renderDefaultTab = () => (
     <fieldset className="border rounded-md px-4 pb-4 pt-2 max-w-4xl">
-      <legend className="px-2 text-sm font-medium text-gray-800">Current Reference No Setup</legend>
+      <legend className="px-2 text-sm font-medium text-foreground">Current Reference No Setup</legend>
       <div className="overflow-x-auto">
         <table className="min-w-[720px] text-sm">
           <thead>
@@ -396,7 +396,7 @@ export default function CompanySetup() {
           <tbody>
             {defaultRows.map(([label, base]) => (
               <tr key={base}>
-                <td className="py-1 pr-3 text-right text-gray-700">{label}:</td>
+                <td className="py-1 pr-3 text-right text-foreground/90">{label}:</td>
                 <td className="px-2 py-1">
                   <input
                     className={inputClass}
@@ -454,8 +454,8 @@ export default function CompanySetup() {
     <div className="max-w-5xl mx-auto space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-semibold text-gray-800">Company Setup</h1>
-          <p className="text-sm text-gray-600 mt-1">
+          <h1 className="text-2xl font-semibold text-foreground">Company Setup</h1>
+          <p className="text-sm text-muted-foreground mt-1">
             HillMaster-style company, application, messaging, and default numbering (stored in system settings).
           </p>
         </div>
@@ -488,7 +488,7 @@ export default function CompanySetup() {
               className={`px-4 py-2.5 text-sm font-medium border-b-2 -mb-px transition-colors ${
                 tab === t.id
                   ? 'border-indigo-600 text-indigo-700 bg-white'
-                  : 'border-transparent text-gray-600 hover:text-gray-900 hover:bg-white/60'
+                  : 'border-transparent text-muted-foreground hover:text-foreground hover:bg-white/60'
               }`}
             >
               {t.label}
@@ -498,7 +498,7 @@ export default function CompanySetup() {
 
         <div className="p-4 sm:p-6">
           {loading ? (
-            <p className="text-gray-500 text-sm">Loading…</p>
+            <p className="text-muted-foreground text-sm">Loading…</p>
           ) : renderCurrentTab()}
         </div>
       </div>
@@ -507,10 +507,10 @@ export default function CompanySetup() {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40" role="dialog">
           <div className="bg-white rounded-lg shadow-xl max-w-3xl w-full max-h-[85vh] flex flex-col">
             <div className="flex items-center justify-between px-4 py-3 border-b">
-              <h2 className="font-semibold text-gray-900">Company setup change log</h2>
+              <h2 className="font-semibold text-foreground">Company setup change log</h2>
               <button
                 type="button"
-                className="text-gray-500 hover:text-gray-800 text-sm"
+                className="text-muted-foreground hover:text-foreground text-sm"
                 onClick={() => setLogOpen(false)}
               >
                 Close
@@ -518,14 +518,14 @@ export default function CompanySetup() {
             </div>
             <div className="p-4 overflow-y-auto text-sm flex-1">
               {logLoading ? (
-                <p className="text-gray-500">Loading…</p>
+                <p className="text-muted-foreground">Loading…</p>
               ) : logRows.length === 0 ? (
-                <p className="text-gray-500">No saves recorded yet.</p>
+                <p className="text-muted-foreground">No saves recorded yet.</p>
               ) : (
                 <ul className="space-y-4">
                   {logRows.map((row) => (
                     <li key={row.log_id} className="border rounded-md p-3 bg-slate-50/80">
-                      <div className="text-xs text-gray-500 mb-2">
+                      <div className="text-xs text-muted-foreground mb-2">
                         #{row.log_id} · user {row.user_id ?? '—'} · {row.created_at ?? ''}
                       </div>
                       <pre className="text-xs overflow-x-auto whitespace-pre-wrap break-words bg-white border rounded p-2">

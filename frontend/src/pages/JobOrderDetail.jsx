@@ -872,8 +872,8 @@ export default function JobOrderDetail() {
     <div>
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-3xl font-bold text-gray-800">{jobOrder.job_order_number}</h1>
-          <p className="text-gray-500 text-sm">Job Order #{jobOrder.job_order_id}</p>
+          <h1 className="text-3xl font-bold text-foreground">{jobOrder.job_order_number}</h1>
+          <p className="text-muted-foreground text-sm">Job Order #{jobOrder.job_order_id}</p>
         </div>
         <Link to="/job-orders" className="text-primary hover:underline font-medium">
           Back to Job Orders
@@ -883,34 +883,34 @@ export default function JobOrderDetail() {
       <Card className="p-6 mb-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
           <div className="flex justify-between">
-            <span className="text-gray-600">Status</span>
+            <span className="text-muted-foreground">Status</span>
             <span className="font-medium">{jobOrder.status}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-gray-600">Invoice</span>
+            <span className="text-muted-foreground">Invoice</span>
             <span className="font-medium">{jobOrder.invoice_type || '-'}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-gray-600">Vehicle</span>
+            <span className="text-muted-foreground">Vehicle</span>
             <span className="font-medium">#{jobOrder.vehicle_id}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-gray-600">Customer</span>
+            <span className="text-muted-foreground">Customer</span>
             <span className="font-medium">{jobOrder.customer_id ? `#${jobOrder.customer_id}` : '-'}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-gray-600">Opened</span>
+            <span className="text-muted-foreground">Opened</span>
             <span className="font-medium">{jobOrder.opened_date || '-'}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-gray-600">Blocked</span>
+            <span className="text-muted-foreground">Blocked</span>
             <span className="font-medium">{jobOrder.is_blocked ? 'Yes' : 'No'}</span>
           </div>
         </div>
 
         {jobOrder.remarks && (
           <div className="mt-4">
-            <div className="text-gray-600 text-sm mb-1">Remarks</div>
+            <div className="text-muted-foreground text-sm mb-1">Remarks</div>
             <div className="text-sm font-medium whitespace-pre-wrap">{jobOrder.remarks}</div>
           </div>
         )}
@@ -918,10 +918,10 @@ export default function JobOrderDetail() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
         <Card className="p-6">
-          <h2 className="text-lg font-semibold text-gray-800 mb-4">Workflow</h2>
+          <h2 className="text-lg font-semibold text-foreground mb-4">Workflow</h2>
 
           <form onSubmit={onDispatch} className="space-y-3 mb-4">
-            <div className="text-sm font-semibold text-gray-700">Dispatch</div>
+            <div className="text-sm font-semibold text-foreground/90">Dispatch</div>
             <Input value={dispatchSection} onChange={(e) => setDispatchSection(e.target.value)} placeholder="Dispatched section" />
             <Button type="submit" disabled={dispatchMutation.isPending || !(dispatchSection || '').trim()}>
               {dispatchMutation.isPending ? 'Dispatching...' : 'Dispatch'}
@@ -932,7 +932,7 @@ export default function JobOrderDetail() {
           </form>
 
           <form onSubmit={onReceive} className="space-y-3 mb-4">
-            <div className="text-sm font-semibold text-gray-700">Receive</div>
+            <div className="text-sm font-semibold text-foreground/90">Receive</div>
             <Input value={receiveSection} onChange={(e) => setReceiveSection(e.target.value)} placeholder="Received section" />
             <Input value={receiveLocation} onChange={(e) => setReceiveLocation(e.target.value)} placeholder="Vehicle location (optional)" />
             <Button type="submit" disabled={receiveMutation.isPending || !(receiveSection || '').trim()}>
@@ -944,7 +944,7 @@ export default function JobOrderDetail() {
           </form>
 
           <div className="space-y-3">
-            <div className="text-sm font-semibold text-gray-700">Block / Release</div>
+            <div className="text-sm font-semibold text-foreground/90">Block / Release</div>
             <form onSubmit={onBlock} className="space-y-3">
               <Input value={blockReason} onChange={(e) => setBlockReason(e.target.value)} placeholder="Block reason (optional)" />
               <div className="flex gap-2">
@@ -965,12 +965,12 @@ export default function JobOrderDetail() {
         </Card>
 
         <Card className="p-6">
-          <h2 className="text-lg font-semibold text-gray-800 mb-4">QC / Delivery</h2>
+          <h2 className="text-lg font-semibold text-foreground mb-4">QC / Delivery</h2>
 
           <div className="mb-4">
             <div className="flex items-center justify-between">
-              <div className="text-sm font-semibold text-gray-700">QC</div>
-              <span className="text-xs px-2 py-1 rounded-full bg-gray-100 text-gray-700">
+              <div className="text-sm font-semibold text-foreground/90">QC</div>
+              <span className="text-xs px-2 py-1 rounded-full bg-muted text-foreground">
                 {isQcLoading ? 'Loading...' : (qcSheet?.overall_status || '-')}
               </span>
             </div>
@@ -1055,7 +1055,7 @@ export default function JobOrderDetail() {
           </div>
 
           <form onSubmit={onDeliver} className="space-y-3">
-            <div className="text-sm font-semibold text-gray-700">Deliver</div>
+            <div className="text-sm font-semibold text-foreground/90">Deliver</div>
             <Input value={deliverToName} onChange={(e) => setDeliverToName(e.target.value)} placeholder="Delivered to (name)" />
             <Input value={deliverToPhone} onChange={(e) => setDeliverToPhone(e.target.value)} placeholder="Delivered to (phone)" />
             <Button type="submit" disabled={deliverMutation.isPending}>
@@ -1066,11 +1066,11 @@ export default function JobOrderDetail() {
             )}
 
             <div className="pt-3 border-t">
-              <div className="text-sm font-semibold text-gray-700 mb-2">VRV</div>
-              <div className="text-sm text-gray-700">
+              <div className="text-sm font-semibold text-foreground/90 mb-2">VRV</div>
+              <div className="text-sm text-foreground/90">
                 VRV No: <span className="font-mono">{jobOrder.vrv_number || '-'}</span>
               </div>
-              <div className="text-sm text-gray-700 mb-3">
+              <div className="text-sm text-foreground/90 mb-3">
                 Printed: <span className="font-medium">{jobOrder.vrv_printed_at ? 'Yes' : 'No'}</span>
               </div>
               <Button type="button" variant="outline" onClick={() => vrvPrintMutation.mutate()} disabled={vrvPrintMutation.isPending}>
@@ -1085,11 +1085,11 @@ export default function JobOrderDetail() {
       </div>
 
       <Card className="p-6 mb-6">
-        <h2 className="text-lg font-semibold text-gray-800 mb-4">Utilities</h2>
+        <h2 className="text-lg font-semibold text-foreground mb-4">Utilities</h2>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div className="space-y-3">
-            <div className="text-sm font-semibold text-gray-700">Close / Reopen / Cancel</div>
+            <div className="text-sm font-semibold text-foreground/90">Close / Reopen / Cancel</div>
             <div className="flex flex-wrap gap-2">
               <Button type="button" onClick={() => closeJobMutation.mutate()} disabled={closeJobMutation.isPending}>
                 {closeJobMutation.isPending ? 'Closing...' : 'Close Job Order'}
@@ -1112,10 +1112,10 @@ export default function JobOrderDetail() {
           </div>
 
           <div className="space-y-3">
-            <div className="text-sm font-semibold text-gray-700">Copy Invoiced Job Order</div>
+            <div className="text-sm font-semibold text-foreground/90">Copy Invoiced Job Order</div>
             <form onSubmit={onCopyJob} className="space-y-2">
               <Input value={copyCustomerId} onChange={(e) => setCopyCustomerId(e.target.value)} placeholder="Customer ID (optional)" />
-              <label className="flex items-center gap-2 text-sm text-gray-700">
+              <label className="flex items-center gap-2 text-sm text-foreground/90">
                 <input type="checkbox" checked={copyTasks} onChange={(e) => setCopyTasks(e.target.checked)} />
                 Copy tasks
               </label>
@@ -1123,7 +1123,7 @@ export default function JobOrderDetail() {
                 {copyJobMutation.isPending ? 'Copying...' : 'Copy Job'}
               </Button>
               {copyJobMutation.isSuccess && copyJobMutation.data?.data?.job_order_id && (
-                <div className="text-sm text-gray-700">
+                <div className="text-sm text-foreground/90">
                   Created job #{copyJobMutation.data.data.job_order_id}:{' '}
                   <Link className="text-primary hover:underline" to={`/job-orders/${copyJobMutation.data.data.job_order_id}`}>
                     Open
@@ -1137,16 +1137,16 @@ export default function JobOrderDetail() {
           </div>
 
           <div className="space-y-3">
-            <div className="text-sm font-semibold text-gray-700">Split Job Order</div>
+            <div className="text-sm font-semibold text-foreground/90">Split Job Order</div>
             <form onSubmit={onSplitJob} className="space-y-2">
               <Input value={splitCustomerId} onChange={(e) => setSplitCustomerId(e.target.value)} placeholder="New Job Customer ID (optional)" />
               <div className="border rounded-md p-3 max-h-48 overflow-auto">
                 {(jobOrder.tasks || []).length === 0 ? (
-                  <div className="text-sm text-gray-500">No tasks available to split.</div>
+                  <div className="text-sm text-muted-foreground">No tasks available to split.</div>
                 ) : (
                   <div className="space-y-2">
                     {(jobOrder.tasks || []).map((t) => (
-                      <label key={t.task_id} className="flex items-center gap-2 text-sm text-gray-700">
+                      <label key={t.task_id} className="flex items-center gap-2 text-sm text-foreground/90">
                         <input
                           type="checkbox"
                           checked={splitTaskIds.includes(Number(t.task_id))}
@@ -1166,7 +1166,7 @@ export default function JobOrderDetail() {
                 <p className="text-sm text-red-600">{splitJobMutation.error?.response?.data?.detail || 'Split failed'}</p>
               )}
               {splitJobMutation.isSuccess && splitJobMutation.data?.data?.new_job_order?.job_order_id && (
-                <div className="text-sm text-gray-700">
+                <div className="text-sm text-foreground/90">
                   New job #{splitJobMutation.data.data.new_job_order.job_order_id}:{' '}
                   <Link
                     className="text-primary hover:underline"
@@ -1180,7 +1180,7 @@ export default function JobOrderDetail() {
           </div>
 
           <div className="space-y-3">
-            <div className="text-sm font-semibold text-gray-700">Pairing Job Orders</div>
+            <div className="text-sm font-semibold text-foreground/90">Pairing Job Orders</div>
             <form onSubmit={onPairJobs} className="space-y-2">
               <Input value={pairOtherJobId} onChange={(e) => setPairOtherJobId(e.target.value)} placeholder="Other Job Order ID" />
               <Button type="submit" variant="outline" disabled={pairJobMutation.isPending || !(pairOtherJobId || '').trim()}>
@@ -1192,16 +1192,16 @@ export default function JobOrderDetail() {
             </form>
 
             <div className="pt-2 border-t">
-              <div className="text-sm font-semibold text-gray-700 mb-2">Current Pairings</div>
+              <div className="text-sm font-semibold text-foreground/90 mb-2">Current Pairings</div>
               {pairings.length === 0 ? (
-                <div className="text-sm text-gray-500">No active pairings.</div>
+                <div className="text-sm text-muted-foreground">No active pairings.</div>
               ) : (
                 <div className="space-y-2">
                   {pairings.map((p) => {
                     const otherId = Number(p.job_order_id_a) === jobOrderId ? p.job_order_id_b : p.job_order_id_a
                     return (
                       <div key={p.pairing_id} className="flex items-center justify-between gap-2 text-sm">
-                        <div className="text-gray-700">
+                        <div className="text-foreground/90">
                           Pairing <span className="font-mono">#{p.pairing_id}</span> with Job <span className="font-mono">#{otherId}</span>
                         </div>
                         <Button
@@ -1228,15 +1228,15 @@ export default function JobOrderDetail() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Card className="p-6">
-          <h2 className="text-lg font-semibold text-gray-800 mb-4">Add Customer Notification</h2>
+          <h2 className="text-lg font-semibold text-foreground mb-4">Add Customer Notification</h2>
           <form onSubmit={onSubmit} className="space-y-3">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               <div>
-                <label className="text-xs text-gray-600">Notice Date *</label>
+                <label className="text-xs text-muted-foreground">Notice Date *</label>
                 <Input type="date" value={noticeDate} onChange={(e) => setNoticeDate(e.target.value)} />
               </div>
               <div>
-                <label className="text-xs text-gray-600">Notice Type *</label>
+                <label className="text-xs text-muted-foreground">Notice Type *</label>
                 <select
                   value={noticeType}
                   onChange={(e) => setNoticeType(e.target.value)}
@@ -1254,17 +1254,17 @@ export default function JobOrderDetail() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               <div>
-                <label className="text-xs text-gray-600">Contact Name</label>
+                <label className="text-xs text-muted-foreground">Contact Name</label>
                 <Input value={contactName} onChange={(e) => setContactName(e.target.value)} placeholder="Name" />
               </div>
               <div>
-                <label className="text-xs text-gray-600">Contact Phone</label>
+                <label className="text-xs text-muted-foreground">Contact Phone</label>
                 <Input value={contactPhone} onChange={(e) => setContactPhone(e.target.value)} placeholder="Phone" />
               </div>
             </div>
 
             <div>
-              <label className="text-xs text-gray-600">Remark</label>
+              <label className="text-xs text-muted-foreground">Remark</label>
               <Textarea value={remark} onChange={(e) => setRemark(e.target.value)} placeholder="Remark" />
             </div>
 
@@ -1278,40 +1278,40 @@ export default function JobOrderDetail() {
           </form>
 
           {noticeTypes.length === 0 && (
-            <p className="text-xs text-gray-500 mt-3">
+            <p className="text-xs text-muted-foreground mt-3">
               No active notice types. Add them in Job Order Notice Types.
             </p>
           )}
         </Card>
 
         <Card className="p-6">
-          <h2 className="text-lg font-semibold text-gray-800 mb-4">Customer Notifications</h2>
+          <h2 className="text-lg font-semibold text-foreground mb-4">Customer Notifications</h2>
           {isEntriesLoading ? (
             <div className="flex justify-center items-center h-32">Loading...</div>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-gray-200">
-                    <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Date</th>
-                    <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Type</th>
-                    <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Contact</th>
-                    <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Remark</th>
+                  <tr className="border-b border-border">
+                    <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Date</th>
+                    <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Type</th>
+                    <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Contact</th>
+                    <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Remark</th>
                   </tr>
                 </thead>
                 <tbody>
                   {entries.map((e) => (
-                    <tr key={e.notification_entry_id} className="border-b border-gray-100">
+                    <tr key={e.notification_entry_id} className="border-b border-border/60">
                       <td className="py-2 px-2 text-sm">{e.notice_date}</td>
                       <td className="py-2 px-2 text-sm">{e.notice_type}</td>
                       <td className="py-2 px-2 text-sm">
                         {(e.contact_name || e.contact_phone) ? (
                           <div>
                             <div className="font-medium">{e.contact_name || '-'}</div>
-                            <div className="text-xs text-gray-500">{e.contact_phone || '-'}</div>
+                            <div className="text-xs text-muted-foreground">{e.contact_phone || '-'}</div>
                           </div>
                         ) : (
-                          <span className="text-gray-400">-</span>
+                          <span className="text-muted-foreground/75">-</span>
                         )}
                       </td>
                       <td className="py-2 px-2 text-sm whitespace-pre-wrap">{e.remark || '-'}</td>
@@ -1319,7 +1319,7 @@ export default function JobOrderDetail() {
                   ))}
                   {entries.length === 0 && (
                     <tr>
-                      <td colSpan={4} className="py-6 px-2 text-center text-gray-500">
+                      <td colSpan={4} className="py-6 px-2 text-center text-muted-foreground">
                         No notifications
                       </td>
                     </tr>
@@ -1332,12 +1332,12 @@ export default function JobOrderDetail() {
       </div>
 
       <Card className="p-6 mt-6">
-        <h2 className="text-lg font-semibold text-gray-800 mb-4">Labor Charges</h2>
+        <h2 className="text-lg font-semibold text-foreground mb-4">Labor Charges</h2>
 
         <form onSubmit={onAddLaborCharge} className="space-y-3">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
             <div>
-              <label className="text-xs text-gray-600">Labor Type *</label>
+              <label className="text-xs text-muted-foreground">Labor Type *</label>
               <select
                 value={laborTypeId}
                 onChange={(e) => setLaborTypeId(e.target.value)}
@@ -1352,7 +1352,7 @@ export default function JobOrderDetail() {
               </select>
             </div>
             <div>
-              <label className="text-xs text-gray-600">Hours Worked *</label>
+              <label className="text-xs text-muted-foreground">Hours Worked *</label>
               <Input
                 value={laborHours}
                 onChange={(e) => setLaborHours(e.target.value)}
@@ -1363,7 +1363,7 @@ export default function JobOrderDetail() {
               />
             </div>
             <div>
-              <label className="text-xs text-gray-600">Technician</label>
+              <label className="text-xs text-muted-foreground">Technician</label>
               <select
                 value={laborTechnicianId}
                 onChange={(e) => setLaborTechnicianId(e.target.value)}
@@ -1385,7 +1385,7 @@ export default function JobOrderDetail() {
           </div>
 
           <div>
-            <label className="text-xs text-gray-600">Remark</label>
+            <label className="text-xs text-muted-foreground">Remark</label>
             <Textarea value={laborChargeRemark} onChange={(e) => setLaborChargeRemark(e.target.value)} placeholder="Remark" />
           </div>
 
@@ -1402,15 +1402,15 @@ export default function JobOrderDetail() {
           ) : (
             <table className="w-full">
               <thead>
-                <tr className="border-b border-gray-200">
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Time</th>
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Type</th>
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Tech</th>
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Hours</th>
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Rate</th>
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Amount</th>
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Remark</th>
-                  <th className="text-right py-2 px-2 text-xs font-semibold text-gray-700">Action</th>
+                <tr className="border-b border-border">
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Time</th>
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Type</th>
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Tech</th>
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Hours</th>
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Rate</th>
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Amount</th>
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Remark</th>
+                  <th className="text-right py-2 px-2 text-xs font-semibold text-foreground/90">Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -1422,7 +1422,7 @@ export default function JobOrderDetail() {
                       : '-'
 
                   return (
-                    <tr key={c.labor_charge_id} className="border-b border-gray-100">
+                    <tr key={c.labor_charge_id} className="border-b border-border/60">
                       <td className="py-2 px-2 text-sm">
                         {c.created_at ? new Date(c.created_at).toLocaleString() : '-'}
                       </td>
@@ -1447,7 +1447,7 @@ export default function JobOrderDetail() {
                 })}
                 {(laborCharges || []).length === 0 && (
                   <tr>
-                    <td colSpan={8} className="py-6 px-2 text-center text-gray-500">
+                    <td colSpan={8} className="py-6 px-2 text-center text-muted-foreground">
                       No labor charges
                     </td>
                   </tr>
@@ -1466,11 +1466,11 @@ export default function JobOrderDetail() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
         <Card className="p-6">
-          <h2 className="text-lg font-semibold text-gray-800 mb-4">Misc Charges</h2>
+          <h2 className="text-lg font-semibold text-foreground mb-4">Misc Charges</h2>
           <form onSubmit={onAddMiscCharge} className="space-y-3">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
               <div className="md:col-span-2">
-                <label className="text-xs text-gray-600">Charge Type *</label>
+                <label className="text-xs text-muted-foreground">Charge Type *</label>
                 <select
                   value={miscTypeId}
                   onChange={(e) => setMiscTypeId(e.target.value)}
@@ -1491,7 +1491,7 @@ export default function JobOrderDetail() {
               </div>
             </div>
             <div>
-              <label className="text-xs text-gray-600">Remark</label>
+              <label className="text-xs text-muted-foreground">Remark</label>
               <Textarea value={miscRemark} onChange={(e) => setMiscRemark(e.target.value)} placeholder="Remark" />
             </div>
             {createMiscChargeMutation.error && (
@@ -1504,19 +1504,19 @@ export default function JobOrderDetail() {
           <div className="mt-4 overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-gray-200">
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Time</th>
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Type</th>
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Unit Price</th>
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Amount</th>
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Remark</th>
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Recorded By</th>
-                  <th className="text-right py-2 px-2 text-xs font-semibold text-gray-700">Action</th>
+                <tr className="border-b border-border">
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Time</th>
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Type</th>
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Unit Price</th>
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Amount</th>
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Remark</th>
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Recorded By</th>
+                  <th className="text-right py-2 px-2 text-xs font-semibold text-foreground/90">Action</th>
                 </tr>
               </thead>
               <tbody>
                 {(miscCharges || []).map((c) => (
-                  <tr key={c.misc_charge_entry_id} className="border-b border-gray-100">
+                  <tr key={c.misc_charge_entry_id} className="border-b border-border/60">
                     <td className="py-2 px-2 text-sm">{c.created_at ? new Date(c.created_at).toLocaleString() : '-'}</td>
                     <td className="py-2 px-2 text-sm">{miscNameById.get(Number(c.misc_charge_type_id)) || `#${c.misc_charge_type_id}`}</td>
                     <td className="py-2 px-2 text-sm">ETB {Number(c.unit_price ?? 0).toFixed(2)}</td>
@@ -1541,7 +1541,7 @@ export default function JobOrderDetail() {
                 ))}
                 {(miscCharges || []).length === 0 && (
                   <tr>
-                    <td colSpan={7} className="py-5 px-2 text-center text-gray-500">No misc charges</td>
+                    <td colSpan={7} className="py-5 px-2 text-center text-muted-foreground">No misc charges</td>
                   </tr>
                 )}
               </tbody>
@@ -1555,11 +1555,11 @@ export default function JobOrderDetail() {
         </Card>
 
         <Card className="p-6">
-          <h2 className="text-lg font-semibold text-gray-800 mb-4">Fuel & Lubricant Charges</h2>
+          <h2 className="text-lg font-semibold text-foreground mb-4">Fuel & Lubricant Charges</h2>
           <form onSubmit={onAddFuelCharge} className="space-y-3">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
               <div className="md:col-span-2">
-                <label className="text-xs text-gray-600">Item *</label>
+                <label className="text-xs text-muted-foreground">Item *</label>
                 <select
                   value={fuelItemId}
                   onChange={(e) => setFuelItemId(e.target.value)}
@@ -1574,7 +1574,7 @@ export default function JobOrderDetail() {
                 </select>
               </div>
               <div>
-                <label className="text-xs text-gray-600">Quantity *</label>
+                <label className="text-xs text-muted-foreground">Quantity *</label>
                 <Input value={fuelQty} onChange={(e) => setFuelQty(e.target.value)} type="number" step="0.01" min="0" />
               </div>
               <div className="flex items-end">
@@ -1584,7 +1584,7 @@ export default function JobOrderDetail() {
               </div>
             </div>
             <div>
-              <label className="text-xs text-gray-600">Remark</label>
+              <label className="text-xs text-muted-foreground">Remark</label>
               <Textarea value={fuelRemark} onChange={(e) => setFuelRemark(e.target.value)} placeholder="Remark" />
             </div>
             {createFuelChargeMutation.error && (
@@ -1597,20 +1597,20 @@ export default function JobOrderDetail() {
           <div className="mt-4 overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-gray-200">
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Time</th>
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Item</th>
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Qty</th>
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Unit Price</th>
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Amount</th>
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Remark</th>
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Recorded By</th>
-                  <th className="text-right py-2 px-2 text-xs font-semibold text-gray-700">Action</th>
+                <tr className="border-b border-border">
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Time</th>
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Item</th>
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Qty</th>
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Unit Price</th>
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Amount</th>
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Remark</th>
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Recorded By</th>
+                  <th className="text-right py-2 px-2 text-xs font-semibold text-foreground/90">Action</th>
                 </tr>
               </thead>
               <tbody>
                 {(fuelCharges || []).map((c) => (
-                  <tr key={c.fuel_lubricant_entry_id} className="border-b border-gray-100">
+                  <tr key={c.fuel_lubricant_entry_id} className="border-b border-border/60">
                     <td className="py-2 px-2 text-sm">{c.created_at ? new Date(c.created_at).toLocaleString() : '-'}</td>
                     <td className="py-2 px-2 text-sm">{fuelNameById.get(Number(c.fuel_lubricant_id)) || `#${c.fuel_lubricant_id}`}</td>
                     <td className="py-2 px-2 text-sm">
@@ -1638,7 +1638,7 @@ export default function JobOrderDetail() {
                 ))}
                 {(fuelCharges || []).length === 0 && (
                   <tr>
-                    <td colSpan={8} className="py-5 px-2 text-center text-gray-500">No fuel/lubricant charges</td>
+                    <td colSpan={8} className="py-5 px-2 text-center text-muted-foreground">No fuel/lubricant charges</td>
                   </tr>
                 )}
               </tbody>
@@ -1652,11 +1652,11 @@ export default function JobOrderDetail() {
         </Card>
 
         <Card className="p-6">
-          <h2 className="text-lg font-semibold text-gray-800 mb-4">Sublet Work Charges</h2>
+          <h2 className="text-lg font-semibold text-foreground mb-4">Sublet Work Charges</h2>
           <form onSubmit={onAddSubletCharge} className="space-y-3">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
               <div className="md:col-span-2">
-                <label className="text-xs text-gray-600">Work Type *</label>
+                <label className="text-xs text-muted-foreground">Work Type *</label>
                 <select
                   value={subletTypeId}
                   onChange={(e) => setSubletTypeId(e.target.value)}
@@ -1671,7 +1671,7 @@ export default function JobOrderDetail() {
                 </select>
               </div>
               <div>
-                <label className="text-xs text-gray-600">Quantity *</label>
+                <label className="text-xs text-muted-foreground">Quantity *</label>
                 <Input value={subletQty} onChange={(e) => setSubletQty(e.target.value)} type="number" step="0.01" min="0" />
               </div>
               <div className="flex items-end">
@@ -1681,7 +1681,7 @@ export default function JobOrderDetail() {
               </div>
             </div>
             <div>
-              <label className="text-xs text-gray-600">Remark</label>
+              <label className="text-xs text-muted-foreground">Remark</label>
               <Textarea value={subletRemark} onChange={(e) => setSubletRemark(e.target.value)} placeholder="Remark" />
             </div>
             {createSubletChargeMutation.error && (
@@ -1694,21 +1694,21 @@ export default function JobOrderDetail() {
           <div className="mt-4 overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-gray-200">
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Time</th>
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Work</th>
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Supplier</th>
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Qty</th>
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Unit Price</th>
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Amount</th>
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Remark</th>
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Recorded By</th>
-                  <th className="text-right py-2 px-2 text-xs font-semibold text-gray-700">Action</th>
+                <tr className="border-b border-border">
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Time</th>
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Work</th>
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Supplier</th>
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Qty</th>
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Unit Price</th>
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Amount</th>
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Remark</th>
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Recorded By</th>
+                  <th className="text-right py-2 px-2 text-xs font-semibold text-foreground/90">Action</th>
                 </tr>
               </thead>
               <tbody>
                 {(subletCharges || []).map((c) => (
-                  <tr key={c.sublet_work_entry_id} className="border-b border-gray-100">
+                  <tr key={c.sublet_work_entry_id} className="border-b border-border/60">
                     <td className="py-2 px-2 text-sm">{c.created_at ? new Date(c.created_at).toLocaleString() : '-'}</td>
                     <td className="py-2 px-2 text-sm">{subletNameById.get(Number(c.sublet_work_type_id)) || `#${c.sublet_work_type_id}`}</td>
                     <td className="py-2 px-2 text-sm">{subletSupplierNameByWorkTypeId.get(Number(c.sublet_work_type_id)) || '-'}</td>
@@ -1737,7 +1737,7 @@ export default function JobOrderDetail() {
                 ))}
                 {(subletCharges || []).length === 0 && (
                   <tr>
-                    <td colSpan={9} className="py-5 px-2 text-center text-gray-500">No sublet charges</td>
+                    <td colSpan={9} className="py-5 px-2 text-center text-muted-foreground">No sublet charges</td>
                   </tr>
                 )}
               </tbody>
@@ -1751,11 +1751,11 @@ export default function JobOrderDetail() {
         </Card>
 
         <Card className="p-6">
-          <h2 className="text-lg font-semibold text-gray-800 mb-4">Other Charges</h2>
+          <h2 className="text-lg font-semibold text-foreground mb-4">Other Charges</h2>
           <form onSubmit={onAddOtherCharge} className="space-y-3">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
               <div className="md:col-span-2">
-                <label className="text-xs text-gray-600">Charge Type *</label>
+                <label className="text-xs text-muted-foreground">Charge Type *</label>
                 <select
                   value={otherChargeTypeId}
                   onChange={(e) => setOtherChargeTypeId(e.target.value)}
@@ -1770,7 +1770,7 @@ export default function JobOrderDetail() {
                 </select>
               </div>
               <div>
-                <label className="text-xs text-gray-600">Quantity *</label>
+                <label className="text-xs text-muted-foreground">Quantity *</label>
                 <Input value={otherChargeQty} onChange={(e) => setOtherChargeQty(e.target.value)} type="number" step="0.01" min="0" />
               </div>
               <div className="flex items-end">
@@ -1780,7 +1780,7 @@ export default function JobOrderDetail() {
               </div>
             </div>
             <div>
-              <label className="text-xs text-gray-600">Remark</label>
+              <label className="text-xs text-muted-foreground">Remark</label>
               <Textarea value={otherChargeRemark} onChange={(e) => setOtherChargeRemark(e.target.value)} placeholder="Remark" />
             </div>
             {createOtherChargeMutation.error && (
@@ -1793,20 +1793,20 @@ export default function JobOrderDetail() {
           <div className="mt-4 overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-gray-200">
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Time</th>
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Type</th>
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Qty</th>
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Unit Price</th>
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Amount</th>
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Remark</th>
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Recorded By</th>
-                  <th className="text-right py-2 px-2 text-xs font-semibold text-gray-700">Action</th>
+                <tr className="border-b border-border">
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Time</th>
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Type</th>
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Qty</th>
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Unit Price</th>
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Amount</th>
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Remark</th>
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Recorded By</th>
+                  <th className="text-right py-2 px-2 text-xs font-semibold text-foreground/90">Action</th>
                 </tr>
               </thead>
               <tbody>
                 {(otherCharges || []).map((c) => (
-                  <tr key={c.other_charge_entry_id} className="border-b border-gray-100">
+                  <tr key={c.other_charge_entry_id} className="border-b border-border/60">
                     <td className="py-2 px-2 text-sm">{c.created_at ? new Date(c.created_at).toLocaleString() : '-'}</td>
                     <td className="py-2 px-2 text-sm">{otherNameById.get(Number(c.other_charge_type_id)) || `#${c.other_charge_type_id}`}</td>
                     <td className="py-2 px-2 text-sm">
@@ -1834,7 +1834,7 @@ export default function JobOrderDetail() {
                 ))}
                 {(otherCharges || []).length === 0 && (
                   <tr>
-                    <td colSpan={8} className="py-5 px-2 text-center text-gray-500">No other charges</td>
+                    <td colSpan={8} className="py-5 px-2 text-center text-muted-foreground">No other charges</td>
                   </tr>
                 )}
               </tbody>
@@ -1850,11 +1850,11 @@ export default function JobOrderDetail() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
         <Card className="p-6">
-          <h2 className="text-lg font-semibold text-gray-800 mb-4">Inventory (MRV Item Issue)</h2>
+          <h2 className="text-lg font-semibold text-foreground mb-4">Inventory (MRV Item Issue)</h2>
 
           <form onSubmit={onCreateIssue} className="space-y-3 mb-5">
             <div>
-              <label className="text-xs text-gray-600">Remarks</label>
+              <label className="text-xs text-muted-foreground">Remarks</label>
               <Textarea value={issueRemarks} onChange={(e) => setIssueRemarks(e.target.value)} placeholder="Remarks" />
             </div>
             <Button type="submit" disabled={createIssueMutation.isPending}>
@@ -1865,7 +1865,7 @@ export default function JobOrderDetail() {
                 {createIssueMutation.error?.response?.data?.detail || 'Failed to create MRV'}
               </p>
             )}
-            <p className="text-xs text-gray-500">
+            <p className="text-xs text-muted-foreground">
               Note: backend requires job Received and at least one technician clocked-in.
             </p>
           </form>
@@ -1881,7 +1881,7 @@ export default function JobOrderDetail() {
                     <div className="flex items-center justify-between gap-4">
                       <div>
                         <div className="font-mono text-sm">{issue.issue_number}</div>
-                        <div className="text-xs text-gray-500">Status: {issue.status}</div>
+                        <div className="text-xs text-muted-foreground">Status: {issue.status}</div>
                       </div>
                       <div className="flex gap-2">
                         {isDraft && (
@@ -1912,7 +1912,7 @@ export default function JobOrderDetail() {
                       <div className="mt-4">
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                           <div>
-                            <label className="text-xs text-gray-600">Part</label>
+                            <label className="text-xs text-muted-foreground">Part</label>
                             <select
                               value={issueAddPartId}
                               onChange={(e) => setIssueAddPartId(e.target.value)}
@@ -1929,7 +1929,7 @@ export default function JobOrderDetail() {
                             </select>
                           </div>
                           <div>
-                            <label className="text-xs text-gray-600">Quantity</label>
+                            <label className="text-xs text-muted-foreground">Quantity</label>
                             <Input
                               value={issueAddQty}
                               onChange={(e) => setIssueAddQty(e.target.value)}
@@ -1958,17 +1958,17 @@ export default function JobOrderDetail() {
                     <div className="mt-4 overflow-x-auto">
                       <table className="w-full">
                         <thead>
-                          <tr className="border-b border-gray-200">
-                            <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Part</th>
-                            <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Qty</th>
-                            <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Unit</th>
+                          <tr className="border-b border-border">
+                            <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Part</th>
+                            <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Qty</th>
+                            <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Unit</th>
                           </tr>
                         </thead>
                         <tbody>
                           {(issue.lines || []).map((ln) => {
                             const p = partsById.get(ln.part_id)
                             return (
-                              <tr key={ln.issue_line_id} className="border-b border-gray-100">
+                              <tr key={ln.issue_line_id} className="border-b border-border/60">
                                 <td className="py-2 px-2 text-sm">
                                   {p ? `${p.part_code} - ${p.part_name}` : `Part #${ln.part_id}`}
                                 </td>
@@ -1979,7 +1979,7 @@ export default function JobOrderDetail() {
                           })}
                           {(issue.lines || []).length === 0 && (
                             <tr>
-                              <td colSpan={3} className="py-3 px-2 text-center text-gray-500 text-sm">
+                              <td colSpan={3} className="py-3 px-2 text-center text-muted-foreground text-sm">
                                 No lines
                               </td>
                             </tr>
@@ -2002,18 +2002,18 @@ export default function JobOrderDetail() {
                 )
               })}
               {(issues || []).length === 0 && (
-                <div className="text-sm text-gray-500">No MRV issues</div>
+                <div className="text-sm text-muted-foreground">No MRV issues</div>
               )}
             </div>
           )}
         </Card>
 
         <Card className="p-6">
-          <h2 className="text-lg font-semibold text-gray-800 mb-4">Return Requests</h2>
+          <h2 className="text-lg font-semibold text-foreground mb-4">Return Requests</h2>
 
           <form onSubmit={onSubmitReturnRequest} className="space-y-3 mb-5">
             <div>
-              <label className="text-xs text-gray-600">MRV (Finalized) *</label>
+              <label className="text-xs text-muted-foreground">MRV (Finalized) *</label>
               <select
                 value={returnIssueId}
                 onChange={(e) => {
@@ -2036,18 +2036,18 @@ export default function JobOrderDetail() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               <div>
-                <label className="text-xs text-gray-600">Authority Name</label>
+                <label className="text-xs text-muted-foreground">Authority Name</label>
                 <Input value={returnAuthorityName} onChange={(e) => setReturnAuthorityName(e.target.value)} />
               </div>
               <div>
-                <label className="text-xs text-gray-600">Reason</label>
+                <label className="text-xs text-muted-foreground">Reason</label>
                 <Input value={returnReason} onChange={(e) => setReturnReason(e.target.value)} />
               </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
               <div className="md:col-span-2">
-                <label className="text-xs text-gray-600">Part *</label>
+                <label className="text-xs text-muted-foreground">Part *</label>
                 <select
                   value={returnPartId}
                   onChange={(e) => setReturnPartId(e.target.value)}
@@ -2071,7 +2071,7 @@ export default function JobOrderDetail() {
                 </select>
               </div>
               <div>
-                <label className="text-xs text-gray-600">Qty *</label>
+                <label className="text-xs text-muted-foreground">Qty *</label>
                 <Input
                   value={returnQty}
                   onChange={(e) => setReturnQty(e.target.value)}
@@ -2088,14 +2088,14 @@ export default function JobOrderDetail() {
             </div>
 
             <div>
-              <label className="text-xs text-gray-600">Item Remark</label>
+              <label className="text-xs text-muted-foreground">Item Remark</label>
               <Input value={returnRemark} onChange={(e) => setReturnRemark(e.target.value)} disabled={!returnIssueId} />
             </div>
 
             <div className="border rounded-lg p-3">
               <div className="text-sm font-medium mb-2">Items</div>
               {(returnItems || []).length === 0 ? (
-                <div className="text-sm text-gray-500">No items added</div>
+                <div className="text-sm text-muted-foreground">No items added</div>
               ) : (
                 <div className="space-y-2">
                   {returnItems.map((it) => {
@@ -2104,7 +2104,7 @@ export default function JobOrderDetail() {
                       <div key={it.part_id} className="flex items-center justify-between gap-3">
                         <div className="text-sm">
                           <span className="font-medium">{p ? `${p.part_code} - ${p.part_name}` : `Part #${it.part_id}`}</span>
-                          <span className="text-gray-500"> — Qty {it.quantity}</span>
+                          <span className="text-muted-foreground"> — Qty {it.quantity}</span>
                         </div>
                         <Button type="button" variant="outline" onClick={() => removeReturnItem(it.part_id)}>
                           Remove
@@ -2133,16 +2133,16 @@ export default function JobOrderDetail() {
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-gray-200">
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Return No</th>
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">MRV</th>
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Status</th>
-                  <th className="text-right py-2 px-2 text-xs font-semibold text-gray-700">Action</th>
+                <tr className="border-b border-border">
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Return No</th>
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">MRV</th>
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Status</th>
+                  <th className="text-right py-2 px-2 text-xs font-semibold text-foreground/90">Action</th>
                 </tr>
               </thead>
               <tbody>
                 {returnRequests.map((r) => (
-                  <tr key={r.return_request_id} className="border-b border-gray-100">
+                  <tr key={r.return_request_id} className="border-b border-border/60">
                     <td className="py-2 px-2 text-sm font-mono">{r.return_number}</td>
                     <td className="py-2 px-2 text-sm">#{r.issue_id}</td>
                     <td className="py-2 px-2 text-sm">{r.status}</td>
@@ -2166,14 +2166,14 @@ export default function JobOrderDetail() {
                           </Button>
                         </div>
                       ) : (
-                        <span className="text-xs text-gray-500">-</span>
+                        <span className="text-xs text-muted-foreground">-</span>
                       )}
                     </td>
                   </tr>
                 ))}
                 {returnRequests.length === 0 && (
                   <tr>
-                    <td colSpan={4} className="py-6 px-2 text-center text-gray-500 text-sm">
+                    <td colSpan={4} className="py-6 px-2 text-center text-muted-foreground text-sm">
                       No return requests
                     </td>
                   </tr>

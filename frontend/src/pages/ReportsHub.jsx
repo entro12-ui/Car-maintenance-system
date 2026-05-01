@@ -1,6 +1,10 @@
 import { Link } from 'react-router-dom'
+import { ArrowRight } from 'lucide-react'
 import { REPORT_MENU, reportsPath } from './ReportsSidebarMenu'
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { PageHeader } from '@/components/PageChrome'
+import AiAssistantPromo from '@/components/AiAssistantPromo'
 
 const BLURBS = {
   listing: 'Master and transaction listings (jobs, invoices, stock movements).',
@@ -15,13 +19,35 @@ const BLURBS = {
 export default function ReportsHub() {
   return (
     <div className="space-y-8">
-      <div className="space-y-2 max-w-3xl">
-        <h1 className="text-2xl font-semibold tracking-tight text-foreground">Reports</h1>
-        <p className="text-sm text-muted-foreground leading-relaxed">
-          HillMaster-style <strong>Reports</strong> menu. Standard groups cover listing, sales, productivity, and other
-          report families; custom and user-defined entries are for tailored reporting when wired.
-        </p>
-      </div>
+      <PageHeader
+        eyebrow="Navigator"
+        title="Reports hub"
+        description={
+          <>
+            HillMaster-style <strong>Reports</strong> menu. Standard groups cover listing, sales, productivity, and
+            other families; custom entries route to analytics where wired.
+          </>
+        }
+        actions={
+          <Button variant="outline" asChild className="shrink-0 gap-2">
+            <Link to="/garage-reports-hub">
+              Garage reports dashboard
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </Button>
+        }
+      />
+
+      <AiAssistantPromo
+        mode="reports"
+        title="Report assistant"
+        description="Get suggestions on which report to run, typical filters, and how to interpret listings, sales, and productivity outputs."
+        examples={[
+          'Which report should I use for monthly sales totals?',
+          'How do listing reports differ from sales reports?',
+          'What parameters should I set before exporting?',
+        ]}
+      />
 
       <div className="space-y-6">
         <div>

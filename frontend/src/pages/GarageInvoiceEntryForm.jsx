@@ -46,8 +46,8 @@ export default function GarageInvoiceEntryForm({ invoiceType, title, subtitle, i
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">{title}</h1>
-        <p className="text-gray-600">{subtitle}</p>
+        <h1 className="text-2xl font-bold text-foreground">{title}</h1>
+        <p className="text-muted-foreground">{subtitle}</p>
       </div>
 
       <Card className="p-4 space-y-4">
@@ -69,13 +69,13 @@ export default function GarageInvoiceEntryForm({ invoiceType, title, subtitle, i
         </div>
 
         {isLoading ? (
-          <div className="text-sm text-gray-500">Loading eligible jobs...</div>
+          <div className="text-sm text-muted-foreground">Loading eligible jobs...</div>
         ) : error ? (
           <div className="text-sm text-red-600">Failed to load eligible jobs.</div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <label className="text-sm">
-              <div className="text-gray-700">JobCard No:</div>
+              <div className="text-foreground/90">JobCard No:</div>
               <select className="w-full mt-1 border rounded px-2 py-1.5" value={jobOrderId} onChange={(e) => setJobOrderId(e.target.value)}>
                 <option value="">Select job...</option>
                 {jobs.map((j) => (
@@ -86,45 +86,45 @@ export default function GarageInvoiceEntryForm({ invoiceType, title, subtitle, i
               </select>
             </label>
             <label className="text-sm">
-              <div className="text-gray-700">Plate No:</div>
-              <input className="w-full mt-1 border rounded px-2 py-1.5 bg-gray-50" value={selected?.plate_number || preview?.vehicle_plate || ''} readOnly />
+              <div className="text-foreground/90">Plate No:</div>
+              <input className="w-full mt-1 border rounded px-2 py-1.5 bg-muted/35" value={selected?.plate_number || preview?.vehicle_plate || ''} readOnly />
             </label>
           </div>
         )}
 
-        {previewLoading && <div className="text-sm text-gray-500">Loading invoice details...</div>}
+        {previewLoading && <div className="text-sm text-muted-foreground">Loading invoice details...</div>}
         {previewError && <div className="text-sm text-red-600">{previewError?.response?.data?.detail || 'Failed to load invoice details.'}</div>}
         {createMutation.error && <div className="text-sm text-red-600">{createMutation.error?.response?.data?.detail || 'Failed to create invoice.'}</div>}
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <label className="text-sm">
-            <div className="text-gray-700">Customer Name:</div>
-            <input className="w-full mt-1 border rounded px-2 py-1.5 bg-gray-50" value={preview?.customer_name || selected?.customer_name || ''} readOnly />
+            <div className="text-foreground/90">Customer Name:</div>
+            <input className="w-full mt-1 border rounded px-2 py-1.5 bg-muted/35" value={preview?.customer_name || selected?.customer_name || ''} readOnly />
           </label>
           <label className="text-sm">
-            <div className="text-gray-700">Address:</div>
-            <input className="w-full mt-1 border rounded px-2 py-1.5 bg-gray-50" value={preview?.customer_address || ''} readOnly />
+            <div className="text-foreground/90">Address:</div>
+            <input className="w-full mt-1 border rounded px-2 py-1.5 bg-muted/35" value={preview?.customer_address || ''} readOnly />
           </label>
           <label className="text-sm">
-            <div className="text-gray-700">{itmMode ? 'ITM No:' : 'Invoice Date:'}</div>
-            <input className="w-full mt-1 border rounded px-2 py-1.5 bg-gray-50" value={itmMode ? (preview?.proforma_number || '') : (preview?.invoice_date || '')} readOnly />
+            <div className="text-foreground/90">{itmMode ? 'ITM No:' : 'Invoice Date:'}</div>
+            <input className="w-full mt-1 border rounded px-2 py-1.5 bg-muted/35" value={itmMode ? (preview?.proforma_number || '') : (preview?.invoice_date || '')} readOnly />
           </label>
           <label className="text-sm">
-            <div className="text-gray-700">Total Amount:</div>
-            <input className="w-full mt-1 border rounded px-2 py-1.5 bg-gray-50" value={fmtAmount(preview?.total_amount)} readOnly />
+            <div className="text-foreground/90">Total Amount:</div>
+            <input className="w-full mt-1 border rounded px-2 py-1.5 bg-muted/35" value={fmtAmount(preview?.total_amount)} readOnly />
           </label>
           <label className="text-sm">
-            <div className="text-gray-700">Type of Job:</div>
-            <input className="w-full mt-1 border rounded px-2 py-1.5 bg-gray-50" value={preview?.repair_type || invoiceType} readOnly />
+            <div className="text-foreground/90">Type of Job:</div>
+            <input className="w-full mt-1 border rounded px-2 py-1.5 bg-muted/35" value={preview?.repair_type || invoiceType} readOnly />
           </label>
           <label className="text-sm">
-            <div className="text-gray-700">Invoice Type:</div>
-            <input className="w-full mt-1 border rounded px-2 py-1.5 bg-gray-50" value={invoiceType} readOnly />
+            <div className="text-foreground/90">Invoice Type:</div>
+            <input className="w-full mt-1 border rounded px-2 py-1.5 bg-muted/35" value={invoiceType} readOnly />
           </label>
         </div>
 
-        <div className="border rounded p-3 bg-gray-50">
-          <div className="font-semibold text-gray-700 mb-2">Customer Details</div>
+        <div className="border rounded p-3 bg-muted/35">
+          <div className="font-semibold text-foreground/90 mb-2">Customer Details</div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
             <div>TIN: {preview?.customer_tin || '-'}</div>
             <div>Kebele: -</div>

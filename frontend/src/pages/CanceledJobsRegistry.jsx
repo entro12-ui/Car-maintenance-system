@@ -235,7 +235,7 @@ export default function CanceledJobsRegistry() {
       <div className="bg-white border rounded-lg shadow-sm p-4 space-y-3">
         <div className="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-3 items-end">
           <label className="text-sm space-y-1">
-            <div className="font-medium text-gray-800">Job Order No</div>
+            <div className="font-medium text-foreground">Job Order No</div>
             <Input value={jobOrderNo} readOnly placeholder="Pick a closed job…" />
           </label>
           <Button type="button" variant="outline" onClick={openLookup}>
@@ -244,19 +244,19 @@ export default function CanceledJobsRegistry() {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           <label className="text-sm space-y-1">
-            <div className="font-medium text-gray-800">Plate No</div>
+            <div className="font-medium text-foreground">Plate No</div>
             <Input value={plate} readOnly />
           </label>
           <label className="text-sm space-y-1 md:col-span-2">
-            <div className="font-medium text-gray-800">Customer Name</div>
+            <div className="font-medium text-foreground">Customer Name</div>
             <Input value={customerName} readOnly />
           </label>
           <label className="text-sm space-y-1">
-            <div className="font-medium text-gray-800">Total Parts/Fuel</div>
+            <div className="font-medium text-foreground">Total Parts/Fuel</div>
             <Input value={totalPartsFuel} readOnly />
           </label>
           <label className="text-sm space-y-1">
-            <div className="font-medium text-gray-800">Total Charge</div>
+            <div className="font-medium text-foreground">Total Charge</div>
             <Input value={totalCharge} readOnly />
           </label>
         </div>
@@ -264,7 +264,7 @@ export default function CanceledJobsRegistry() {
         <div className="border-t pt-4 overflow-auto">
           <table className="min-w-[900px] w-full text-sm">
             <thead>
-              <tr className="text-left text-gray-600 border-b">
+              <tr className="text-left text-muted-foreground border-b">
                 <th className="py-2 pr-2">Job Order No</th>
                 <th className="py-2 pr-2">Canceled By</th>
                 <th className="py-2 pr-2">Canceled On</th>
@@ -273,7 +273,7 @@ export default function CanceledJobsRegistry() {
             </thead>
             <tbody>
               {rows.map((r, idx) => (
-                <tr key={`${r.job_order_no}-${idx}`} className="border-b border-gray-100 hover:bg-gray-50">
+                <tr key={`${r.job_order_no}-${idx}`} className="border-b border-border/60 hover:bg-muted/45">
                   <td className="py-2 pr-2 font-medium">{r.job_order_no}</td>
                   <td className="py-2 pr-2">{r.canceled_by}</td>
                   <td className="py-2 pr-2">
@@ -291,7 +291,7 @@ export default function CanceledJobsRegistry() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
           <div className="bg-white rounded-lg shadow-xl max-w-3xl w-full max-h-[80vh] overflow-hidden flex flex-col">
             <div className="p-4 border-b flex items-center justify-between gap-3">
-              <div className="font-semibold text-gray-900">Select closed job order</div>
+              <div className="font-semibold text-foreground">Select closed job order</div>
               <Button type="button" variant="outline" onClick={() => setLookupOpen(false)}>
                 Close
               </Button>
@@ -303,14 +303,14 @@ export default function CanceledJobsRegistry() {
                 onChange={(e) => setLookup(e.target.value)}
                 placeholder="Filter by job order number…"
               />
-              <div className="text-xs text-gray-500 mt-2">
+              <div className="text-xs text-muted-foreground mt-2">
                 {loadingLookup ? 'Loading closed jobs…' : `${filteredJobs.length} match(es)`}
               </div>
             </div>
             <div className="overflow-auto flex-1">
               <table className="w-full text-sm">
                 <thead className="bg-slate-50 sticky top-0">
-                  <tr className="text-left text-gray-600 border-b">
+                  <tr className="text-left text-muted-foreground border-b">
                     <th className="py-2 px-4">Job No</th>
                     <th className="py-2 px-4">Status</th>
                     <th className="py-2 px-4">Vehicle Id</th>
@@ -320,7 +320,7 @@ export default function CanceledJobsRegistry() {
                   {filteredJobs.map((j) => (
                     <tr
                       key={j.job_order_id}
-                      className="border-b border-gray-100 hover:bg-gray-50 cursor-pointer"
+                      className="border-b border-border/60 hover:bg-muted/45 cursor-pointer"
                       onClick={() => {
                         hydrateJob(j)
                       }}

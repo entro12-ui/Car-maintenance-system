@@ -58,15 +58,15 @@ export default function AdminCustomerDetails() {
       <div className="flex items-center space-x-4 mb-6">
         <button
           onClick={() => navigate('/customers')}
-          className="text-gray-600 hover:text-gray-800"
+          className="text-muted-foreground hover:text-foreground"
         >
           <ArrowLeft size={24} />
         </button>
         <div>
-          <h1 className="text-3xl font-bold text-gray-800">
+          <h1 className="text-3xl font-bold text-foreground">
             {customer?.data?.customer?.first_name} {customer?.data?.customer?.last_name}
           </h1>
-          <p className="text-gray-600">{customer?.data?.customer?.email}</p>
+          <p className="text-muted-foreground">{customer?.data?.customer?.email}</p>
         </div>
       </div>
 
@@ -75,60 +75,60 @@ export default function AdminCustomerDetails() {
         <h2 className="text-xl font-semibold mb-4">Customer Information</h2>
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <p className="text-sm text-gray-600">Phone</p>
+            <p className="text-sm text-muted-foreground">Phone</p>
             <p className="font-semibold">{customer?.data?.customer?.phone}</p>
           </div>
           <div>
-            <p className="text-sm text-gray-600">City</p>
+            <p className="text-sm text-muted-foreground">City</p>
             <p className="font-semibold">{customer?.data?.customer?.city || '-'}</p>
           </div>
           <div>
-            <p className="text-sm text-gray-600">Total Payments</p>
+            <p className="text-sm text-muted-foreground">Total Payments</p>
             <p className="font-semibold text-green-600">
               ETB {customer?.data?.total_payments?.toLocaleString() || '0'}
             </p>
           </div>
           <div>
-            <p className="text-sm text-gray-600">Total Services</p>
+            <p className="text-sm text-muted-foreground">Total Services</p>
             <p className="font-semibold">{customer?.data?.total_services || 0}</p>
           </div>
         </div>
         
         {/* Loyalty Information */}
         {customer?.data?.loyalty && (
-          <div className="mt-6 pt-6 border-t border-gray-200">
+          <div className="mt-6 pt-6 border-t border-border">
             <h3 className="text-lg font-semibold mb-3 text-primary-600">Loyalty Program</h3>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div>
-                <p className="text-sm text-gray-600">Loyalty Number</p>
+                <p className="text-sm text-muted-foreground">Loyalty Number</p>
                 <p className="font-bold text-primary-600 text-xl">
                   #{customer.data.loyalty.loyalty_id.toString().padStart(6, '0')}
                 </p>
               </div>
               <div>
-                <p className="text-sm text-gray-600">Consecutive Services</p>
-                <p className="font-semibold text-gray-800">
+                <p className="text-sm text-muted-foreground">Consecutive Services</p>
+                <p className="font-semibold text-foreground">
                   {customer.data.loyalty.consecutive_count} / {customer.data.loyalty.services_required}
                 </p>
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-muted-foreground mt-1">
                   {customer.data.loyalty.services_needed} more for free service
                 </p>
               </div>
               <div>
-                <p className="text-sm text-gray-600">Free Services</p>
-                <p className="font-semibold text-gray-800">
+                <p className="text-sm text-muted-foreground">Free Services</p>
+                <p className="font-semibold text-foreground">
                   Earned: {customer.data.loyalty.free_services_earned} | 
                   Used: {customer.data.loyalty.free_services_used}
                 </p>
               </div>
               <div>
-                <p className="text-sm text-gray-600">Status</p>
+                <p className="text-sm text-muted-foreground">Status</p>
                 {customer.data.loyalty.free_service_available ? (
                   <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-semibold">
                     Free Service Available
                   </span>
                 ) : (
-                  <span className="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-sm font-semibold">
+                  <span className="px-3 py-1 bg-muted text-muted-foreground rounded-full text-sm font-semibold">
                     In Progress
                   </span>
                 )}
@@ -163,14 +163,14 @@ export default function AdminCustomerDetails() {
         <div className="space-y-3">
           {customer?.data?.vehicles && customer.data.vehicles.length > 0 ? (
             customer.data.vehicles.map((vehicle) => (
-            <div key={vehicle.vehicle_id} className="border border-gray-200 rounded-lg p-4">
+            <div key={vehicle.vehicle_id} className="border border-border rounded-lg p-4">
               <div className="flex justify-between items-start">
                 <div>
-                  <p className="font-semibold text-gray-800">
+                  <p className="font-semibold text-foreground">
                     {vehicle.make} {vehicle.model} ({vehicle.year})
                   </p>
-                  <p className="text-sm text-gray-600">License: {vehicle.license_plate}</p>
-                  <p className="text-sm text-gray-500 mt-1">
+                  <p className="text-sm text-muted-foreground">License: {vehicle.license_plate}</p>
+                  <p className="text-sm text-muted-foreground mt-1">
                     Current: {vehicle.current_mileage.toLocaleString()} km • 
                     Next: {vehicle.next_service_mileage.toLocaleString()} km
                   </p>
@@ -186,8 +186,8 @@ export default function AdminCustomerDetails() {
             </div>
             ))
           ) : (
-            <div className="text-center py-8 text-gray-500">
-              <Car className="mx-auto mb-2 text-gray-400" size={32} />
+            <div className="text-center py-8 text-muted-foreground">
+              <Car className="mx-auto mb-2 text-muted-foreground/75" size={32} />
               <p>No vehicles added yet</p>
             </div>
           )}
@@ -228,19 +228,19 @@ export default function AdminCustomerDetails() {
           {customer?.data?.services?.map((service) => (
             <div 
               key={service.service_id} 
-              className="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 cursor-pointer transition-colors"
+              className="border border-border rounded-lg p-4 hover:bg-muted/45 cursor-pointer transition-colors"
               onClick={() => setSelectedServiceId(service.service_id)}
             >
               <div className="flex justify-between items-start">
                 <div className="flex-1">
-                  <p className="font-semibold text-gray-800">{service.service_type}</p>
-                  <p className="text-sm text-gray-600">
+                  <p className="font-semibold text-foreground">{service.service_type}</p>
+                  <p className="text-sm text-muted-foreground">
                     {new Date(service.service_date).toLocaleDateString()}
                   </p>
                 </div>
                 <div className="text-right flex items-center gap-3">
                   <div>
-                    <p className="font-semibold text-gray-800">
+                    <p className="font-semibold text-foreground">
                       ETB {service.grand_total.toLocaleString()}
                     </p>
                     <span className={`text-xs px-2 py-1 rounded-full ${
@@ -268,8 +268,8 @@ export default function AdminCustomerDetails() {
             </div>
           ))}
           {(!customer?.data?.services || customer.data.services.length === 0) && (
-            <div className="text-center py-8 text-gray-500">
-              <Wrench className="mx-auto mb-2 text-gray-400" size={32} />
+            <div className="text-center py-8 text-muted-foreground">
+              <Wrench className="mx-auto mb-2 text-muted-foreground/75" size={32} />
               <p>No services found</p>
             </div>
           )}

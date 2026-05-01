@@ -1,4 +1,5 @@
 import React from 'react'
+import { Button } from '@/components/ui/button'
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -17,19 +18,27 @@ class ErrorBoundary extends React.Component {
   render() {
     if (this.state.hasError) {
       return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-50">
-          <div className="text-center">
-            <h1 className="text-2xl font-bold text-gray-800 mb-4">Something went wrong</h1>
-            <p className="text-gray-600 mb-4">{this.state.error?.message || 'An error occurred'}</p>
-            <button
+        <div className="auth-mesh relative flex min-h-screen flex-col items-center justify-center px-6 py-16">
+          <div className="pointer-events-none absolute inset-0 auth-mesh-glow opacity-70" aria-hidden />
+          <div className="glass-auth-card relative z-10 max-w-md rounded-2xl p-10 text-center shadow-2xl">
+            <div className="mx-auto mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-destructive/10 text-destructive">
+              <span className="font-display text-2xl font-bold">!</span>
+            </div>
+            <h1 className="font-display text-2xl font-bold tracking-tight text-foreground">
+              Something went wrong
+            </h1>
+            <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+              {this.state.error?.message || 'An unexpected error occurred. You can try signing in again.'}
+            </p>
+            <Button
+              className="mt-8 w-full"
               onClick={() => {
                 this.setState({ hasError: false, error: null })
                 window.location.href = '/login'
               }}
-              className="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700"
             >
-              Go to Login
-            </button>
+              Go to login
+            </Button>
           </div>
         </div>
       )
@@ -40,4 +49,3 @@ class ErrorBoundary extends React.Component {
 }
 
 export default ErrorBoundary
-

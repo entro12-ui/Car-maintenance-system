@@ -98,7 +98,7 @@ import CopyJobOrder from './pages/CopyJobOrder'
 import SplitJobOrder from './pages/SplitJobOrder'
 import PairingJobOrder from './pages/PairingJobOrder'
 import JournalEntryListing from './pages/JournalEntryListing'
-import InventoryCount from './pages/InventoryCount'
+import Inventory from './pages/Inventory'
 
 function AppRoutes() {
   const { isAuthenticated, isAdmin, isAccountant, loading } = useAuth()
@@ -106,8 +106,21 @@ function AppRoutes() {
   // Show loading while checking auth
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-screen">
-        <div className="text-gray-500">Loading...</div>
+      <div className="auth-mesh relative flex min-h-screen flex-col items-center justify-center gap-6 px-6">
+        <div className="pointer-events-none absolute inset-0 auth-mesh-glow opacity-80" aria-hidden />
+        <div className="relative z-10 flex flex-col items-center gap-5">
+          <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-primary-500 to-primary-700 font-display text-xl font-bold text-white shadow-xl shadow-primary/30">
+            CS
+          </div>
+          <div className="relative h-10 w-10">
+            <div
+              className="absolute inset-0 rounded-full border-2 border-primary/20"
+              aria-hidden
+            />
+            <div className="absolute inset-0 animate-spin-slow rounded-full border-2 border-transparent border-t-primary-600 border-r-primary-500/40" />
+          </div>
+          <p className="text-sm font-medium text-muted-foreground">Loading your workspace…</p>
+        </div>
       </div>
     )
   }
@@ -730,11 +743,16 @@ function AppRoutes() {
           </Layout>
         </ProtectedRoute>
       } />
-      <Route path="/inventory-count" element={
+      <Route path="/inventory" element={
         <ProtectedRoute requireAdmin={true}>
           <Layout>
-            <InventoryCount />
+            <Inventory />
           </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/inventory-count" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Navigate to="/inventory" replace />
         </ProtectedRoute>
       } />
       <Route path="/proformas" element={

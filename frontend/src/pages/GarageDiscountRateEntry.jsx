@@ -64,14 +64,14 @@ export default function GarageDiscountRateEntry() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Discount Rate Entry</h1>
-        <p className="text-gray-600">Register discount rate for a job order or customer.</p>
+        <h1 className="text-2xl font-bold text-foreground">Discount Rate Entry</h1>
+        <p className="text-muted-foreground">Register discount rate for a job order or customer.</p>
       </div>
 
       <Card className="p-4 space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="text-sm font-medium text-gray-700">Scope</label>
+            <label className="text-sm font-medium text-foreground/90">Scope</label>
             <select
               className="mt-1 w-full border rounded-md px-3 py-2"
               value={scope}
@@ -88,38 +88,38 @@ export default function GarageDiscountRateEntry() {
 
           {scope === 'JobOrder' ? (
             <div>
-              <label className="text-sm font-medium text-gray-700">Job Order ID</label>
+              <label className="text-sm font-medium text-foreground/90">Job Order ID</label>
               <Input className="mt-1" value={jobOrderId} onChange={(e) => setJobOrderId(e.target.value)} placeholder="e.g. 123" />
             </div>
           ) : (
             <div>
-              <label className="text-sm font-medium text-gray-700">Customer ID</label>
+              <label className="text-sm font-medium text-foreground/90">Customer ID</label>
               <Input className="mt-1" value={customerId} onChange={(e) => setCustomerId(e.target.value)} placeholder="e.g. 45" />
             </div>
           )}
 
           <div>
-            <label className="text-sm font-medium text-gray-700">Discount Rate (%)</label>
+            <label className="text-sm font-medium text-foreground/90">Discount Rate (%)</label>
             <Input className="mt-1" value={discountRate} onChange={(e) => setDiscountRate(e.target.value)} placeholder="e.g. 10" />
           </div>
 
           <div>
-            <label className="text-sm font-medium text-gray-700">Authority (optional)</label>
+            <label className="text-sm font-medium text-foreground/90">Authority (optional)</label>
             <Input className="mt-1" value={authorityName} onChange={(e) => setAuthorityName(e.target.value)} placeholder="Authority name" />
           </div>
 
           <div>
-            <label className="text-sm font-medium text-gray-700">Valid From (optional)</label>
+            <label className="text-sm font-medium text-foreground/90">Valid From (optional)</label>
             <Input className="mt-1" type="date" value={validFrom} onChange={(e) => setValidFrom(e.target.value)} />
           </div>
 
           <div>
-            <label className="text-sm font-medium text-gray-700">Valid To (optional)</label>
+            <label className="text-sm font-medium text-foreground/90">Valid To (optional)</label>
             <Input className="mt-1" type="date" value={validTo} onChange={(e) => setValidTo(e.target.value)} />
           </div>
 
           <div className="md:col-span-2">
-            <label className="text-sm font-medium text-gray-700">Remark (optional)</label>
+            <label className="text-sm font-medium text-foreground/90">Remark (optional)</label>
             <Input className="mt-1" value={remark} onChange={(e) => setRemark(e.target.value)} placeholder="Remark" />
           </div>
         </div>
@@ -137,11 +137,11 @@ export default function GarageDiscountRateEntry() {
       </Card>
 
       <Card className="p-4">
-        <div className="text-sm font-semibold text-gray-800 mb-3">Recent Entries</div>
+        <div className="text-sm font-semibold text-foreground mb-3">Recent Entries</div>
         {!idOk ? (
-          <div className="text-sm text-gray-500">Enter an ID to view entries.</div>
+          <div className="text-sm text-muted-foreground">Enter an ID to view entries.</div>
         ) : entries.length === 0 ? (
-          <div className="text-sm text-gray-500">No entries.</div>
+          <div className="text-sm text-muted-foreground">No entries.</div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">

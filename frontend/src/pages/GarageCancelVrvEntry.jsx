@@ -24,18 +24,18 @@ export default function GarageCancelVrvEntry() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Cancel VRV Entry</h1>
-        <p className="text-gray-600">Cancel delivery/VRV entry so VRV can be reprocessed later.</p>
+        <h1 className="text-2xl font-bold text-foreground">Cancel VRV Entry</h1>
+        <p className="text-muted-foreground">Cancel delivery/VRV entry so VRV can be reprocessed later.</p>
       </div>
 
       <Card className="p-4 space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="text-sm font-medium text-gray-700">Job Order ID</label>
+            <label className="text-sm font-medium text-foreground/90">Job Order ID</label>
             <Input className="mt-1" value={jobOrderId} onChange={(e) => setJobOrderId(e.target.value)} placeholder="e.g. 123" />
           </div>
           <div>
-            <label className="text-sm font-medium text-gray-700">Reason (optional)</label>
+            <label className="text-sm font-medium text-foreground/90">Reason (optional)</label>
             <Input className="mt-1" value={reason} onChange={(e) => setReason(e.target.value)} placeholder="Reason" />
           </div>
         </div>
@@ -53,7 +53,7 @@ export default function GarageCancelVrvEntry() {
         </div>
 
         {result && (
-          <div className="text-sm text-gray-700">
+          <div className="text-sm text-foreground/90">
             Updated job: <span className="font-mono">{result.job_order_number}</span>
           </div>
         )}

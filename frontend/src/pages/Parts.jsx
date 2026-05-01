@@ -1,17 +1,26 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { partsApi } from '../services/api'
 import { AlertTriangle, Package, Plus } from 'lucide-react'
 import AddPartModal from '../components/AddPartModal'
+import { PageHeader } from '@/components/PageChrome'
+import LoadingSpinner from '@/components/LoadingSpinner'
+import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Table, TableBody, TableCell, TableHeader, TableRow } from '@/components/ui/table'
+import { SortableTableHead, TableSearchBar } from '@/components/ui/sortable-table'
+import { useClientTableSortFilter } from '@/lib/tableSortFilter'
+import { cn } from '@/lib/utils'
 
 export default function Parts() {
   const [showLowStock, setShowLowStock] = useState(false)
   const [showAddModal, setShowAddModal] = useState(false)
-  
+
   const { data: parts, isLoading } = useQuery({
     queryKey: ['parts'],
     queryFn: async () => {
-      const response = await partsApi.getAll()
+      const response = await partsApi.getAll({ limit: 10000, skip: 0 })
       return response.data
     },
   })
@@ -25,115 +34,182 @@ export default function Parts() {
   })
 
   if (isLoading) {
-    return <div className="flex justify-center items-center h-64">Loading...</div>
+    return (
+      <div className="flex min-h-[50vh] flex-col items-center justify-center gap-3">
+        <LoadingSpinner size="lg" />
+        <p className="text-sm text-muted-foreground">Loading parts catalog…</p>
+      </div>
+    )
   }
 
+  const lowCount = lowStockParts?.length ?? 0
+
+  const catalogRows = parts || []
+
+  const searchFields = useMemo(
+    () => [(p) => `${p.part_code || ''} ${p.part_name || ''} ${p.category || ''} ${p.is_active ? 'active' : 'inactive'}`],
+    []
+  )
+
+  const sortAccessors = useMemo(
+    () => ({
+      code: (p) => p.part_code || '',
+      name: (p) => p.part_name || '',
+      category: (p) => p.category || '',
+      stock: (p) => Number(p.stock_quantity) || 0,
+      price: (p) => parseFloat(p.unit_price) || 0,
+      status: (p) => (p.is_active ? 'Active' : 'Inactive'),
+    }),
+    []
+  )
+
+  const { query, setQuery, sort, toggleSort, items: sortedParts } = useClientTableSortFilter(
+    catalogRows,
+    searchFields,
+    sortAccessors
+  )
+
   return (
-    <div>
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold text-gray-800">Parts Inventory</h1>
-        <div className="flex space-x-3">
-          <button
-            onClick={() => setShowLowStock(!showLowStock)}
-            className={`px-4 py-2 rounded-lg flex items-center space-x-2 ${
-              showLowStock
-                ? 'bg-red-600 text-white'
-                : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-50'
-            }`}
-          >
-            <AlertTriangle size={20} />
-            <span>Low Stock ({lowStockParts?.length || 0})</span>
-          </button>
-          <button
-            onClick={() => setShowAddModal(true)}
-            className="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 flex items-center space-x-2"
-          >
-            <Plus size={20} />
-            <span>Add Part</span>
-          </button>
-        </div>
-      </div>
+    <div className="space-y-8">
+      <PageHeader
+        eyebrow="Inventory"
+        title="Parts inventory"
+        description="Browse SKU master data, on-hand quantities, and pricing. Toggle low stock to focus SKUs at or below minimum."
+        actions={
+          <>
+            <Button
+              type="button"
+              variant={showLowStock ? 'destructive' : 'outline'}
+              className="gap-2"
+              onClick={() => setShowLowStock(!showLowStock)}
+            >
+              <AlertTriangle className="h-4 w-4 shrink-0" />
+              Low stock ({lowCount})
+            </Button>
+            <Button type="button" className="gap-2 shadow-md shadow-primary/20" onClick={() => setShowAddModal(true)}>
+              <Plus className="h-4 w-4 shrink-0" />
+              Add part
+            </Button>
+          </>
+        }
+      />
 
-      {showLowStock && lowStockParts && lowStockParts.length > 0 && (
-        <div className="bg-red-50 border border-red-200 rounded-lg p-6 mb-6">
-          <h2 className="text-xl font-semibold text-red-800 mb-4">Low Stock Items</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {lowStockParts.map((part) => (
-              <div key={part.part_id} className="bg-white border border-red-200 rounded-lg p-4">
-                <div className="flex items-center justify-between mb-2">
-                  <p className="font-semibold text-gray-800">{part.part_name}</p>
-                  <span className={`px-2 py-1 rounded-full text-xs ${
-                    part.stock_status === 'OUT OF STOCK' 
-                      ? 'bg-red-100 text-red-800' 
-                      : 'bg-yellow-100 text-yellow-800'
-                  }`}>
-                    {part.stock_status}
-                  </span>
-                </div>
-                <p className="text-sm text-gray-600 mb-2">Code: {part.part_code}</p>
-                <div className="flex justify-between text-sm">
-                  <span className="text-gray-600">Stock:</span>
-                  <span className="font-semibold">{part.stock_quantity} / {part.min_stock_level}</span>
-                </div>
-                <div className="flex justify-between text-sm mt-1">
-                  <span className="text-gray-600">Price:</span>
-                  <span className="font-semibold">ETB {part.unit_price.toLocaleString()}</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
+      {showLowStock && lowCount === 0 ? (
+        <Card className="border-dashed border-primary/25 bg-primary/[0.03]">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-base">Low stock</CardTitle>
+            <CardDescription>Every tracked SKU is currently above its minimum level.</CardDescription>
+          </CardHeader>
+        </Card>
+      ) : null}
 
-      <div className="bg-white rounded-lg shadow-md p-6">
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b border-gray-200">
-                <th className="text-left py-3 px-4 font-semibold text-gray-700">Part Code</th>
-                <th className="text-left py-3 px-4 font-semibold text-gray-700">Name</th>
-                <th className="text-left py-3 px-4 font-semibold text-gray-700">Category</th>
-                <th className="text-left py-3 px-4 font-semibold text-gray-700">Stock</th>
-                <th className="text-left py-3 px-4 font-semibold text-gray-700">Unit Price</th>
-                <th className="text-left py-3 px-4 font-semibold text-gray-700">Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {parts?.map((part) => (
-                <tr key={part.part_id} className="border-b border-gray-100 hover:bg-gray-50">
-                  <td className="py-3 px-4 font-mono text-sm">{part.part_code}</td>
-                  <td className="py-3 px-4">{part.part_name}</td>
-                  <td className="py-3 px-4">{part.category || '-'}</td>
-                  <td className="py-3 px-4">
-                    <span className={part.stock_quantity <= part.min_stock_level ? 'text-red-600 font-semibold' : ''}>
-                      {part.stock_quantity}
+      {showLowStock && lowStockParts && lowStockParts.length > 0 ? (
+        <Card className="border-destructive/25 bg-gradient-to-br from-destructive/[0.04] to-transparent">
+          <CardHeader className="pb-4">
+            <CardTitle className="flex items-center gap-2 text-base text-destructive">
+              <AlertTriangle className="h-5 w-5" />
+              Low stock items
+            </CardTitle>
+            <CardDescription>{lowStockParts.length} SKUs need attention.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
+              {lowStockParts.map((part) => (
+                <div
+                  key={part.part_id}
+                  className="rounded-xl border border-destructive/20 bg-card/95 p-4 shadow-sm transition hover:border-destructive/35"
+                >
+                  <div className="flex items-start justify-between gap-2">
+                    <p className="font-semibold leading-snug text-foreground">{part.part_name}</p>
+                    <Badge variant={part.stock_status === 'OUT OF STOCK' ? 'danger' : 'outline'}>
+                      {part.stock_status}
+                    </Badge>
+                  </div>
+                  <p className="mt-2 font-mono text-xs text-muted-foreground">{part.part_code}</p>
+                  <div className="mt-3 flex justify-between text-sm">
+                    <span className="text-muted-foreground">Stock</span>
+                    <span className="font-semibold tabular-nums">
+                      {part.stock_quantity} / {part.min_stock_level}
                     </span>
-                    <span className="text-gray-500 text-sm ml-1">
-                      / {part.min_stock_level}
-                    </span>
-                  </td>
-                  <td className="py-3 px-4">ETB {parseFloat(part.unit_price).toLocaleString()}</td>
-                  <td className="py-3 px-4">
-                    <span
-                      className={`px-2 py-1 rounded-full text-xs ${
-                        part.is_active
-                          ? 'bg-green-100 text-green-800'
-                          : 'bg-gray-100 text-gray-800'
-                      }`}
-                    >
-                      {part.is_active ? 'Active' : 'Inactive'}
-                    </span>
-                  </td>
-                </tr>
+                  </div>
+                  <div className="mt-1 flex justify-between text-sm">
+                    <span className="text-muted-foreground">Price</span>
+                    <span className="font-semibold tabular-nums">ETB {Number(part.unit_price).toLocaleString()}</span>
+                  </div>
+                </div>
               ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+            </div>
+          </CardContent>
+        </Card>
+      ) : null}
 
-      {/* Add Part Modal */}
+      <Card>
+        <CardHeader className="flex flex-col gap-1 border-b border-border/50 pb-4 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <CardTitle className="flex items-center gap-2 text-lg">
+              <Package className="h-5 w-5 text-primary" />
+              Catalog
+            </CardTitle>
+            <CardDescription className="mt-1">
+              {(parts?.length ?? 0).toLocaleString()} parts loaded (up to 10,000 per request).
+            </CardDescription>
+          </div>
+        </CardHeader>
+        <CardContent className="px-4 pb-6 pt-4 sm:px-6">
+            <TableSearchBar value={query} onChange={setQuery} placeholder="Filter catalog by code, name, category…" />
+            <Table shell="embed">
+              <TableHeader>
+                <TableRow className="hover:bg-transparent">
+                  <SortableTableHead columnKey="code" sort={sort} onSort={toggleSort}>
+                    Part code
+                  </SortableTableHead>
+                  <SortableTableHead columnKey="name" sort={sort} onSort={toggleSort}>
+                    Name
+                  </SortableTableHead>
+                  <SortableTableHead columnKey="category" sort={sort} onSort={toggleSort}>
+                    Category
+                  </SortableTableHead>
+                  <SortableTableHead columnKey="stock" sort={sort} onSort={toggleSort}>
+                    Stock
+                  </SortableTableHead>
+                  <SortableTableHead columnKey="price" sort={sort} onSort={toggleSort}>
+                    Unit price
+                  </SortableTableHead>
+                  <SortableTableHead columnKey="status" sort={sort} onSort={toggleSort}>
+                    Status
+                  </SortableTableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {sortedParts.map((part) => (
+                  <TableRow key={part.part_id}>
+                    <TableCell className="font-mono text-xs">{part.part_code}</TableCell>
+                    <TableCell className="font-medium">{part.part_name}</TableCell>
+                    <TableCell className="text-muted-foreground">{part.category || '—'}</TableCell>
+                    <TableCell className="tabular-nums">
+                      <span
+                        className={cn(
+                          part.stock_quantity <= part.min_stock_level && 'font-semibold text-destructive'
+                        )}
+                      >
+                        {part.stock_quantity}
+                      </span>
+                      <span className="text-muted-foreground text-sm"> / {part.min_stock_level}</span>
+                    </TableCell>
+                    <TableCell className="tabular-nums">ETB {parseFloat(part.unit_price).toLocaleString()}</TableCell>
+                    <TableCell>
+                      <Badge variant={part.is_active ? 'success' : 'secondary'}>
+                        {part.is_active ? 'Active' : 'Inactive'}
+                      </Badge>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+        </CardContent>
+      </Card>
+
       <AddPartModal isOpen={showAddModal} onClose={() => setShowAddModal(false)} />
     </div>
   )
 }
-

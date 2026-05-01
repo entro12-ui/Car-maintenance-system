@@ -1,6 +1,12 @@
+import { useMemo } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { Link } from 'react-router-dom'
 import { jobOrdersApi } from '../services/api'
+import { PageHeader, PageLoading } from '@/components/PageChrome'
+import { Button } from '@/components/ui/button'
+import { DataTableShell } from '@/components/ui/table'
+import { SortableTh, TableSearchBar } from '@/components/ui/sortable-table'
+import { useClientTableSortFilter } from '@/lib/tableSortFilter'
 
 export default function JobOrders() {
   const { data, isLoading, error } = useQuery({
@@ -10,64 +16,118 @@ export default function JobOrders() {
 
   const rows = data?.data || []
 
+  const searchFields = useMemo(
+    () => [
+      (jo) =>
+        `${jo.job_order_number ?? ''} ${jo.status ?? ''} ${jo.invoice_type ?? ''} ${jo.vehicle_id ?? ''} ${jo.customer_id ?? ''} ${jo.opened_date ?? ''} ${jo.is_blocked ? 'blocked' : ''}`,
+    ],
+    []
+  )
+
+  const sortAccessors = useMemo(
+    () => ({
+      jobNo: (jo) => jo.job_order_number || '',
+      status: (jo) => jo.status || '',
+      invoice: (jo) => jo.invoice_type || '',
+      vehicle: (jo) => jo.vehicle_id ?? 0,
+      customer: (jo) => jo.customer_id ?? 0,
+      opened: (jo) => jo.opened_date || '',
+      blocked: (jo) => (jo.is_blocked ? 1 : 0),
+    }),
+    []
+  )
+
+  const { query, setQuery, sort, toggleSort, items } = useClientTableSortFilter(rows, searchFields, sortAccessors)
+
   if (isLoading) {
-    return <div className="flex justify-center items-center h-64">Loading...</div>
+    return <PageLoading label="Loading job orders…" />
   }
 
   if (error) {
-    return <div className="text-red-600">Failed to load job orders</div>
+    return (
+      <div className="rounded-2xl border border-destructive/25 bg-destructive/5 px-4 py-6 text-sm text-destructive">
+        Failed to load job orders.
+      </div>
+    )
   }
 
   return (
-    <div>
-      <h1 className="text-3xl font-bold text-gray-800 mb-6">Job Orders</h1>
-      <div className="mb-6 rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
-        <p className="font-semibold">Job Order</p>
-        <p className="mt-1">
-          New job orders are opened from this page. Use the available tabs to maintain general information, other
-          information, repair details, informing client, job text, and audit log for each job order.
-        </p>
-        <p className="mt-1">
-          For any new job, the <strong>General Info</strong> and <strong>Job Text/Charge</strong> tabs are required.
-        </p>
-        <p className="mt-1">
-          Note: Opening a job order is not allowed for vehicle plate numbers or customers that are in the blocked
-          list. Release them first from the block list.
-        </p>
-      </div>
-      <div className="mb-4">
-        <Link
-          to="/work-order-creation"
-          className="inline-flex items-center rounded-md border border-indigo-600 bg-indigo-600 px-3 py-2 text-sm font-medium text-white hover:bg-indigo-700"
-        >
-          New Work Order
-        </Link>
-      </div>
+    <div className="space-y-8">
+      <PageHeader
+        eyebrow="Workshop"
+        title="Job orders"
+        description="Open new work orders and continue jobs already in the shop. Blocked customers or plates must be released before opening jobs."
+        actions={
+          <Button asChild className="gap-2 shadow-md shadow-primary/15">
+            <Link to="/work-order-creation">New work order</Link>
+          </Button>
+        }
+        footer={
+          <div className="rounded-2xl border border-amber-200/80 bg-amber-50/90 p-4 text-sm leading-relaxed text-amber-950 shadow-sm">
+            <p className="font-semibold text-amber-950">Guidance</p>
+            <p className="mt-1">
+              Use tabs on the work order screen for general info, repair detail, client messaging, job text, charges,
+              and audit trail.
+            </p>
+            <p className="mt-1">
+              For any new job, the <strong>General Info</strong> and <strong>Job Text / Charge</strong> sections are
+              required.
+            </p>
+          </div>
+        }
+      />
 
-      <div className="bg-white rounded-lg shadow-md p-6">
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b border-gray-200">
-                <th className="text-left py-3 px-4 font-semibold text-gray-700">Job No</th>
-                <th className="text-left py-3 px-4 font-semibold text-gray-700">Status</th>
-                <th className="text-left py-3 px-4 font-semibold text-gray-700">Invoice</th>
-                <th className="text-left py-3 px-4 font-semibold text-gray-700">Vehicle</th>
-                <th className="text-left py-3 px-4 font-semibold text-gray-700">Customer</th>
-                <th className="text-left py-3 px-4 font-semibold text-gray-700">Opened</th>
-                <th className="text-left py-3 px-4 font-semibold text-gray-700">Blocked</th>
-                <th className="text-right py-3 px-4 font-semibold text-gray-700">Action</th>
+      <TableSearchBar value={query} onChange={setQuery} placeholder="Filter by job no., status, invoice, vehicle, customer…" />
+
+      <DataTableShell>
+        <table className="w-full">
+          <thead>
+            <tr className="border-b border-border/65 bg-muted/60 shadow-[inset_0_-1px_0_0_rgba(255,255,255,0.45)]">
+              <SortableTh columnKey="jobNo" sort={sort} onSort={toggleSort}>
+                Job No
+              </SortableTh>
+              <SortableTh columnKey="status" sort={sort} onSort={toggleSort}>
+                Status
+              </SortableTh>
+              <SortableTh columnKey="invoice" sort={sort} onSort={toggleSort}>
+                Invoice
+              </SortableTh>
+              <SortableTh columnKey="vehicle" sort={sort} onSort={toggleSort}>
+                Vehicle
+              </SortableTh>
+              <SortableTh columnKey="customer" sort={sort} onSort={toggleSort}>
+                Customer
+              </SortableTh>
+              <SortableTh columnKey="opened" sort={sort} onSort={toggleSort}>
+                Opened
+              </SortableTh>
+              <SortableTh columnKey="blocked" sort={sort} onSort={toggleSort}>
+                Blocked
+              </SortableTh>
+              <th className="px-4 py-3 text-right text-[11px] font-semibold uppercase tracking-[0.08em] text-muted-foreground">
+                Action
+              </th>
+            </tr>
+          </thead>
+          <tbody className="[&_tr:nth-child(even)]:bg-muted/[0.22]">
+            {items.length === 0 ? (
+              <tr>
+                <td colSpan={8} className="px-4 py-10 text-center text-sm text-muted-foreground">
+                  No job orders match your filters.
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {rows.map((jo) => (
-                <tr key={jo.job_order_id} className="border-b border-gray-100 hover:bg-gray-50">
-                  <td className="py-3 px-4 font-mono text-sm">{jo.job_order_number}</td>
-                  <td className="py-3 px-4">
+            ) : (
+              items.map((jo) => (
+                <tr
+                  key={jo.job_order_id}
+                  className="border-b border-border/55 transition-colors duration-150 hover:bg-primary/[0.055]"
+                >
+                  <td className="px-4 py-4 font-mono text-sm">{jo.job_order_number}</td>
+                  <td className="px-4 py-4">
                     <span
-                      className={`px-2 py-1 rounded-full text-xs ${
+                      className={`rounded-full px-2 py-1 text-xs ${
                         jo.status === 'Closed'
-                          ? 'bg-gray-100 text-gray-800'
+                          ? 'bg-muted text-foreground'
                           : jo.status === 'Cancelled'
                           ? 'bg-red-100 text-red-800'
                           : jo.status === 'Delivered'
@@ -78,32 +138,22 @@ export default function JobOrders() {
                       {jo.status}
                     </span>
                   </td>
-                  <td className="py-3 px-4">{jo.invoice_type || '-'}</td>
-                  <td className="py-3 px-4">#{jo.vehicle_id}</td>
-                  <td className="py-3 px-4">{jo.customer_id ? `#${jo.customer_id}` : '-'}</td>
-                  <td className="py-3 px-4">{jo.opened_date || '-'}</td>
-                  <td className="py-3 px-4">{jo.is_blocked ? 'Yes' : 'No'}</td>
-                  <td className="py-3 px-4 text-right">
-                    <Link
-                      to={`/job-orders/${jo.job_order_id}`}
-                      className="text-primary hover:underline font-medium"
-                    >
+                  <td className="px-4 py-4 text-[13px]">{jo.invoice_type || '-'}</td>
+                  <td className="px-4 py-4 text-[13px]">#{jo.vehicle_id}</td>
+                  <td className="px-4 py-4 text-[13px]">{jo.customer_id ? `#${jo.customer_id}` : '-'}</td>
+                  <td className="px-4 py-4 text-[13px]">{jo.opened_date || '-'}</td>
+                  <td className="px-4 py-4 text-[13px]">{jo.is_blocked ? 'Yes' : 'No'}</td>
+                  <td className="px-4 py-4 text-right text-[13px]">
+                    <Link to={`/job-orders/${jo.job_order_id}`} className="font-medium text-primary hover:underline">
                       View
                     </Link>
                   </td>
                 </tr>
-              ))}
-              {rows.length === 0 && (
-                <tr>
-                  <td colSpan={8} className="py-6 px-4 text-center text-gray-500">
-                    No job orders
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-      </div>
+              ))
+            )}
+          </tbody>
+        </table>
+      </DataTableShell>
     </div>
   )
 }

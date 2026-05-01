@@ -3,6 +3,10 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { vehiclesApi, customersApi } from '../services/api'
 import { Plus, Search, Car } from 'lucide-react'
 import AddVehicleModal from '../components/AddVehicleModal'
+import { PageHeader, PageLoading } from '@/components/PageChrome'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
 
 export default function Vehicles() {
   const [searchTerm, setSearchTerm] = useState('')
@@ -40,84 +44,96 @@ export default function Vehicles() {
   ) || []
 
   if (isLoading) {
-    return <div className="flex justify-center items-center h-64">Loading...</div>
+    return <PageLoading label="Loading vehicles…" />
   }
 
   return (
-    <div>
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold text-gray-800">Vehicles</h1>
-        <button
-          type="button"
-          onClick={() => {
-            setVehicleError(null)
-            setIsVehicleModalOpen(true)
-          }}
-          className="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 flex items-center space-x-2"
-        >
-          <Plus size={20} />
-          <span>Add Vehicle</span>
-        </button>
-      </div>
+    <div className="space-y-8">
+      <PageHeader
+        eyebrow="Fleet"
+        title="Vehicles"
+        description="Search the registered fleet, pick a default customer for quick adds, and open the modal to register a new vehicle."
+        actions={
+          <Button
+            type="button"
+            className="gap-2 shadow-md shadow-primary/15"
+            onClick={() => {
+              setVehicleError(null)
+              setIsVehicleModalOpen(true)
+            }}
+          >
+            <Plus size={20} />
+            Add vehicle
+          </Button>
+        }
+      />
 
-      <div className="bg-white rounded-lg shadow-md p-4 mb-4">
-        <label className="block text-sm font-medium text-gray-700 mb-2">Default Customer for New Vehicle</label>
-        <select
-          className="w-full md:w-[420px] px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
-          value={selectedCustomerId}
-          onChange={(e) => setSelectedCustomerId(e.target.value)}
-        >
-          <option value="">{isCustomersLoading ? 'Loading customers...' : 'Select customer...'}</option>
-          {customers.map((c) => (
-            <option key={c.customer_id} value={String(c.customer_id)}>
-              {`${c.first_name || ''} ${c.last_name || ''}`.trim()} (#{c.customer_id})
-            </option>
-          ))}
-        </select>
-      </div>
+      <Card>
+        <CardHeader className="pb-2">
+          <CardTitle className="text-base">Default customer</CardTitle>
+          <CardDescription>Used when adding a vehicle from the modal.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <select
+            className="flex h-11 w-full max-w-md rounded-xl border border-input bg-background px-4 text-sm shadow-[inset_0_1px_2px_rgba(15,23,42,0.04)] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500/30 md:w-[420px]"
+            value={selectedCustomerId}
+            onChange={(e) => setSelectedCustomerId(e.target.value)}
+          >
+            <option value="">{isCustomersLoading ? 'Loading customers...' : 'Select customer...'}</option>
+            {customers.map((c) => (
+              <option key={c.customer_id} value={String(c.customer_id)}>
+                {`${c.first_name || ''} ${c.last_name || ''}`.trim()} (#{c.customer_id})
+              </option>
+            ))}
+          </select>
+        </CardContent>
+      </Card>
 
-      <div className="bg-white rounded-lg shadow-md p-6">
-        <div className="mb-4">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
-            <input
+      <Card>
+        <CardHeader className="pb-2">
+          <CardTitle className="text-lg">Fleet directory</CardTitle>
+          <CardDescription>Filter by plate, make, or model.</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="relative max-w-lg">
+            <Search className="absolute left-3 top-1/2 z-[1] -translate-y-1/2 text-muted-foreground/75" size={20} />
+            <Input
               type="text"
               placeholder="Search vehicles..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+              className="pl-10"
             />
           </div>
-        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
           {filteredVehicles.map((vehicle) => (
-            <div key={vehicle.vehicle_id} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+            <div key={vehicle.vehicle_id} className="border border-border rounded-lg p-4 hover:shadow-md transition-shadow">
               <div className="flex items-center space-x-3 mb-3">
                 <div className="bg-primary-100 p-3 rounded-full">
                   <Car className="text-primary-600" size={24} />
                 </div>
                 <div>
-                  <p className="font-semibold text-gray-800">{vehicle.make} {vehicle.model}</p>
-                  <p className="text-sm text-gray-600">{vehicle.license_plate}</p>
+                  <p className="font-semibold text-foreground">{vehicle.make} {vehicle.model}</p>
+                  <p className="text-sm text-muted-foreground">{vehicle.license_plate}</p>
                 </div>
               </div>
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Year:</span>
+                  <span className="text-muted-foreground">Year:</span>
                   <span className="font-medium">{vehicle.year}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Mileage:</span>
+                  <span className="text-muted-foreground">Mileage:</span>
                   <span className="font-medium">{parseFloat(vehicle.current_mileage).toLocaleString()} km</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Next Service:</span>
+                  <span className="text-muted-foreground">Next Service:</span>
                   <span className="font-medium">{parseFloat(vehicle.next_service_mileage).toLocaleString()} km</span>
                 </div>
                 {vehicle.fuel_type && (
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Fuel:</span>
+                    <span className="text-muted-foreground">Fuel:</span>
                     <span className="font-medium">{vehicle.fuel_type}</span>
                   </div>
                 )}
@@ -125,7 +141,8 @@ export default function Vehicles() {
             </div>
           ))}
         </div>
-      </div>
+        </CardContent>
+      </Card>
 
       <AddVehicleModal
         isOpen={isVehicleModalOpen}

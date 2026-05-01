@@ -42,26 +42,26 @@ export default function Loyalty() {
           <h2 className="text-xl font-semibold mb-4">Active Programs</h2>
           <div className="space-y-4">
             {programs?.data?.map((program) => (
-              <div key={program.program_id} className="border border-gray-200 rounded-lg p-4">
+              <div key={program.program_id} className="border border-border rounded-lg p-4">
                 <div className="flex items-center space-x-3 mb-3">
                   <Gift className="text-primary-600" size={24} />
                   <h3 className="text-lg font-semibold">{program.program_name}</h3>
                 </div>
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Services Required:</span>
+                    <span className="text-muted-foreground">Services Required:</span>
                     <span className="font-semibold">{program.services_required}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Free Labor Hours:</span>
+                    <span className="text-muted-foreground">Free Labor Hours:</span>
                     <span className="font-semibold">{parseFloat(program.free_labor_hours)} hrs</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Parts Discount:</span>
+                    <span className="text-muted-foreground">Parts Discount:</span>
                     <span className="font-semibold">{parseFloat(program.free_parts_discount)}%</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Valid Days:</span>
+                    <span className="text-muted-foreground">Valid Days:</span>
                     <span className="font-semibold">{program.valid_days} days</span>
                   </div>
                 </div>

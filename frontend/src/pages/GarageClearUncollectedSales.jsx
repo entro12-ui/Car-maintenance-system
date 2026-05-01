@@ -64,18 +64,18 @@ export default function GarageClearUncollectedSales() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Clear Uncollected Sales Order</h1>
-        <p className="text-gray-600">List uncollected invoices by date range and clear them.</p>
+        <h1 className="text-2xl font-bold text-foreground">Clear Uncollected Sales Order</h1>
+        <p className="text-muted-foreground">List uncollected invoices by date range and clear them.</p>
       </div>
 
       <Card className="p-4 space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
-            <label className="text-sm font-medium text-gray-700">Start Date</label>
+            <label className="text-sm font-medium text-foreground/90">Start Date</label>
             <Input className="mt-1" type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
           </div>
           <div>
-            <label className="text-sm font-medium text-gray-700">End Date</label>
+            <label className="text-sm font-medium text-foreground/90">End Date</label>
             <Input className="mt-1" type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
           </div>
           <div className="flex items-end gap-2">
@@ -103,11 +103,11 @@ export default function GarageClearUncollectedSales() {
 
       <Card className="p-4">
         {isLoading ? (
-          <div className="text-sm text-gray-500">Loading...</div>
+          <div className="text-sm text-muted-foreground">Loading...</div>
         ) : error ? (
           <div className="text-sm text-red-600">Failed to load uncollected invoices</div>
         ) : rows.length === 0 ? (
-          <div className="text-sm text-gray-500">No uncollected invoices in this date range.</div>
+          <div className="text-sm text-muted-foreground">No uncollected invoices in this date range.</div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">

@@ -180,7 +180,7 @@ export default function GlAccountSetup() {
 
   const accountSelect = (label, key) => (
     <label className="text-xs">
-      <span className="text-gray-600">{label}</span>
+      <span className="text-muted-foreground">{label}</span>
       <select className="w-full mt-1 border rounded px-2 py-1.5 text-sm" value={form[key]} onChange={(e) => setField(key, e.target.value)}>
         <option value="">— Select account —</option>
         {accounts.map((a) => (
@@ -196,8 +196,8 @@ export default function GlAccountSetup() {
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-semibold text-gray-900">GL Account Setup By Section and Repair Type</h1>
-          <p className="text-sm text-gray-600">
+          <h1 className="text-2xl font-semibold text-foreground">GL Account Setup By Section and Repair Type</h1>
+          <p className="text-sm text-muted-foreground">
             Configure Stock, WIP, CGS, Sales, Discount and VAT accounts by part/service/job dimensions.
           </p>
         </div>
@@ -220,7 +220,7 @@ export default function GlAccountSetup() {
               type="button"
               onClick={() => setTab(t.id)}
               className={`px-4 py-2.5 text-sm font-medium border-b-2 -mb-px ${
-                tab === t.id ? 'border-indigo-600 text-indigo-700 bg-white' : 'border-transparent text-gray-600'
+                tab === t.id ? 'border-indigo-600 text-indigo-700 bg-white' : 'border-transparent text-muted-foreground'
               }`}
             >
               {t.label}
@@ -229,38 +229,38 @@ export default function GlAccountSetup() {
         </div>
 
         <div className="p-4 space-y-4">
-          <p className="text-sm text-gray-600">{tabGuidanceByTab[tab]}</p>
+          <p className="text-sm text-muted-foreground">{tabGuidanceByTab[tab]}</p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <label className="text-xs">
-              <span className="text-gray-600">{scopeLabelByTab[tab]}</span>
+              <span className="text-muted-foreground">{scopeLabelByTab[tab]}</span>
               <select className="w-full mt-1 border rounded px-2 py-1.5 text-sm" value={form.parts_group_code} onChange={(e) => setField('parts_group_code', e.target.value)}>
                 <option value="">All - 0</option>
                 {(scopeOptionsByTab[tab] || []).map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
               </select>
             </label>
             <label className="text-xs">
-              <span className="text-gray-600">Type of job</span>
+              <span className="text-muted-foreground">Type of job</span>
               <select className="w-full mt-1 border rounded px-2 py-1.5 text-sm" value={form.job_type} onChange={(e) => setField('job_type', e.target.value)}>
                 <option value="">All - 0</option>
                 {(options.job_types || []).map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
               </select>
             </label>
             <label className="text-xs">
-              <span className="text-gray-600">Repair / service type</span>
+              <span className="text-muted-foreground">Repair / service type</span>
               <select className="w-full mt-1 border rounded px-2 py-1.5 text-sm" value={form.service_type_id} onChange={(e) => setField('service_type_id', e.target.value)}>
                 <option value="">All - 0</option>
                 {(options.service_types || []).map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
               </select>
             </label>
             <label className="text-xs">
-              <span className="text-gray-600">Location</span>
+              <span className="text-muted-foreground">Location</span>
               <select className="w-full mt-1 border rounded px-2 py-1.5 text-sm" value={form.garage_location} onChange={(e) => setField('garage_location', e.target.value)}>
                 <option value="">All - 0</option>
                 {(options.locations || []).map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
               </select>
             </label>
             <label className="text-xs md:col-span-2">
-              <span className="text-gray-600">Maintenance section</span>
+              <span className="text-muted-foreground">Maintenance section</span>
               <select className="w-full mt-1 border rounded px-2 py-1.5 text-sm" value={form.maintenance_section} onChange={(e) => setField('maintenance_section', e.target.value)}>
                 <option value="">All - 0</option>
                 {(options.maintenance_sections || []).map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
@@ -279,7 +279,7 @@ export default function GlAccountSetup() {
 
           <div className="overflow-x-auto border rounded">
             <table className="min-w-full text-sm">
-              <thead className="bg-gray-100 text-xs text-gray-600 uppercase">
+              <thead className="bg-muted text-xs text-muted-foreground uppercase">
                 <tr>
                   <th className="px-2 py-2 text-left">{scopeLabelByTab[tab]}</th>
                   <th className="px-2 py-2 text-left">Location</th>
@@ -298,7 +298,7 @@ export default function GlAccountSetup() {
               <tbody>
                 {rows.length === 0 ? (
                   <tr>
-                    <td colSpan={12} className="px-3 py-6 text-center text-gray-500">
+                    <td colSpan={12} className="px-3 py-6 text-center text-muted-foreground">
                       {loading ? 'Loading…' : 'No setup rows for this tab.'}
                     </td>
                   </tr>

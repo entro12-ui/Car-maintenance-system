@@ -423,7 +423,7 @@ export default function GlobalParameters() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <div className="bg-white border rounded-lg shadow-sm p-3">
-          <div className="text-xs font-semibold text-gray-500 mb-2">Parameter type</div>
+          <div className="text-xs font-semibold text-muted-foreground mb-2">Parameter type</div>
           <div className="max-h-[520px] overflow-y-auto space-y-1">
             {parameterTypes.map((t) => (
               <button
@@ -431,7 +431,7 @@ export default function GlobalParameters() {
                 type="button"
                 onClick={() => setSelectedType(t.value)}
                 className={`w-full text-left px-2 py-1.5 rounded text-sm ${
-                  selectedType === t.value ? 'bg-indigo-50 text-indigo-700 border border-indigo-200' : 'hover:bg-gray-50'
+                  selectedType === t.value ? 'bg-indigo-50 text-indigo-700 border border-indigo-200' : 'hover:bg-muted/45'
                 }`}
               >
                 {t.label}
@@ -442,7 +442,7 @@ export default function GlobalParameters() {
 
         <div className="bg-white border rounded-lg shadow-sm p-3 lg:col-span-2 space-y-3">
           <div className="flex flex-wrap gap-2 items-end">
-            <div className="text-sm font-medium text-gray-700">
+            <div className="text-sm font-medium text-foreground/90">
               {selectedType ? `Values for: ${selectedType}` : 'Values'}
             </div>
             <input
@@ -456,9 +456,9 @@ export default function GlobalParameters() {
 
           <form onSubmit={onSave} className="grid grid-cols-1 md:grid-cols-2 gap-3 border rounded p-3 bg-slate-50/60">
             <label className="text-xs">
-              <span className="text-gray-600">{formConfig.keyLabel}</span>
+              <span className="text-muted-foreground">{formConfig.keyLabel}</span>
               <input
-                className="w-full mt-1 border rounded px-2 py-1.5 text-sm disabled:bg-gray-100"
+                className="w-full mt-1 border rounded px-2 py-1.5 text-sm disabled:bg-muted"
                 value={form.setting_key}
                 disabled={!!form.setting_id}
                 onChange={(e) => setForm((p) => ({ ...p, setting_key: e.target.value }))}
@@ -475,7 +475,7 @@ export default function GlobalParameters() {
               )}
             </label>
             <label className="text-xs">
-              <span className="text-gray-600">{formConfig.valueLabel}</span>
+              <span className="text-muted-foreground">{formConfig.valueLabel}</span>
               <input
                 className="w-full mt-1 border rounded px-2 py-1.5 text-sm"
                 value={form.setting_value}
@@ -484,7 +484,7 @@ export default function GlobalParameters() {
               />
             </label>
             <label className="text-xs">
-              <span className="text-gray-600">Type</span>
+              <span className="text-muted-foreground">Type</span>
               <input
                 className="w-full mt-1 border rounded px-2 py-1.5 text-sm"
                 value={form.setting_type}
@@ -493,7 +493,7 @@ export default function GlobalParameters() {
               />
             </label>
             <label className="text-xs">
-              <span className="text-gray-600">{formConfig.descriptionLabel}</span>
+              <span className="text-muted-foreground">{formConfig.descriptionLabel}</span>
               <input
                 className="w-full mt-1 border rounded px-2 py-1.5 text-sm"
                 value={form.description}
@@ -508,7 +508,7 @@ export default function GlobalParameters() {
 
           <div className="overflow-x-auto border rounded">
             <table className="min-w-full text-sm">
-              <thead className="bg-gray-100 text-xs text-gray-600 uppercase">
+              <thead className="bg-muted text-xs text-muted-foreground uppercase">
                 <tr>
                   <th className="px-2 py-2 text-left">Parameter key</th>
                   <th className="px-2 py-2 text-left">Description</th>
@@ -519,7 +519,7 @@ export default function GlobalParameters() {
               <tbody>
                 {rows.length === 0 ? (
                   <tr>
-                    <td colSpan={4} className="px-3 py-6 text-center text-gray-500">
+                    <td colSpan={4} className="px-3 py-6 text-center text-muted-foreground">
                       {loading ? 'Loading…' : 'No values in this parameter type.'}
                     </td>
                   </tr>

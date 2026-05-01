@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { TASK_MENU, taskPath } from './TaskSidebarMenu'
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { PageHeader } from '@/components/PageChrome'
 
 const BLURBS = {
   'absent-overtime-entry': 'Record technician absence and overtime for payroll and capacity.',
@@ -33,14 +34,17 @@ const BLURBS = {
 export default function TaskHub() {
   return (
     <div className="space-y-8">
-      <div className="space-y-2 max-w-3xl">
-        <h1 className="text-2xl font-semibold tracking-tight text-foreground">Task</h1>
-        <p className="text-sm text-muted-foreground leading-relaxed">
-          HillMaster-style <strong>Task</strong> menu: shop-floor time, dispatch, appointments, estimation workflow, and
-          washing status. Each card opens a task screen; some entries redirect to an existing module where coverage
-          already exists.
-        </p>
-      </div>
+      <PageHeader
+        eyebrow="Operations"
+        title="Task"
+        description={
+          <>
+            HillMaster-style <strong>Task</strong> menu: shop-floor time, dispatch, appointments, estimation workflow,
+            and washing status. Each card opens a task screen; some entries redirect to an existing module where
+            coverage already exists.
+          </>
+        }
+      />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3">
         {TASK_MENU.map((item) => {

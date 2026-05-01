@@ -198,11 +198,11 @@ function Technicians() {
     >
     <div className="space-y-6">
       <div className="bg-white shadow rounded-lg p-3 flex flex-wrap items-center gap-3 text-sm">
-        <button type="button" onClick={resetForm} className="text-gray-700 hover:text-gray-900">New</button>
-        <button type="button" onClick={(e) => handleSubmit(e)} className="text-gray-700 hover:text-gray-900">Save</button>
-        <button type="button" onClick={() => window.print()} className="text-gray-700 hover:text-gray-900">Print Preview</button>
-        <button type="button" onClick={loadTechnicians} className="text-gray-700 hover:text-gray-900">Refresh</button>
-        <button type="button" onClick={() => window.alert('Technician audit log is not wired yet.')} className="text-gray-700 hover:text-gray-900">View Log</button>
+        <button type="button" onClick={resetForm} className="text-muted-foreground hover:text-foreground">New</button>
+        <button type="button" onClick={(e) => handleSubmit(e)} className="text-muted-foreground hover:text-foreground">Save</button>
+        <button type="button" onClick={() => window.print()} className="text-muted-foreground hover:text-foreground">Print Preview</button>
+        <button type="button" onClick={loadTechnicians} className="text-muted-foreground hover:text-foreground">Refresh</button>
+        <button type="button" onClick={() => window.alert('Technician audit log is not wired yet.')} className="text-muted-foreground hover:text-foreground">View Log</button>
         <span className="text-blue-700 font-semibold">Ready</span>
       </div>
 
@@ -215,7 +215,7 @@ function Technicians() {
 
         <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-12 gap-3">
           <div className="md:col-span-12">
-            <label className="text-xs font-medium text-gray-500 block mb-1">Technician</label>
+            <label className="text-xs font-medium text-muted-foreground block mb-1">Technician</label>
             <select
               value={form.employee_id || ''}
               onChange={(e) => {
@@ -234,18 +234,18 @@ function Technicians() {
             </select>
           </div>
           <div className="md:col-span-2">
-            <label className="text-xs font-medium text-gray-500 block mb-1">Technician Code</label>
+            <label className="text-xs font-medium text-muted-foreground block mb-1">Technician Code</label>
             <input
               type="text"
               value={form.employee_code}
               disabled={!!form.employee_id}
               onChange={(e) => setForm({ ...form, employee_code: e.target.value })}
-              className="border rounded px-2 py-1 w-full text-sm disabled:bg-gray-100"
+              className="border rounded px-2 py-1 w-full text-sm disabled:bg-muted"
               placeholder="TECH001"
             />
           </div>
           <div className="md:col-span-3">
-            <label className="text-xs font-medium text-gray-500 block mb-1">First Name</label>
+            <label className="text-xs font-medium text-muted-foreground block mb-1">First Name</label>
             <input
               type="text"
               value={form.first_name}
@@ -254,7 +254,7 @@ function Technicians() {
             />
           </div>
           <div className="md:col-span-3">
-            <label className="text-xs font-medium text-gray-500 block mb-1">Last Name</label>
+            <label className="text-xs font-medium text-muted-foreground block mb-1">Last Name</label>
             <input
               type="text"
               value={form.last_name}
@@ -263,7 +263,7 @@ function Technicians() {
             />
           </div>
           <div className="md:col-span-2">
-            <label className="text-xs font-medium text-gray-500 block mb-1">Email</label>
+            <label className="text-xs font-medium text-muted-foreground block mb-1">Email</label>
             <input
               type="email"
               value={form.email}
@@ -272,7 +272,7 @@ function Technicians() {
             />
           </div>
           <div className="md:col-span-2">
-            <label className="text-xs font-medium text-gray-500 block mb-1">Phone</label>
+            <label className="text-xs font-medium text-muted-foreground block mb-1">Phone</label>
             <input
               type="text"
               value={form.phone}
@@ -281,7 +281,7 @@ function Technicians() {
             />
           </div>
           <div className="md:col-span-3">
-            <label className="text-xs font-medium text-gray-500 block mb-1">Work Unit / Department</label>
+            <label className="text-xs font-medium text-muted-foreground block mb-1">Work Unit / Department</label>
             <select
               value={form.work_unit}
               onChange={(e) => setForm({ ...form, work_unit: e.target.value })}
@@ -294,7 +294,7 @@ function Technicians() {
             </select>
           </div>
           <div className="md:col-span-3">
-            <label className="text-xs font-medium text-gray-500 block mb-1">Supervisor</label>
+            <label className="text-xs font-medium text-muted-foreground block mb-1">Supervisor</label>
             <select
               value={form.supervisor_employee_id}
               onChange={(e) => setForm({ ...form, supervisor_employee_id: e.target.value })}
@@ -309,7 +309,7 @@ function Technicians() {
             </select>
           </div>
           <div className="md:col-span-2">
-            <label className="text-xs font-medium text-gray-500 block mb-1">DOE</label>
+            <label className="text-xs font-medium text-muted-foreground block mb-1">DOE</label>
             <input
               type="date"
               value={form.hire_date}
@@ -318,7 +318,7 @@ function Technicians() {
             />
           </div>
           <div className="md:col-span-2">
-            <label className="text-xs font-medium text-gray-500 block mb-1">DOT</label>
+            <label className="text-xs font-medium text-muted-foreground block mb-1">DOT</label>
             <input
               type="date"
               value={form.date_of_termination}
@@ -327,7 +327,7 @@ function Technicians() {
             />
           </div>
           <div className="md:col-span-2">
-            <label className="text-xs font-medium text-gray-500 block mb-1">Payroll No</label>
+            <label className="text-xs font-medium text-muted-foreground block mb-1">Payroll No</label>
             <input
               type="text"
               value={form.payroll_no}
@@ -336,7 +336,7 @@ function Technicians() {
             />
           </div>
           <div className="md:col-span-2">
-            <label className="text-xs font-medium text-gray-500 block mb-1">Hourly Rate</label>
+            <label className="text-xs font-medium text-muted-foreground block mb-1">Hourly Rate</label>
             <input
               type="number"
               min="0"
@@ -347,7 +347,7 @@ function Technicians() {
             />
           </div>
           <div className="md:col-span-2">
-            <label className="text-xs font-medium text-gray-500 block mb-1">Specialization</label>
+            <label className="text-xs font-medium text-muted-foreground block mb-1">Specialization</label>
             <input
               type="text"
               value={form.specialization}
@@ -364,7 +364,7 @@ function Technicians() {
               onChange={(e) => setForm({ ...form, can_dispatch_job: e.target.checked })}
               className="h-4 w-4"
             />
-            <label htmlFor="tech-dispatch" className="text-xs font-medium text-gray-700">
+            <label htmlFor="tech-dispatch" className="text-xs font-medium text-foreground/90">
               Can Dispatch Job
             </label>
           </div>
@@ -376,7 +376,7 @@ function Technicians() {
               onChange={(e) => setForm({ ...form, on_payroll: e.target.checked })}
               className="h-4 w-4"
             />
-            <label htmlFor="tech-payroll" className="text-xs font-medium text-gray-700">
+            <label htmlFor="tech-payroll" className="text-xs font-medium text-foreground/90">
               On Payroll
             </label>
           </div>
@@ -388,7 +388,7 @@ function Technicians() {
               onChange={(e) => setForm({ ...form, is_active: e.target.checked })}
               className="h-4 w-4"
             />
-            <label htmlFor="tech-active" className="text-xs font-medium text-gray-700">
+            <label htmlFor="tech-active" className="text-xs font-medium text-foreground/90">
               Is Active
             </label>
           </div>
@@ -405,32 +405,32 @@ function Technicians() {
 
       <div className="bg-white shadow rounded-lg overflow-hidden">
         <div className="px-4 py-2 border-b flex items-center justify-between">
-          <h2 className="text-sm font-semibold text-gray-700">
+          <h2 className="text-sm font-semibold text-foreground/90">
             Technicians ({technicians.length})
           </h2>
-          {loading && <span className="text-xs text-gray-500">Loading...</span>}
+          {loading && <span className="text-xs text-muted-foreground">Loading...</span>}
         </div>
         <div className="overflow-x-auto">
           <table className="min-w-full text-sm">
-            <thead className="bg-gray-50">
+            <thead className="bg-muted/35">
               <tr>
-                <th className="px-3 py-2 text-left font-medium text-gray-500">Code</th>
-                <th className="px-3 py-2 text-left font-medium text-gray-500">Technician</th>
-                <th className="px-3 py-2 text-left font-medium text-gray-500">Can Disp Job</th>
-                <th className="px-3 py-2 text-left font-medium text-gray-500">Supervisor</th>
-                <th className="px-3 py-2 text-left font-medium text-gray-500">Work Unit</th>
-                <th className="px-3 py-2 text-left font-medium text-gray-500">On Payroll</th>
-                <th className="px-3 py-2 text-left font-medium text-gray-500">Payroll No</th>
-                <th className="px-3 py-2 text-left font-medium text-gray-500">DOE</th>
-                <th className="px-3 py-2 text-left font-medium text-gray-500">DOT</th>
-                <th className="px-3 py-2 text-left font-medium text-gray-500">Is Active</th>
-                <th className="px-3 py-2 text-right font-medium text-gray-500">Actions</th>
+                <th className="px-3 py-2 text-left font-medium text-muted-foreground">Code</th>
+                <th className="px-3 py-2 text-left font-medium text-muted-foreground">Technician</th>
+                <th className="px-3 py-2 text-left font-medium text-muted-foreground">Can Disp Job</th>
+                <th className="px-3 py-2 text-left font-medium text-muted-foreground">Supervisor</th>
+                <th className="px-3 py-2 text-left font-medium text-muted-foreground">Work Unit</th>
+                <th className="px-3 py-2 text-left font-medium text-muted-foreground">On Payroll</th>
+                <th className="px-3 py-2 text-left font-medium text-muted-foreground">Payroll No</th>
+                <th className="px-3 py-2 text-left font-medium text-muted-foreground">DOE</th>
+                <th className="px-3 py-2 text-left font-medium text-muted-foreground">DOT</th>
+                <th className="px-3 py-2 text-left font-medium text-muted-foreground">Is Active</th>
+                <th className="px-3 py-2 text-right font-medium text-muted-foreground">Actions</th>
               </tr>
             </thead>
             <tbody>
               {technicians.length === 0 && !loading && (
                 <tr>
-                  <td colSpan={11} className="px-3 py-4 text-center text-gray-500">
+                  <td colSpan={11} className="px-3 py-4 text-center text-muted-foreground">
                     No technicians found.
                   </td>
                 </tr>
@@ -444,13 +444,13 @@ function Technicians() {
                   <td className="px-3 py-2">
                     {t.can_dispatch_job ? 'Yes' : 'No'}
                   </td>
-                  <td className="px-3 py-2 text-xs text-gray-600">{t.supervisor_name || '-'}</td>
-                  <td className="px-3 py-2 text-xs text-gray-600">{t.work_unit || '-'}</td>
-                  <td className="px-3 py-2 text-xs text-gray-600">{t.on_payroll ? 'Yes' : 'No'}</td>
-                  <td className="px-3 py-2 text-xs text-gray-600">{t.payroll_no || '-'}</td>
-                  <td className="px-3 py-2 text-xs text-gray-600">{t.hire_date || '-'}</td>
-                  <td className="px-3 py-2 text-xs text-gray-600">{t.date_of_termination || '-'}</td>
-                  <td className="px-3 py-2 text-xs text-gray-600">{t.is_active ? 'Yes' : 'No'}</td>
+                  <td className="px-3 py-2 text-xs text-muted-foreground">{t.supervisor_name || '-'}</td>
+                  <td className="px-3 py-2 text-xs text-muted-foreground">{t.work_unit || '-'}</td>
+                  <td className="px-3 py-2 text-xs text-muted-foreground">{t.on_payroll ? 'Yes' : 'No'}</td>
+                  <td className="px-3 py-2 text-xs text-muted-foreground">{t.payroll_no || '-'}</td>
+                  <td className="px-3 py-2 text-xs text-muted-foreground">{t.hire_date || '-'}</td>
+                  <td className="px-3 py-2 text-xs text-muted-foreground">{t.date_of_termination || '-'}</td>
+                  <td className="px-3 py-2 text-xs text-muted-foreground">{t.is_active ? 'Yes' : 'No'}</td>
                   <td className="px-3 py-2 text-right">
                     <button
                       type="button"

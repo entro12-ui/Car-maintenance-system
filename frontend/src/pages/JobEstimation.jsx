@@ -268,8 +268,8 @@ export default function JobEstimation() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold text-gray-800">Job Estimation</h1>
-        <p className="text-sm text-gray-600">Process garage job estimations with general info and category tabs.</p>
+        <h1 className="text-2xl font-semibold text-foreground">Job Estimation</h1>
+        <p className="text-sm text-muted-foreground">Process garage job estimations with general info and category tabs.</p>
       </div>
 
       <Card className="p-4 space-y-4">
@@ -286,15 +286,15 @@ export default function JobEstimation() {
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <label className="text-sm">
-            <span className="text-gray-600">Estimation No.</span>
+            <span className="text-muted-foreground">Estimation No.</span>
             <Input readOnly value={form.estimation_number || '(auto)'} className="mt-1" />
           </label>
           <label className="text-sm">
-            <span className="text-gray-600">Estimation Date</span>
+            <span className="text-muted-foreground">Estimation Date</span>
             <Input readOnly value={form.estimation_date || ''} className="mt-1" />
           </label>
           <label className="text-sm">
-            <span className="text-gray-600">Estimation Type</span>
+            <span className="text-muted-foreground">Estimation Type</span>
             <select className="w-full mt-1 border rounded px-2 py-1.5" value={form.estimation_type} onChange={(e) => updateForm('estimation_type', e.target.value)}>
               <option>External Estimation</option>
               <option>Insurance Claim Estimation</option>
@@ -303,15 +303,15 @@ export default function JobEstimation() {
             </select>
           </label>
           <label className="text-sm">
-            <span className="text-gray-600">Valid Until</span>
+            <span className="text-muted-foreground">Valid Until</span>
             <input type="date" className="w-full mt-1 border rounded px-2 py-1.5" value={form.valid_until} onChange={(e) => updateForm('valid_until', e.target.value)} />
           </label>
           <label className="text-sm">
-            <span className="text-gray-600">Estimator</span>
+            <span className="text-muted-foreground">Estimator</span>
             <Input className="mt-1" value={form.estimator} onChange={(e) => updateForm('estimator', e.target.value)} />
           </label>
           <label className="text-sm">
-            <span className="text-gray-600">Priority</span>
+            <span className="text-muted-foreground">Priority</span>
             <select className="w-full mt-1 border rounded px-2 py-1.5" value={form.priority} onChange={(e) => updateForm('priority', e.target.value)}>
               <option value="">Select priority...</option>
               <option value="Low">Low</option>
@@ -321,7 +321,7 @@ export default function JobEstimation() {
             </select>
           </label>
           <label className="text-sm">
-            <span className="text-gray-600">Requisition No.</span>
+            <span className="text-muted-foreground">Requisition No.</span>
             <Input className="mt-1" value={form.requisition_no} onChange={(e) => updateForm('requisition_no', e.target.value)} />
           </label>
         </div>
@@ -341,7 +341,7 @@ export default function JobEstimation() {
               key={key}
               type="button"
               onClick={() => setActiveTab(key)}
-              className={`px-3 py-2 text-xs border rounded-t ${activeTab === key ? 'bg-white border-gray-300' : 'bg-gray-100 border-gray-200 text-gray-600'}`}
+              className={`px-3 py-2 text-xs border rounded-t ${activeTab === key ? 'bg-white border-border' : 'bg-muted border-border text-muted-foreground'}`}
             >
               {label}
             </button>
@@ -351,7 +351,7 @@ export default function JobEstimation() {
         {activeTab === 'general' && (
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <label className="text-sm">
-            <span className="text-gray-600">Customer</span>
+            <span className="text-muted-foreground">Customer</span>
             <select className="w-full mt-1 border rounded px-2 py-1.5" value={form.customer_id} onChange={(e) => updateForm('customer_id', e.target.value)}>
               <option value="">Select customer...</option>
               {customers.map((c) => (
@@ -362,7 +362,7 @@ export default function JobEstimation() {
             </select>
           </label>
           <label className="text-sm md:col-span-2">
-            <span className="text-gray-600">Vehicle</span>
+            <span className="text-muted-foreground">Vehicle</span>
             <select className="w-full mt-1 border rounded px-2 py-1.5" value={form.vehicle_id} onChange={(e) => updateForm('vehicle_id', e.target.value)}>
               <option value="">Select vehicle...</option>
               {filteredVehicles.map((v) => (
@@ -373,59 +373,59 @@ export default function JobEstimation() {
             </select>
           </label>
           <label className="text-sm">
-            <span className="text-gray-600">Chassi/VIN No.</span>
+            <span className="text-muted-foreground">Chassi/VIN No.</span>
             <Input className="mt-1" value={form.chassis_no || selectedVehicle?.vin || ''} onChange={(e) => updateForm('chassis_no', e.target.value)} />
           </label>
           <label className="text-sm">
-            <span className="text-gray-600">Plate No.</span>
+            <span className="text-muted-foreground">Plate No.</span>
             <Input className="mt-1" value={form.plate_no || selectedVehicle?.license_plate || ''} onChange={(e) => updateForm('plate_no', e.target.value)} />
           </label>
           <label className="text-sm">
-            <span className="text-gray-600">Cell No.</span>
+            <span className="text-muted-foreground">Cell No.</span>
             <Input className="mt-1" value={form.cell_no || selectedCustomer?.phone || ''} onChange={(e) => updateForm('cell_no', e.target.value)} />
           </label>
           <label className="text-sm md:col-span-2">
-            <span className="text-gray-600">Address</span>
+            <span className="text-muted-foreground">Address</span>
             <Input className="mt-1" value={form.address || selectedCustomer?.address || ''} onChange={(e) => updateForm('address', e.target.value)} />
           </label>
           <label className="text-sm">
-            <span className="text-gray-600">Make</span>
+            <span className="text-muted-foreground">Make</span>
             <Input className="mt-1" value={form.make || selectedVehicle?.make || ''} onChange={(e) => updateForm('make', e.target.value)} />
           </label>
           <label className="text-sm">
-            <span className="text-gray-600">Model Type</span>
+            <span className="text-muted-foreground">Model Type</span>
             <Input className="mt-1" value={form.model_type || selectedVehicle?.model || ''} onChange={(e) => updateForm('model_type', e.target.value)} />
           </label>
           <label className="text-sm">
-            <span className="text-gray-600">Engine No.</span>
+            <span className="text-muted-foreground">Engine No.</span>
             <Input className="mt-1" value={form.engine_no} onChange={(e) => updateForm('engine_no', e.target.value)} />
           </label>
           <label className="text-sm">
-            <span className="text-gray-600">Type of Job</span>
+            <span className="text-muted-foreground">Type of Job</span>
             <Input className="mt-1" value={form.type_of_job || (serviceTypes.find((s) => Number(s.service_type_id) === Number(form.service_type_id))?.service_name || '')} onChange={(e) => updateForm('type_of_job', e.target.value)} />
           </label>
           <label className="text-sm">
-            <span className="text-gray-600">Delivery Time</span>
+            <span className="text-muted-foreground">Delivery Time</span>
             <Input className="mt-1" value={form.delivery_time} onChange={(e) => updateForm('delivery_time', e.target.value)} />
           </label>
           <label className="text-sm">
-            <span className="text-gray-600">Color Code</span>
+            <span className="text-muted-foreground">Color Code</span>
             <Input className="mt-1" value={form.color_code} onChange={(e) => updateForm('color_code', e.target.value)} />
           </label>
           <label className="text-sm">
-            <span className="text-gray-600">Trim Code</span>
+            <span className="text-muted-foreground">Trim Code</span>
             <Input className="mt-1" value={form.trim_code} onChange={(e) => updateForm('trim_code', e.target.value)} />
           </label>
           <label className="text-sm">
-            <span className="text-gray-600">Millage</span>
+            <span className="text-muted-foreground">Millage</span>
             <Input className="mt-1" value={form.millage} onChange={(e) => updateForm('millage', e.target.value)} />
           </label>
           <label className="text-sm">
-            <span className="text-gray-600">Claim No</span>
+            <span className="text-muted-foreground">Claim No</span>
             <Input className="mt-1" value={form.claim_no} onChange={(e) => updateForm('claim_no', e.target.value)} />
           </label>
           <label className="text-sm">
-            <span className="text-gray-600">Service Type</span>
+            <span className="text-muted-foreground">Service Type</span>
             <select className="w-full mt-1 border rounded px-2 py-1.5" value={form.service_type_id} onChange={(e) => updateForm('service_type_id', e.target.value)}>
               <option value="">Select service type...</option>
               {serviceTypes.map((s) => (
@@ -444,23 +444,23 @@ export default function JobEstimation() {
             Supplied By Others
           </label>
           <label className="text-sm">
-            <span className="text-gray-600">Tax %</span>
+            <span className="text-muted-foreground">Tax %</span>
             <input className="w-full mt-1 border rounded px-2 py-1.5" value={form.tax_rate} onChange={(e) => updateForm('tax_rate', e.target.value)} />
           </label>
           <label className="text-sm">
-            <span className="text-gray-600">Discount Amount</span>
+            <span className="text-muted-foreground">Discount Amount</span>
             <input className="w-full mt-1 border rounded px-2 py-1.5" value={form.discount_amount} onChange={(e) => updateForm('discount_amount', e.target.value)} />
           </label>
           <label className="text-sm md:col-span-2">
-            <span className="text-gray-600">Remark</span>
+            <span className="text-muted-foreground">Remark</span>
             <input className="w-full mt-1 border rounded px-2 py-1.5" value={form.remark} onChange={(e) => updateForm('remark', e.target.value)} />
           </label>
           <label className="text-sm md:col-span-4">
-            <span className="text-gray-600">Detail Work Description</span>
+            <span className="text-muted-foreground">Detail Work Description</span>
             <textarea className="w-full mt-1 border rounded px-2 py-1.5 min-h-[90px]" value={form.detail_work_description} onChange={(e) => updateForm('detail_work_description', e.target.value)} />
           </label>
           <label className="text-sm md:col-span-4">
-            <span className="text-gray-600">Description</span>
+            <span className="text-muted-foreground">Description</span>
             <input className="w-full mt-1 border rounded px-2 py-1.5" value={form.description} onChange={(e) => updateForm('description', e.target.value)} />
           </label>
         </div>
@@ -475,25 +475,25 @@ export default function JobEstimation() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
             <label className="text-sm md:col-span-2">
-              <span className="text-gray-600">Item / Charge</span>
+              <span className="text-muted-foreground">Item / Charge</span>
               <input className="w-full mt-1 border rounded px-2 py-1.5" value={lineDraft.item_name} onChange={(e) => setLineDraft((d) => ({ ...d, item_name: e.target.value }))} />
             </label>
             <label className="text-sm">
-              <span className="text-gray-600">Quantity</span>
+              <span className="text-muted-foreground">Quantity</span>
               <input className="w-full mt-1 border rounded px-2 py-1.5" value={lineDraft.quantity} onChange={(e) => setLineDraft((d) => ({ ...d, quantity: e.target.value }))} />
             </label>
             <label className="text-sm">
-              <span className="text-gray-600">Unit Price</span>
+              <span className="text-muted-foreground">Unit Price</span>
               <input className="w-full mt-1 border rounded px-2 py-1.5" value={lineDraft.unit_price} onChange={(e) => setLineDraft((d) => ({ ...d, unit_price: e.target.value }))} />
             </label>
             <label className="text-sm md:col-span-4">
-              <span className="text-gray-600">Description</span>
+              <span className="text-muted-foreground">Description</span>
               <input className="w-full mt-1 border rounded px-2 py-1.5" value={lineDraft.item_description} onChange={(e) => setLineDraft((d) => ({ ...d, item_description: e.target.value }))} />
             </label>
           </div>
           <div className="overflow-auto border rounded">
             <table className="min-w-full text-sm">
-              <thead className="bg-gray-100 text-xs text-gray-600 uppercase">
+              <thead className="bg-muted text-xs text-muted-foreground uppercase">
                 <tr>
                   <th className="py-2 px-2 text-left">No</th>
                   <th className="py-2 px-2 text-left">Code/Name</th>
@@ -506,7 +506,7 @@ export default function JobEstimation() {
               <tbody>
                 {filteredTabItems.length === 0 ? (
                   <tr>
-                    <td colSpan={6} className="py-4 px-2 text-center text-gray-500">No items in this tab.</td>
+                    <td colSpan={6} className="py-4 px-2 text-center text-muted-foreground">No items in this tab.</td>
                   </tr>
                 ) : (
                   filteredTabItems.map((it, idx) => (
@@ -530,7 +530,7 @@ export default function JobEstimation() {
         <div className="space-y-3">
           <div className="overflow-auto border rounded">
             <table className="min-w-full text-sm">
-              <thead className="bg-gray-100 text-xs text-gray-600 uppercase">
+              <thead className="bg-muted text-xs text-muted-foreground uppercase">
                 <tr>
                   <th className="py-2 px-2 text-left">Type</th>
                   <th className="py-2 px-2 text-left">Name</th>
@@ -541,7 +541,7 @@ export default function JobEstimation() {
               </thead>
               <tbody>
                 {form.items.filter((x) => x.item_name).length === 0 ? (
-                  <tr><td colSpan={5} className="py-4 px-2 text-center text-gray-500">No estimation lines yet.</td></tr>
+                  <tr><td colSpan={5} className="py-4 px-2 text-center text-muted-foreground">No estimation lines yet.</td></tr>
                 ) : form.items.filter((x) => x.item_name).map((it, idx) => (
                   <tr key={`${it.item_name}-${idx}`} className="border-t">
                     <td className="py-2 px-2">{it.item_type}</td>
@@ -563,7 +563,7 @@ export default function JobEstimation() {
         )}
 
         <label className="text-sm block">
-          <span className="text-gray-600">Notes</span>
+          <span className="text-muted-foreground">Notes</span>
           <textarea className="w-full mt-1 border rounded px-2 py-1.5 min-h-[80px]" value={form.notes} onChange={(e) => updateForm('notes', e.target.value)} />
         </label>
 
@@ -589,7 +589,7 @@ export default function JobEstimation() {
       <Card className="p-4">
         <h2 className="font-semibold mb-3">Recent Job Estimations</h2>
         {listLoading ? (
-          <div className="text-sm text-gray-500">Loading estimations...</div>
+          <div className="text-sm text-muted-foreground">Loading estimations...</div>
         ) : (
           <div className="overflow-x-auto">
             <table className="min-w-full text-sm">
@@ -620,7 +620,7 @@ export default function JobEstimation() {
                 ))}
                 {!estimations.length && (
                   <tr>
-                    <td className="py-3 text-gray-500" colSpan={6}>No estimations found.</td>
+                    <td className="py-3 text-muted-foreground" colSpan={6}>No estimations found.</td>
                   </tr>
                 )}
               </tbody>

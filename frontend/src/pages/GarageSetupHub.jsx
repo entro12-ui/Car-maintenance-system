@@ -13,8 +13,8 @@ const setupItems = [
 export default function GarageSetupHub() {
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-semibold text-gray-800">Setup Hub</h1>
-      <p className="text-sm text-gray-600">
+      <h1 className="text-2xl font-semibold text-foreground">Setup Hub</h1>
+      <p className="text-sm text-muted-foreground">
         Quick access to setup pages defined in the manual. Each item opens System Settings filtered by category.
       </p>
 
@@ -65,8 +65,8 @@ export default function GarageSetupHub() {
             to={item.route || `/system-settings?category=${encodeURIComponent(item.category)}`}
             className="bg-white shadow rounded-lg p-4 border hover:border-indigo-300 hover:shadow-md transition"
           >
-            <div className="font-medium text-gray-800">{item.label}</div>
-            <div className="text-xs text-gray-500 mt-1">{item.category}</div>
+            <div className="font-medium text-foreground">{item.label}</div>
+            <div className="text-xs text-muted-foreground mt-1">{item.category}</div>
           </Link>
         ))}
       </div>

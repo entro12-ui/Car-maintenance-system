@@ -1,7 +1,29 @@
 import { useCallback, useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { customersApi } from '../services/api'
+import {
+  ArrowLeft,
+  FileText,
+  RefreshCw,
+  Save,
+  Trash2,
+  UserRoundPlus,
+} from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Select } from '@/components/ui/select'
+import { Textarea } from '@/components/ui/textarea'
+import { PageHeader } from '@/components/PageChrome'
+import { cn } from '@/lib/utils'
 
 const TABS = ['GL', 'Other', 'Local address', 'Foreign address']
 
@@ -297,130 +319,204 @@ export default function CustomerCreation() {
   }
 
   const renderGeneral = () => (
-    <div className="border rounded-lg p-4 space-y-3 bg-slate-50/50">
-      <h2 className="text-sm font-semibold text-gray-800">General information</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-        <label className="text-xs">
-          <span className="text-gray-600">Sub ledger</span>
-          <input className="w-full mt-1 border rounded px-2 py-1.5 text-sm" value={form.sub_ledger} onChange={(e) => setField('sub_ledger', e.target.value)} />
-        </label>
-        <label className="text-xs">
-          <span className="text-gray-600">System Id</span>
-          <input className="w-full mt-1 border rounded px-2 py-1.5 text-sm bg-gray-100" value={form.customer_id || '(new)'} disabled />
-        </label>
-        <label className="text-xs">
-          <span className="text-gray-600">TIN</span>
-          <input className="w-full mt-1 border rounded px-2 py-1.5 text-sm" value={form.tin} onChange={(e) => setField('tin', e.target.value)} />
-        </label>
-        <label className="text-xs md:col-span-2">
-          <span className="text-gray-600">Customer name</span>
-          <input className="w-full mt-1 border rounded px-2 py-1.5 text-sm" value={form.display_name} onChange={(e) => setField('display_name', e.target.value)} placeholder="Company or full name (last word becomes last name if split)" />
-        </label>
-        <label className="text-xs md:col-span-2">
-          <span className="text-gray-600">Contact</span>
-          <input className="w-full mt-1 border rounded px-2 py-1.5 text-sm" value={form.contact_name} onChange={(e) => setField('contact_name', e.target.value)} />
-        </label>
-        <label className="text-xs md:col-span-2">
-          <span className="text-gray-600">Address</span>
-          <input className="w-full mt-1 border rounded px-2 py-1.5 text-sm" value={form.address} onChange={(e) => setField('address', e.target.value)} />
-        </label>
-        <label className="text-xs">
-          <span className="text-gray-600">Telephone no.</span>
-          <input className="w-full mt-1 border rounded px-2 py-1.5 text-sm" value={form.phone} onChange={(e) => setField('phone', e.target.value)} />
-        </label>
-        <label className="text-xs">
-          <span className="text-gray-600">Alt. telephone no.</span>
-          <input className="w-full mt-1 border rounded px-2 py-1.5 text-sm" value={form.alt_phone} onChange={(e) => setField('alt_phone', e.target.value)} />
-        </label>
-        <label className="text-xs">
-          <span className="text-gray-600">Fax no.</span>
-          <input className="w-full mt-1 border rounded px-2 py-1.5 text-sm" value={form.fax_no} onChange={(e) => setField('fax_no', e.target.value)} />
-        </label>
-        <label className="text-xs">
-          <span className="text-gray-600">PO box</span>
-          <input className="w-full mt-1 border rounded px-2 py-1.5 text-sm" value={form.po_box} onChange={(e) => setField('po_box', e.target.value)} />
-        </label>
-        <label className="text-xs md:col-span-2">
-          <span className="text-gray-600">Email address</span>
-          <input type="email" className="w-full mt-1 border rounded px-2 py-1.5 text-sm" value={form.email} onChange={(e) => setField('email', e.target.value)} />
-        </label>
-        <label className="text-xs">
-          <span className="text-gray-600">Tax rate</span>
-          <input className="w-full mt-1 border rounded px-2 py-1.5 text-sm" value={form.tax_rate} onChange={(e) => setField('tax_rate', e.target.value)} placeholder="Code or label" />
-        </label>
-        <label className="text-xs">
-          <span className="text-gray-600">Credit limit</span>
-          <input className="w-full mt-1 border rounded px-2 py-1.5 text-sm" value={form.credit_limit} onChange={(e) => setField('credit_limit', e.target.value)} />
-        </label>
-        <label className="text-xs">
-          <span className="text-gray-600">Invoice due in days</span>
-          <input className="w-full mt-1 border rounded px-2 py-1.5 text-sm" value={form.invoice_due_days} onChange={(e) => setField('invoice_due_days', e.target.value)} />
-        </label>
-        <label className="text-xs">
-          <span className="text-gray-600">Price list</span>
-          <input className="w-full mt-1 border rounded px-2 py-1.5 text-sm" value={form.price_list_code} onChange={(e) => setField('price_list_code', e.target.value)} />
-        </label>
-        <label className="text-xs">
-          <span className="text-gray-600">Status</span>
-          <select className="w-full mt-1 border rounded px-2 py-1.5 text-sm" value={form.status_label} onChange={(e) => setField('status_label', e.target.value)}>
+    <Card className="border-border/55 shadow-none hover:translate-y-0">
+      <CardHeader className="pb-2">
+        <CardTitle className="text-base">General information</CardTitle>
+        <CardDescription>Name, contact, billing defaults, and portal access.</CardDescription>
+      </CardHeader>
+      <CardContent className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div className="space-y-2">
+          <Label htmlFor="cust-sub-ledger">Sub ledger</Label>
+          <Input
+            id="cust-sub-ledger"
+            value={form.sub_ledger}
+            onChange={(e) => setField('sub_ledger', e.target.value)}
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="cust-system-id">System ID</Label>
+          <Input id="cust-system-id" className="bg-muted/50" value={form.customer_id || '(new)'} disabled />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="cust-tin">TIN</Label>
+          <Input id="cust-tin" value={form.tin} onChange={(e) => setField('tin', e.target.value)} />
+        </div>
+        <div className="space-y-2 md:col-span-2">
+          <Label htmlFor="cust-display-name">
+            Customer name <span className="text-destructive">*</span>
+          </Label>
+          <Input
+            id="cust-display-name"
+            value={form.display_name}
+            onChange={(e) => setField('display_name', e.target.value)}
+            placeholder="Company or full name (last word becomes last name if split)"
+          />
+        </div>
+        <div className="space-y-2 md:col-span-2">
+          <Label htmlFor="cust-contact">Contact</Label>
+          <Input
+            id="cust-contact"
+            value={form.contact_name}
+            onChange={(e) => setField('contact_name', e.target.value)}
+          />
+        </div>
+        <div className="space-y-2 md:col-span-2">
+          <Label htmlFor="cust-address">Address</Label>
+          <Input id="cust-address" value={form.address} onChange={(e) => setField('address', e.target.value)} />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="cust-phone">
+            Telephone <span className="text-destructive">*</span>
+          </Label>
+          <Input id="cust-phone" value={form.phone} onChange={(e) => setField('phone', e.target.value)} />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="cust-alt-phone">Alt. telephone</Label>
+          <Input id="cust-alt-phone" value={form.alt_phone} onChange={(e) => setField('alt_phone', e.target.value)} />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="cust-fax">Fax</Label>
+          <Input id="cust-fax" value={form.fax_no} onChange={(e) => setField('fax_no', e.target.value)} />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="cust-pobox">PO box</Label>
+          <Input id="cust-pobox" value={form.po_box} onChange={(e) => setField('po_box', e.target.value)} />
+        </div>
+        <div className="space-y-2 md:col-span-2">
+          <Label htmlFor="cust-email">
+            Email <span className="text-destructive">*</span>
+          </Label>
+          <Input
+            id="cust-email"
+            type="email"
+            value={form.email}
+            onChange={(e) => setField('email', e.target.value)}
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="cust-tax-rate">Tax rate</Label>
+          <Input
+            id="cust-tax-rate"
+            value={form.tax_rate}
+            onChange={(e) => setField('tax_rate', e.target.value)}
+            placeholder="Code or label"
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="cust-credit-limit">Credit limit</Label>
+          <Input
+            id="cust-credit-limit"
+            value={form.credit_limit}
+            onChange={(e) => setField('credit_limit', e.target.value)}
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="cust-due-days">Invoice due (days)</Label>
+          <Input
+            id="cust-due-days"
+            value={form.invoice_due_days}
+            onChange={(e) => setField('invoice_due_days', e.target.value)}
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="cust-price-list">Price list</Label>
+          <Input
+            id="cust-price-list"
+            value={form.price_list_code}
+            onChange={(e) => setField('price_list_code', e.target.value)}
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="cust-status">Status</Label>
+          <Select id="cust-status" value={form.status_label} onChange={(e) => setField('status_label', e.target.value)}>
             <option value="Active">Active</option>
             <option value="Inactive">Inactive</option>
-          </select>
-        </label>
-        <label className="text-xs">
-          <span className="text-gray-600">City</span>
-          <input className="w-full mt-1 border rounded px-2 py-1.5 text-sm" value={form.city} onChange={(e) => setField('city', e.target.value)} />
-        </label>
-        <label className="text-xs">
-          <span className="text-gray-600">National ID (optional)</span>
-          <input className="w-full mt-1 border rounded px-2 py-1.5 text-sm" value={form.national_id} onChange={(e) => setField('national_id', e.target.value)} />
-        </label>
-        <label className="text-xs md:col-span-2">
-          <span className="text-gray-600">Portal password (optional)</span>
-          <input type="password" className="w-full mt-1 border rounded px-2 py-1.5 text-sm" value={form.portal_password} onChange={(e) => setField('portal_password', e.target.value)} placeholder="Leave blank if customer does not log in" />
-        </label>
-      </div>
-    </div>
+          </Select>
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="cust-city">City</Label>
+          <Input id="cust-city" value={form.city} onChange={(e) => setField('city', e.target.value)} />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="cust-national-id">National ID (optional)</Label>
+          <Input
+            id="cust-national-id"
+            value={form.national_id}
+            onChange={(e) => setField('national_id', e.target.value)}
+          />
+        </div>
+        <div className="space-y-2 md:col-span-2">
+          <Label htmlFor="cust-portal-pw">Portal password (optional)</Label>
+          <Input
+            id="cust-portal-pw"
+            type="password"
+            value={form.portal_password}
+            onChange={(e) => setField('portal_password', e.target.value)}
+            placeholder="Leave blank if customer does not log in"
+          />
+        </div>
+      </CardContent>
+    </Card>
   )
 
   const renderGl = () => (
-    <div className="space-y-3">
-      <label className="text-xs block">
-        <span className="text-gray-600">COA (chart of accounts)</span>
-        <div className="flex gap-2 mt-1">
-          <input className="flex-1 border rounded px-2 py-1.5 text-sm" value={form.gl_coa_code} onChange={(e) => setField('gl_coa_code', e.target.value)} />
-          <Button type="button" variant="outline" size="sm" onClick={handleGetFromGl}>
+    <div className="space-y-5">
+      <div className="space-y-2">
+        <Label htmlFor="cust-gl-coa">COA (chart of accounts)</Label>
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+          <Input
+            id="cust-gl-coa"
+            className="sm:flex-1"
+            value={form.gl_coa_code}
+            onChange={(e) => setField('gl_coa_code', e.target.value)}
+          />
+          <Button type="button" variant="outline" className="shrink-0" onClick={handleGetFromGl}>
             Get from GL
           </Button>
         </div>
-      </label>
-      <label className="text-xs block">
-        <span className="text-gray-600">COA name</span>
-        <textarea className="w-full mt-1 border rounded px-2 py-1.5 text-sm min-h-[72px]" value={form.gl_coa_name} onChange={(e) => setField('gl_coa_name', e.target.value)} />
-      </label>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-        <label className="text-xs">
-          <span className="text-gray-600">Category</span>
-          <input className="w-full mt-1 border rounded px-2 py-1.5 text-sm" value={form.gl_category} onChange={(e) => setField('gl_category', e.target.value)} />
-        </label>
-        <label className="text-xs">
-          <span className="text-gray-600">Customer type</span>
-          <input className="w-full mt-1 border rounded px-2 py-1.5 text-sm" value={form.gl_customer_type} onChange={(e) => setField('gl_customer_type', e.target.value)} />
-        </label>
       </div>
-      <div className="flex flex-wrap gap-4 text-sm">
-        <label className="flex items-center gap-2">
-          <input type="checkbox" checked={form.allow_credit} onChange={(e) => setField('allow_credit', e.target.checked)} />
-          Allow credit
-        </label>
-        <label className="flex items-center gap-2">
-          <input type="checkbox" checked={form.on_hold} onChange={(e) => setField('on_hold', e.target.checked)} />
-          On hold
-        </label>
-        <label className="flex items-center gap-2">
-          <input type="checkbox" checked={form.is_dealer} onChange={(e) => setField('is_dealer', e.target.checked)} />
-          Dealer
-        </label>
+      <div className="space-y-2">
+        <Label htmlFor="cust-gl-name">COA name</Label>
+        <Textarea
+          id="cust-gl-name"
+          className="min-h-[88px]"
+          value={form.gl_coa_name}
+          onChange={(e) => setField('gl_coa_name', e.target.value)}
+        />
+      </div>
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div className="space-y-2">
+          <Label htmlFor="cust-gl-cat">Category</Label>
+          <Input id="cust-gl-cat" value={form.gl_category} onChange={(e) => setField('gl_category', e.target.value)} />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="cust-gl-type">Customer type</Label>
+          <Input
+            id="cust-gl-type"
+            value={form.gl_customer_type}
+            onChange={(e) => setField('gl_customer_type', e.target.value)}
+          />
+        </div>
+      </div>
+      <div className="flex flex-wrap gap-3">
+        {[
+          { key: 'allow_credit', label: 'Allow credit', checked: form.allow_credit },
+          { key: 'on_hold', label: 'On hold', checked: form.on_hold },
+          { key: 'is_dealer', label: 'Dealer', checked: form.is_dealer },
+        ].map(({ key, label, checked }) => (
+          <label
+            key={key}
+            className="flex cursor-pointer items-center gap-3 rounded-xl border border-border/55 bg-muted/25 px-4 py-3 text-sm font-medium shadow-sm transition hover:bg-muted/40"
+          >
+            <input
+              type="checkbox"
+              className="h-4 w-4 rounded border-input text-primary focus:ring-teal-500/35"
+              checked={checked}
+              onChange={(e) => setField(key, e.target.checked)}
+            />
+            {label}
+          </label>
+        ))}
       </div>
     </div>
   )
@@ -429,116 +525,193 @@ export default function CustomerCreation() {
     if (activeTab === 'GL') return renderGl()
     if (activeTab === 'Other') {
       return (
-        <label className="text-xs block">
-          <span className="text-gray-600">Notes</span>
-          <textarea className="w-full mt-1 border rounded px-2 py-1.5 text-sm min-h-[160px]" value={form.notes_other} onChange={(e) => setField('notes_other', e.target.value)} />
-        </label>
+        <div className="space-y-2">
+          <Label htmlFor="cust-notes">Notes</Label>
+          <Textarea
+            id="cust-notes"
+            className="min-h-[160px]"
+            value={form.notes_other}
+            onChange={(e) => setField('notes_other', e.target.value)}
+          />
+        </div>
       )
     }
     if (activeTab === 'Local address') {
       return (
-        <label className="text-xs block">
-          <span className="text-gray-600">Local address</span>
-          <textarea className="w-full mt-1 border rounded px-2 py-1.5 text-sm min-h-[120px]" value={form.address_local} onChange={(e) => setField('address_local', e.target.value)} />
-        </label>
+        <div className="space-y-2">
+          <Label htmlFor="cust-addr-local">Local address</Label>
+          <Textarea
+            id="cust-addr-local"
+            className="min-h-[120px]"
+            value={form.address_local}
+            onChange={(e) => setField('address_local', e.target.value)}
+          />
+        </div>
       )
     }
     return (
-      <label className="text-xs block">
-        <span className="text-gray-600">Foreign address</span>
-        <textarea className="w-full mt-1 border rounded px-2 py-1.5 text-sm min-h-[120px]" value={form.address_foreign} onChange={(e) => setField('address_foreign', e.target.value)} />
-      </label>
+      <div className="space-y-2">
+        <Label htmlFor="cust-addr-foreign">Foreign address</Label>
+        <Textarea
+          id="cust-addr-foreign"
+          className="min-h-[120px]"
+          value={form.address_foreign}
+          onChange={(e) => setField('address_foreign', e.target.value)}
+        />
+      </div>
     )
   }
 
   return (
-    <div className="space-y-4 max-w-5xl mx-auto">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <h1 className="text-2xl font-semibold text-gray-900">New customer creation</h1>
-          <p className="text-sm text-gray-600">General profile, GL link, and extended addresses (HillMaster-style).</p>
+    <div className="mx-auto max-w-5xl space-y-8">
+      <PageHeader
+        eyebrow="Maintenance"
+        title="Customer maintenance"
+        description="Full HillMaster-style profile: general data, GL link, notes, and alternate addresses. Save loads the server-side record and refreshes the picker."
+        actions={
+          <>
+            <Button type="button" variant="outline" className="gap-2" asChild>
+              <Link to="/customers">
+                <ArrowLeft className="h-4 w-4" />
+                Customer list
+              </Link>
+            </Button>
+            <Button type="button" variant="outline" className="gap-2" onClick={handleNew}>
+              <UserRoundPlus className="h-4 w-4" />
+              New
+            </Button>
+            <Button type="button" variant="outline" className="gap-2" onClick={handleRefresh}>
+              <RefreshCw className="h-4 w-4" />
+              Refresh
+            </Button>
+            <Button type="button" variant="outline" className="gap-2" onClick={openLog}>
+              <FileText className="h-4 w-4" />
+              View log
+            </Button>
+            <Button
+              type="button"
+              variant="destructive"
+              className="gap-2"
+              onClick={handleDelete}
+              disabled={!form.customer_id || saving}
+            >
+              <Trash2 className="h-4 w-4" />
+              Delete
+            </Button>
+            <Button type="button" className="gap-2 shadow-md shadow-primary/20" onClick={handleSave} disabled={saving}>
+              <Save className="h-4 w-4" />
+              {saving ? 'Saving…' : 'Save'}
+            </Button>
+          </>
+        }
+      />
+
+      {error ? (
+        <div
+          role="alert"
+          className="rounded-xl border border-destructive/35 bg-destructive/10 px-4 py-3 text-sm text-destructive"
+        >
+          {error}
         </div>
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="text-sm text-blue-700 hidden sm:inline">Ready</span>
-          <Button type="button" variant="outline" onClick={handleNew}>New</Button>
-          <Button type="button" variant="outline" onClick={handleRefresh}>Refresh</Button>
-          <Button type="button" variant="outline" onClick={openLog}>View log</Button>
-          <Button type="button" variant="destructive" onClick={handleDelete} disabled={!form.customer_id || saving}>Delete</Button>
-          <Button type="button" onClick={handleSave} disabled={saving}>{saving ? 'Saving…' : 'Save'}</Button>
+      ) : null}
+      {success ? (
+        <div
+          role="status"
+          className="rounded-xl border border-emerald-300/50 bg-emerald-50/90 px-4 py-3 text-sm text-emerald-900 dark:bg-emerald-950/40 dark:text-emerald-100"
+        >
+          {success}
         </div>
-      </div>
+      ) : null}
 
-      {error && <div className="rounded border border-red-200 bg-red-50 text-red-700 px-3 py-2 text-sm">{error}</div>}
-      {success && <div className="rounded border border-green-200 bg-green-50 text-green-700 px-3 py-2 text-sm">{success}</div>}
-
-      <div className="bg-white border rounded-lg shadow-sm p-4 space-y-4">
-        <label className="text-sm block max-w-xl">
-          <span className="text-gray-600">Customer</span>
-          <select
-            className="w-full mt-1 border rounded px-3 py-2 text-sm"
-            value={selectedListId}
-            onChange={(e) => handleSelectExisting(e.target.value)}
-            disabled={loadingList}
-          >
-            <option value="">— New customer —</option>
-            {customerList.map((c) => (
-              <option key={c.customer_id} value={c.customer_id}>
-                #{c.customer_id} {c.first_name} {c.last_name}
-              </option>
-            ))}
-          </select>
-        </label>
-
-        {renderGeneral()}
-
-        <div className="border rounded-lg overflow-hidden">
-          <div className="flex flex-wrap border-b bg-slate-50">
-            {TABS.map((t) => (
-              <button
-                key={t}
-                type="button"
-                onClick={() => setActiveTab(t)}
-                className={`px-4 py-2 text-sm border-b-2 -mb-px ${activeTab === t ? 'border-indigo-600 text-indigo-800 bg-white' : 'border-transparent text-gray-600'}`}
-              >
-                {t}
-              </button>
-            ))}
+      <Card>
+        <CardHeader className="border-b border-border/50 pb-6">
+          <CardTitle className="font-display text-lg">Customer record</CardTitle>
+          <CardDescription>Select an existing customer or leave “New customer” to create.</CardDescription>
+          <div className="max-w-xl pt-4">
+            <Label htmlFor="cust-picker" className="mb-2 block">
+              Customer
+            </Label>
+            <Select
+              id="cust-picker"
+              value={selectedListId}
+              onChange={(e) => handleSelectExisting(e.target.value)}
+              disabled={loadingList}
+            >
+              <option value="">— New customer —</option>
+              {customerList.map((c) => (
+                <option key={c.customer_id} value={c.customer_id}>
+                  #{c.customer_id} {c.first_name} {c.last_name}
+                </option>
+              ))}
+            </Select>
           </div>
-          <div className="p-4">{renderTab()}</div>
-        </div>
+        </CardHeader>
+        <CardContent className="space-y-6 pt-8">
+          {renderGeneral()}
 
-        <p className="text-xs text-gray-500">
-          Delete marks the customer <strong>inactive</strong> (soft delete) so vehicles and history stay linked.
-          Use <button type="button" className="text-indigo-700 underline" onClick={() => navigate('/customers')}>Customers</button> for the compact list view.
-        </p>
-      </div>
-
-      {logOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40" role="dialog">
-          <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[80vh] flex flex-col">
-            <div className="flex justify-between items-center px-4 py-3 border-b">
-              <h2 className="font-semibold">Customer audit log</h2>
-              <button type="button" className="text-gray-500 text-sm" onClick={() => setLogOpen(false)}>Close</button>
+          <div className="overflow-hidden rounded-xl border border-border/60 bg-card shadow-none">
+            <div className="flex flex-wrap gap-1 border-b border-border/55 bg-muted/35 p-1.5">
+              {TABS.map((t) => (
+                <button
+                  key={t}
+                  type="button"
+                  onClick={() => setActiveTab(t)}
+                  className={cn(
+                    'rounded-lg px-4 py-2 text-sm font-semibold transition-all duration-200',
+                    activeTab === t
+                      ? 'bg-card text-primary shadow-sm ring-1 ring-primary/25'
+                      : 'text-muted-foreground hover:bg-muted/70 hover:text-foreground'
+                  )}
+                >
+                  {t}
+                </button>
+              ))}
             </div>
-            <div className="p-4 overflow-y-auto text-sm flex-1">
-              {logLoading ? (
-                <p className="text-gray-500">Loading…</p>
-              ) : logRows.length === 0 ? (
-                <p className="text-gray-500">No log entries yet.</p>
-              ) : (
-                <ul className="space-y-3">
-                  {logRows.map((row) => (
-                    <li key={row.log_id} className="border rounded p-2 bg-slate-50">
-                      <div className="text-xs text-gray-500">{row.action_type} · {row.created_at}</div>
-                      <pre className="text-xs whitespace-pre-wrap mt-1">{JSON.stringify({ old: row.old_values, new: row.new_values }, null, 2)}</pre>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
+            <div className="p-5 sm:p-6">{renderTab()}</div>
           </div>
-        </div>
-      )}
+
+          <p className="text-xs leading-relaxed text-muted-foreground">
+            Delete marks the customer <strong className="text-foreground">inactive</strong> (soft delete) so vehicles and
+            history stay linked. For a compact grid view use{' '}
+            <button type="button" className="font-semibold text-primary underline-offset-4 hover:underline" onClick={() => navigate('/customers')}>
+              Customers
+            </button>
+            .
+          </p>
+        </CardContent>
+      </Card>
+
+      <Dialog open={logOpen} onOpenChange={(open) => !open && setLogOpen(false)}>
+        <DialogContent className="flex max-h-[min(85vh,640px)] max-w-[calc(100vw-2rem)] flex-col gap-0 overflow-hidden p-0 sm:max-w-2xl">
+          <DialogHeader className="shrink-0 border-b border-border/60 px-6 py-5 pr-14">
+            <DialogTitle className="font-display text-lg">Customer audit log</DialogTitle>
+            <DialogDescription>Change history for this customer record.</DialogDescription>
+          </DialogHeader>
+          <div className="min-h-0 flex-1 overflow-y-auto px-6 py-4">
+            {logLoading ? (
+              <p className="text-sm text-muted-foreground">Loading…</p>
+            ) : logRows.length === 0 ? (
+              <p className="text-sm text-muted-foreground">No log entries yet.</p>
+            ) : (
+              <ul className="space-y-3">
+                {logRows.map((row) => (
+                  <li
+                    key={row.log_id}
+                    className="rounded-xl border border-border/55 bg-muted/25 p-4 text-sm shadow-sm"
+                  >
+                    <div className="text-xs font-medium text-muted-foreground">
+                      {row.action_type} · {row.created_at}
+                    </div>
+                    <pre className="mt-2 whitespace-pre-wrap rounded-lg bg-background/80 p-3 font-mono text-[11px] leading-relaxed text-foreground/90 ring-1 ring-border/40">
+                      {JSON.stringify({ old: row.old_values, new: row.new_values }, null, 2)}
+                    </pre>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

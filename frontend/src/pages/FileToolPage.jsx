@@ -116,28 +116,28 @@ function EstimationLetterSetup() {
           ) : (
             <>
               <label className="block text-sm">
-                <span className="text-gray-600">Header Text</span>
+                <span className="text-muted-foreground">Header Text</span>
                 <input className="w-full mt-1 border rounded px-3 py-2" value={form.header_text} onChange={(e) => update('header_text', e.target.value)} />
               </label>
               <label className="block text-sm">
-                <span className="text-gray-600">Validity Wording</span>
+                <span className="text-muted-foreground">Validity Wording</span>
                 <textarea className="w-full mt-1 border rounded px-3 py-2 min-h-[68px]" value={form.validity_wording} onChange={(e) => update('validity_wording', e.target.value)} />
               </label>
               <label className="block text-sm">
-                <span className="text-gray-600">Terms & Conditions</span>
+                <span className="text-muted-foreground">Terms & Conditions</span>
                 <textarea className="w-full mt-1 border rounded px-3 py-2 min-h-[120px]" value={form.terms_and_conditions} onChange={(e) => update('terms_and_conditions', e.target.value)} />
               </label>
               <label className="block text-sm">
-                <span className="text-gray-600">Footer Notes</span>
+                <span className="text-muted-foreground">Footer Notes</span>
                 <textarea className="w-full mt-1 border rounded px-3 py-2 min-h-[90px]" value={form.footer_notes} onChange={(e) => update('footer_notes', e.target.value)} />
               </label>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <label className="block text-sm">
-                  <span className="text-gray-600">Left Signature Label</span>
+                  <span className="text-muted-foreground">Left Signature Label</span>
                   <input className="w-full mt-1 border rounded px-3 py-2" value={form.signature_left_label} onChange={(e) => update('signature_left_label', e.target.value)} />
                 </label>
                 <label className="block text-sm">
-                  <span className="text-gray-600">Right Signature Label</span>
+                  <span className="text-muted-foreground">Right Signature Label</span>
                   <input className="w-full mt-1 border rounded px-3 py-2" value={form.signature_right_label} onChange={(e) => update('signature_right_label', e.target.value)} />
                 </label>
               </div>

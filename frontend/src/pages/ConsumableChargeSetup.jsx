@@ -235,7 +235,7 @@ export default function ConsumableChargeSetup() {
       <div className="bg-white border rounded-lg shadow-sm p-4 space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 items-end">
           <label className="text-sm space-y-1">
-            <div className="text-gray-700 font-medium">Used For / Job Type</div>
+            <div className="text-foreground/90 font-medium">Used For / Job Type</div>
             <select className="w-full border rounded-md px-3 py-2 text-sm" value={jobType} onChange={(e) => setJobType(e.target.value)}>
               {jobTypes.map((jt) => (
                 <option key={jt.code} value={`${jt.code} — ${jt.name}`}>
@@ -245,7 +245,7 @@ export default function ConsumableChargeSetup() {
             </select>
           </label>
           <label className="text-sm space-y-1">
-            <div className="text-gray-700 font-medium">Charge Code</div>
+            <div className="text-foreground/90 font-medium">Charge Code</div>
             <select
               className="w-full border rounded-md px-3 py-2 text-sm"
               value={chargeCode}
@@ -259,7 +259,7 @@ export default function ConsumableChargeSetup() {
             </select>
           </label>
           <label className="text-sm space-y-1">
-            <div className="text-gray-700 font-medium">Based On</div>
+            <div className="text-foreground/90 font-medium">Based On</div>
             <Input value={basedOn} onChange={(e) => setBasedOn(e.target.value)} placeholder="e.g. Labour amount, Parts total…" />
           </label>
         </div>
@@ -275,7 +275,7 @@ export default function ConsumableChargeSetup() {
 
         <div className="border-t pt-4 space-y-3">
           <div className="flex items-center justify-between gap-2">
-            <div className="text-base font-semibold text-gray-900">Consumable Rate</div>
+            <div className="text-base font-semibold text-foreground">Consumable Rate</div>
             <div className="flex gap-2">
               <Button type="button" variant="outline" onClick={addRow}>
                 Add tier
@@ -288,7 +288,7 @@ export default function ConsumableChargeSetup() {
           <div className="overflow-auto">
             <table className="min-w-[900px] w-full text-sm">
               <thead>
-                <tr className="text-left text-gray-600 border-b">
+                <tr className="text-left text-muted-foreground border-b">
                   <th className="py-2 pr-2">Consumable Charge Code</th>
                   <th className="py-2 pr-2">Amount From</th>
                   <th className="py-2 pr-2">Amount To</th>
@@ -298,13 +298,13 @@ export default function ConsumableChargeSetup() {
               <tbody>
                 {rates.length === 0 ? (
                   <tr>
-                    <td colSpan={4} className="py-6 text-gray-500">
+                    <td colSpan={4} className="py-6 text-muted-foreground">
                       No tiers yet — add a row and save.
                     </td>
                   </tr>
                 ) : (
                   rates.map((r, idx) => (
-                    <tr key={idx} className="border-b border-gray-100 hover:bg-gray-50 align-top">
+                    <tr key={idx} className="border-b border-border/60 hover:bg-muted/45 align-top">
                       <td className="py-2 pr-2 w-56">
                         <Input
                           value={r.consumable_charge_code}
@@ -350,8 +350,8 @@ export default function ConsumableChargeSetup() {
         </div>
 
         <div className="border-t pt-4">
-          <div className="text-base font-semibold text-gray-900 mb-2">Job Types</div>
-          <p className="text-sm text-gray-600">
+          <div className="text-base font-semibold text-foreground mb-2">Job Types</div>
+          <p className="text-sm text-muted-foreground">
             Job types are maintained under <span className="font-medium">Global Parameters → Job Type</span> (system settings
             category <span className="font-mono text-xs">job_type</span>).
           </p>

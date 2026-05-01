@@ -23,8 +23,8 @@ export default function GarageReportRun() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold text-gray-800">Generate Garage Report</h1>
-        <p className="text-sm text-gray-600">Run the report by ID (double click from listing table).</p>
+        <h1 className="text-2xl font-semibold text-foreground">Generate Garage Report</h1>
+        <p className="text-sm text-muted-foreground">Run the report by ID (double click from listing table).</p>
       </div>
 
       <Card>
@@ -37,11 +37,11 @@ export default function GarageReportRun() {
 
         <div className="px-6 pb-6 grid grid-cols-1 md:grid-cols-3 gap-3">
           <label className="block text-sm">
-            <span className="text-gray-600">From Date (optional)</span>
+            <span className="text-muted-foreground">From Date (optional)</span>
             <input type="date" className="w-full mt-1 border rounded px-3 py-2" value={fromDate} onChange={(e) => setFromDate(e.target.value)} />
           </label>
           <label className="block text-sm">
-            <span className="text-gray-600">To Date (optional)</span>
+            <span className="text-muted-foreground">To Date (optional)</span>
             <input type="date" className="w-full mt-1 border rounded px-3 py-2" value={toDate} onChange={(e) => setToDate(e.target.value)} />
           </label>
           <div className="md:pt-6 flex items-end gap-2">
@@ -51,7 +51,7 @@ export default function GarageReportRun() {
 
         {status && (
           <div className="px-6 pb-6">
-            <div className="text-sm text-gray-700 whitespace-pre-wrap">{status}</div>
+            <div className="text-sm text-foreground/90 whitespace-pre-wrap">{status}</div>
           </div>
         )}
       </Card>

@@ -134,13 +134,13 @@ function SystemSettings() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-semibold text-gray-800">System Settings</h1>
+        <h1 className="text-2xl font-semibold text-foreground">System Settings</h1>
       </div>
 
       <div className="bg-white shadow rounded-lg p-4 space-y-4">
         <div className="flex flex-wrap gap-3 items-end">
           <div>
-            <label className="text-xs font-medium text-gray-500 block mb-1">
+            <label className="text-xs font-medium text-muted-foreground block mb-1">
               Category
             </label>
             <select
@@ -157,7 +157,7 @@ function SystemSettings() {
           </div>
 
           <div>
-            <label className="text-xs font-medium text-gray-500 block mb-1">
+            <label className="text-xs font-medium text-muted-foreground block mb-1">
               Search
             </label>
             <input
@@ -180,7 +180,7 @@ function SystemSettings() {
           <button
             type="button"
             onClick={resetForm}
-            className="inline-flex items-center px-3 py-1.5 text-sm border rounded text-gray-700 hover:bg-gray-50"
+            className="inline-flex items-center px-3 py-1.5 text-sm border rounded text-foreground/90 hover:bg-muted/45"
           >
             New
           </button>
@@ -194,7 +194,7 @@ function SystemSettings() {
 
         <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-3 gap-4 border-t pt-4 mt-2">
           <div>
-            <label className="text-xs font-medium text-gray-500 block mb-1">
+            <label className="text-xs font-medium text-muted-foreground block mb-1">
               Key
             </label>
             <input
@@ -202,12 +202,12 @@ function SystemSettings() {
               value={form.setting_key}
               disabled={!!form.setting_id}
               onChange={(e) => setForm({ ...form, setting_key: e.target.value })}
-              className="border rounded px-2 py-1 w-full text-sm disabled:bg-gray-100"
+              className="border rounded px-2 py-1 w-full text-sm disabled:bg-muted"
               placeholder="e.g. ADDIS_MAIN_WORKSHOP"
             />
           </div>
           <div>
-            <label className="text-xs font-medium text-gray-500 block mb-1">
+            <label className="text-xs font-medium text-muted-foreground block mb-1">
               Category
             </label>
             <select
@@ -224,7 +224,7 @@ function SystemSettings() {
             </select>
           </div>
           <div>
-            <label className="text-xs font-medium text-gray-500 block mb-1">
+            <label className="text-xs font-medium text-muted-foreground block mb-1">
               Type
             </label>
             <input
@@ -236,7 +236,7 @@ function SystemSettings() {
             />
           </div>
           <div className="md:col-span-1">
-            <label className="text-xs font-medium text-gray-500 block mb-1">
+            <label className="text-xs font-medium text-muted-foreground block mb-1">
               Value
             </label>
             <input
@@ -248,7 +248,7 @@ function SystemSettings() {
             />
           </div>
           <div className="md:col-span-2">
-            <label className="text-xs font-medium text-gray-500 block mb-1">
+            <label className="text-xs font-medium text-muted-foreground block mb-1">
               Description
             </label>
             <input
@@ -272,33 +272,33 @@ function SystemSettings() {
 
       <div className="bg-white shadow rounded-lg overflow-hidden">
         <div className="px-4 py-2 border-b flex items-center justify-between">
-          <h2 className="text-sm font-semibold text-gray-700">
+          <h2 className="text-sm font-semibold text-foreground/90">
             Settings ({settings.length})
           </h2>
           {loading && (
-            <span className="text-xs text-gray-500">Loading...</span>
+            <span className="text-xs text-muted-foreground">Loading...</span>
           )}
         </div>
         <div className="overflow-x-auto">
           <table className="min-w-full text-sm">
-            <thead className="bg-gray-50">
+            <thead className="bg-muted/35">
               <tr>
-                <th className="px-3 py-2 text-left font-medium text-gray-500">
+                <th className="px-3 py-2 text-left font-medium text-muted-foreground">
                   Key
                 </th>
-                <th className="px-3 py-2 text-left font-medium text-gray-500">
+                <th className="px-3 py-2 text-left font-medium text-muted-foreground">
                   Category
                 </th>
-                <th className="px-3 py-2 text-left font-medium text-gray-500">
+                <th className="px-3 py-2 text-left font-medium text-muted-foreground">
                   Type
                 </th>
-                <th className="px-3 py-2 text-left font-medium text-gray-500">
+                <th className="px-3 py-2 text-left font-medium text-muted-foreground">
                   Value
                 </th>
-                <th className="px-3 py-2 text-left font-medium text-gray-500">
+                <th className="px-3 py-2 text-left font-medium text-muted-foreground">
                   Description
                 </th>
-                <th className="px-3 py-2 text-right font-medium text-gray-500">
+                <th className="px-3 py-2 text-right font-medium text-muted-foreground">
                   Actions
                 </th>
               </tr>
@@ -308,7 +308,7 @@ function SystemSettings() {
                 <tr>
                   <td
                     colSpan={6}
-                    className="px-3 py-4 text-center text-gray-500"
+                    className="px-3 py-4 text-center text-muted-foreground"
                   >
                     No settings found.
                   </td>
@@ -320,17 +320,17 @@ function SystemSettings() {
                     {s.setting_key}
                   </td>
                   <td className="px-3 py-2">
-                    <span className="inline-flex items-center px-2 py-0.5 rounded text-xs bg-gray-100 text-gray-700">
+                    <span className="inline-flex items-center px-2 py-0.5 rounded text-xs bg-muted text-foreground">
                       {s.category || '-'}
                     </span>
                   </td>
-                  <td className="px-3 py-2 text-xs text-gray-600">
+                  <td className="px-3 py-2 text-xs text-muted-foreground">
                     {s.setting_type || '-'}
                   </td>
-                  <td className="px-3 py-2 text-xs text-gray-800">
+                  <td className="px-3 py-2 text-xs text-foreground">
                     {s.setting_value || ''}
                   </td>
-                  <td className="px-3 py-2 text-xs text-gray-600">
+                  <td className="px-3 py-2 text-xs text-muted-foreground">
                     {s.description || ''}
                   </td>
                   <td className="px-3 py-2 text-right">

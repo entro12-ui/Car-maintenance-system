@@ -1,6 +1,23 @@
 import { useEffect, useMemo, useState } from 'react'
+import { Plus, Printer, Pencil, RefreshCw, Trash2 } from 'lucide-react'
 import { systemSettingsApi } from '../services/api'
 import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Select } from '@/components/ui/select'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
+import { PageHeader } from '@/components/PageChrome'
+import { SortableTableHead, TableSearchBar } from '@/components/ui/sortable-table'
+import { useClientTableSortFilter } from '@/lib/tableSortFilter'
+import { cn } from '@/lib/utils'
 
 const TABS = [
   { id: 'vehicle_model_group', label: 'Model Group', showJobType: true },
@@ -46,6 +63,33 @@ export default function VehicleModelSetup() {
   const [form, setForm] = useState(initialForm(TABS[0].id))
 
   const tabMeta = useMemo(() => TABS.find((t) => t.id === tab) || TABS[0], [tab])
+
+  const tableColCount = useMemo(
+    () => 4 + (tabMeta.showJobType ? 1 : 0) + (tabMeta.showModelGroupAndJobType ? 2 : 0),
+    [tabMeta]
+  )
+
+  const searchFields = useMemo(
+    () => [(r) => `${r.setting_key || ''} ${r.setting_value || ''} ${r.description || ''}`],
+    []
+  )
+
+  const sortAccessors = useMemo(
+    () => ({
+      code: (r) => r.setting_key || '',
+      description: (r) => r.setting_value || '',
+      jobCol: (r) => (tabMeta.showJobType ? r.description || '' : ''),
+      modelGroup: (r) => (tabMeta.showModelGroupAndJobType ? parseModelMeta(r.description).model_group : ''),
+      jobTypeModel: (r) => (tabMeta.showModelGroupAndJobType ? parseModelMeta(r.description).job_type : ''),
+    }),
+    [tabMeta]
+  )
+
+  const { query, setQuery, sort, toggleSort, items: displayRows } = useClientTableSortFilter(
+    rows,
+    searchFields,
+    sortAccessors
+  )
 
   const load = async (category = tab) => {
     setLoading(true)
@@ -145,119 +189,118 @@ export default function VehicleModelSetup() {
   }
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between flex-wrap gap-3">
-        <div>
-          <h1 className="text-2xl font-semibold text-gray-900">Vehicle Model Setup</h1>
-          <p className="text-sm text-gray-600">
-            Setup model groups, models, repair sections and maintenance sections used by garage operations.
+    <div className="space-y-8">
+      <PageHeader
+        eyebrow="Maintenance"
+        title="Vehicle model setup"
+        description="Maintain model groups, vehicle models, repair sections, and maintenance sections used by garage operations."
+        actions={
+          <>
+            <Button type="button" className="gap-2 shadow-md shadow-primary/15" onClick={() => setForm(initialForm(tab))}>
+              <Plus className="h-4 w-4" />
+              Add record
+            </Button>
+            <Button type="button" variant="outline" className="gap-2" onClick={() => window.print()}>
+              <Printer className="h-4 w-4" />
+              Print preview
+            </Button>
+            <Button type="button" variant="outline" className="gap-2" onClick={() => load(tab)} disabled={loading}>
+              <RefreshCw className={cn('h-4 w-4', loading && 'animate-spin')} />
+              Refresh
+            </Button>
+          </>
+        }
+      />
+
+      {error ? (
+        <div
+          role="alert"
+          className="rounded-xl border border-destructive/35 bg-destructive/10 px-4 py-3 text-sm text-destructive"
+        >
+          {error}
+        </div>
+      ) : null}
+      {success ? (
+        <div
+          role="status"
+          className="rounded-xl border border-emerald-300/50 bg-emerald-50/90 px-4 py-3 text-sm text-emerald-900"
+        >
+          {success}
+        </div>
+      ) : null}
+
+      {tab === 'car_model' ? (
+        <div className="rounded-xl border border-primary/20 bg-gradient-to-br from-primary/[0.07] via-transparent to-teal-500/[0.05] p-4 text-sm leading-relaxed shadow-sm sm:p-5">
+          <p className="font-medium text-foreground">Model setup</p>
+          <p className="mt-2 text-muted-foreground">
+            Maintain model codes and descriptions, then map each model to a model group and job type.
           </p>
         </div>
-        <div className="flex items-center gap-2">
-          <span className="text-sm text-blue-700 hidden sm:inline">Ready</span>
-          <Button type="button" variant="outline" onClick={() => setForm(initialForm(tab))}>Add New Record</Button>
-          <Button type="button" variant="outline" onClick={() => window.print()}>Print Preview</Button>
-          <Button type="button" variant="outline" onClick={() => load(tab)}>Refresh</Button>
-        </div>
-      </div>
-
-      {error && <div className="rounded border border-red-200 bg-red-50 text-red-700 px-3 py-2 text-sm">{error}</div>}
-      {success && <div className="rounded border border-green-200 bg-green-50 text-green-700 px-3 py-2 text-sm">{success}</div>}
-
-      {tab === 'car_model' && (
-        <div className="rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm text-slate-700">
-          <p className="font-semibold text-slate-900">Model Setup Guidance</p>
-          <p className="mt-1">
-            Use this tab to maintain model codes and descriptions, then map each model to a model group and job type.
+      ) : null}
+      {tab === 'repair_section' ? (
+        <div className="rounded-xl border border-primary/20 bg-gradient-to-br from-primary/[0.07] via-transparent to-teal-500/[0.05] p-4 text-sm leading-relaxed shadow-sm sm:p-5">
+          <p className="font-medium text-foreground">Repair section</p>
+          <p className="mt-2 text-muted-foreground">
+            Definitions used during job order processing and related pricing logic.
           </p>
         </div>
-      )}
-      {tab === 'repair_section' && (
-        <div className="rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm text-slate-700">
-          <p className="font-semibold text-slate-900">Repair Section Setup Guidance</p>
-          <p className="mt-1">
-            Use this tab to maintain repair section definitions used during job order processing and related pricing logic.
-          </p>
-        </div>
-      )}
+      ) : null}
 
-      <div className="bg-white border rounded-lg shadow-sm">
-        <div className="flex flex-wrap border-b bg-slate-50/80">
+      <Card className="overflow-hidden shadow-none hover:translate-y-0">
+        <div className="flex flex-wrap gap-1 border-b border-border/55 bg-muted/35 p-1.5">
           {TABS.map((t) => (
             <button
               key={t.id}
               type="button"
               onClick={() => setTab(t.id)}
-              className={`px-4 py-2.5 text-sm font-medium border-b-2 -mb-px ${
-                tab === t.id ? 'border-indigo-600 text-indigo-700 bg-white' : 'border-transparent text-gray-600'
-              }`}
+              className={cn(
+                'rounded-lg px-4 py-2 text-sm font-semibold transition-all duration-200',
+                tab === t.id
+                  ? 'bg-card text-primary shadow-sm ring-1 ring-primary/25'
+                  : 'text-muted-foreground hover:bg-muted/70 hover:text-foreground'
+              )}
             >
               {t.label}
             </button>
           ))}
         </div>
 
-        <div className="p-4 space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-3 border rounded p-3 bg-slate-50/60">
-            <label className="text-xs">
-              <span className="text-gray-600">Code</span>
-              <input
-                className="w-full mt-1 border rounded px-2 py-1.5 text-sm disabled:bg-gray-100"
-                value={form.code}
-                disabled={!!form.setting_id}
-                onChange={(e) => setForm((p) => ({ ...p, code: e.target.value }))}
-                placeholder="e.g. SZ01"
-              />
-            </label>
-            <label className="text-xs">
-              <span className="text-gray-600">Description</span>
-              <input
-                className="w-full mt-1 border rounded px-2 py-1.5 text-sm"
-                value={form.description}
-                onChange={(e) => setForm((p) => ({ ...p, description: e.target.value }))}
-                placeholder="e.g. Suzuki Alto"
-              />
-            </label>
-            {tabMeta.showJobType ? (
-              <label className="text-xs">
-                <span className="text-gray-600">Job Type</span>
-                <select
-                  className="w-full mt-1 border rounded px-2 py-1.5 text-sm"
-                  value={form.job_type}
-                  onChange={(e) => setForm((p) => ({ ...p, job_type: e.target.value }))}
-                >
-                  <option value="">Select job type</option>
-                  {jobTypes.map((j) => (
-                    <option key={j.setting_id} value={j.setting_value || j.setting_key}>
-                      {j.setting_value || j.setting_key}
-                    </option>
-                  ))}
-                </select>
-              </label>
-            ) : (
-              <div />
-            )}
-            {tabMeta.showModelGroupAndJobType ? (
-              <>
-                <label className="text-xs">
-                  <span className="text-gray-600">Model Group</span>
-                  <select
-                    className="w-full mt-1 border rounded px-2 py-1.5 text-sm"
-                    value={form.model_group}
-                    onChange={(e) => setForm((p) => ({ ...p, model_group: e.target.value }))}
-                  >
-                    <option value="">Select model group</option>
-                    {modelGroups.map((m) => (
-                      <option key={m.setting_id} value={m.setting_value || m.setting_key}>
-                        {m.setting_value || m.setting_key}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-                <label className="text-xs">
-                  <span className="text-gray-600">Job Type</span>
-                  <select
-                    className="w-full mt-1 border rounded px-2 py-1.5 text-sm"
+        <CardContent className="space-y-6 p-5 sm:p-6">
+          <div className="rounded-xl border border-border/55 bg-muted/20 p-4 sm:p-5">
+            <p className="mb-4 text-[11px] font-semibold uppercase tracking-wide text-primary">
+              {form.setting_id ? 'Edit record' : 'New record'}
+            </p>
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
+              <div className="space-y-2">
+                <Label htmlFor="vm-code">Code</Label>
+                <Input
+                  id="vm-code"
+                  value={form.code}
+                  disabled={!!form.setting_id}
+                  onChange={(e) => setForm((p) => ({ ...p, code: e.target.value }))}
+                  placeholder="e.g. SZ01"
+                  className="font-mono text-sm"
+                />
+              </div>
+              <div
+                className={cn(
+                  'space-y-2 md:col-span-2',
+                  !tabMeta.showJobType && !tabMeta.showModelGroupAndJobType && 'xl:col-span-3'
+                )}
+              >
+                <Label htmlFor="vm-desc">Description</Label>
+                <Input
+                  id="vm-desc"
+                  value={form.description}
+                  onChange={(e) => setForm((p) => ({ ...p, description: e.target.value }))}
+                  placeholder="e.g. Suzuki Alto"
+                />
+              </div>
+              {tabMeta.showJobType ? (
+                <div className="space-y-2">
+                  <Label htmlFor="vm-job-type">Job type</Label>
+                  <Select
+                    id="vm-job-type"
                     value={form.job_type}
                     onChange={(e) => setForm((p) => ({ ...p, job_type: e.target.value }))}
                   >
@@ -267,84 +310,142 @@ export default function VehicleModelSetup() {
                         {j.setting_value || j.setting_key}
                       </option>
                     ))}
-                  </select>
-                </label>
-              </>
-            ) : null}
-            <div className="flex items-end gap-2">
+                  </Select>
+                </div>
+              ) : null}
+              {tabMeta.showModelGroupAndJobType ? (
+                <>
+                  <div className="space-y-2">
+                    <Label htmlFor="vm-model-group">Model group</Label>
+                    <Select
+                      id="vm-model-group"
+                      value={form.model_group}
+                      onChange={(e) => setForm((p) => ({ ...p, model_group: e.target.value }))}
+                    >
+                      <option value="">Select model group</option>
+                      {modelGroups.map((m) => (
+                        <option key={m.setting_id} value={m.setting_value || m.setting_key}>
+                          {m.setting_value || m.setting_key}
+                        </option>
+                      ))}
+                    </Select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="vm-job-type-2">Job type</Label>
+                    <Select
+                      id="vm-job-type-2"
+                      value={form.job_type}
+                      onChange={(e) => setForm((p) => ({ ...p, job_type: e.target.value }))}
+                    >
+                      <option value="">Select job type</option>
+                      {jobTypes.map((j) => (
+                        <option key={j.setting_id} value={j.setting_value || j.setting_key}>
+                          {j.setting_value || j.setting_key}
+                        </option>
+                      ))}
+                    </Select>
+                  </div>
+                </>
+              ) : null}
+            </div>
+            <div className="mt-5 flex flex-wrap gap-2">
               <Button type="button" onClick={onSave} disabled={saving || loading}>
-                {saving ? 'Saving…' : (form.setting_id ? 'Update' : 'Save')}
+                {saving ? 'Saving…' : form.setting_id ? 'Update' : 'Save'}
               </Button>
-              {form.setting_id && (
+              {form.setting_id ? (
                 <Button type="button" variant="outline" onClick={() => setForm(initialForm(tab))}>
                   Clear
                 </Button>
-              )}
+              ) : null}
             </div>
           </div>
 
-          <div className="overflow-x-auto border rounded">
-            <table className="min-w-full text-sm">
-              <thead className="bg-gray-100 text-xs text-gray-600 uppercase">
-                <tr>
-                  <th className="px-2 py-2 text-left">No</th>
-                  <th className="px-2 py-2 text-left">{tabMeta.label}</th>
-                  <th className="px-2 py-2 text-left">Description</th>
-                  {tabMeta.showJobType && <th className="px-2 py-2 text-left">Job Type</th>}
-                  {tabMeta.showModelGroupAndJobType && (
+          <div className="overflow-hidden rounded-xl border border-border/60">
+            <div className="border-b border-border/50 px-3 py-3 sm:px-4">
+              <TableSearchBar
+                value={query}
+                onChange={setQuery}
+                placeholder="Filter by code, description, job fields…"
+                className="mb-0 max-w-none"
+              />
+            </div>
+            <Table shell="embed">
+              <TableHeader>
+                <TableRow className="hover:bg-transparent">
+                  <TableHead className="w-12">No</TableHead>
+                  <SortableTableHead columnKey="code" sort={sort} onSort={toggleSort}>
+                    {tabMeta.label}
+                  </SortableTableHead>
+                  <SortableTableHead columnKey="description" sort={sort} onSort={toggleSort}>
+                    Description
+                  </SortableTableHead>
+                  {tabMeta.showJobType ? (
+                    <SortableTableHead columnKey="jobCol" sort={sort} onSort={toggleSort}>
+                      Job type
+                    </SortableTableHead>
+                  ) : null}
+                  {tabMeta.showModelGroupAndJobType ? (
                     <>
-                      <th className="px-2 py-2 text-left">Model Group</th>
-                      <th className="px-2 py-2 text-left">Job Type</th>
+                      <SortableTableHead columnKey="modelGroup" sort={sort} onSort={toggleSort}>
+                        Model group
+                      </SortableTableHead>
+                      <SortableTableHead columnKey="jobTypeModel" sort={sort} onSort={toggleSort}>
+                        Job type
+                      </SortableTableHead>
                     </>
-                  )}
-                  <th className="px-2 py-2 text-right">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {rows.length === 0 ? (
-                  <tr>
-                    <td
-                      colSpan={tabMeta.showJobType ? 5 : (tabMeta.showModelGroupAndJobType ? 7 : 4)}
-                      className="px-3 py-6 text-center text-gray-500"
-                    >
-                      {loading ? 'Loading…' : 'No records yet.'}
-                    </td>
-                  </tr>
+                  ) : null}
+                  <TableHead className="text-right">Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {displayRows.length === 0 ? (
+                  <TableRow>
+                    <TableCell colSpan={tableColCount} className="py-12 text-center text-muted-foreground">
+                      {loading ? 'Loading…' : rows.length === 0 ? 'No records yet.' : 'No matching records.'}
+                    </TableCell>
+                  </TableRow>
                 ) : (
-                  rows.map((r, idx) => (
-                    <tr key={r.setting_id} className="border-t">
-                      {(() => {
-                        const modelMeta = tabMeta.showModelGroupAndJobType ? parseModelMeta(r.description) : null
-                        return (
+                  displayRows.map((r, idx) => {
+                    const modelMeta = tabMeta.showModelGroupAndJobType ? parseModelMeta(r.description) : null
+                    return (
+                      <TableRow key={r.setting_id}>
+                        <TableCell className="tabular-nums text-muted-foreground">{idx + 1}</TableCell>
+                        <TableCell className="font-mono text-sm font-semibold">{r.setting_key}</TableCell>
+                        <TableCell>{r.setting_value || '—'}</TableCell>
+                        {tabMeta.showJobType ? <TableCell>{r.description || '—'}</TableCell> : null}
+                        {tabMeta.showModelGroupAndJobType ? (
                           <>
-                      <td className="px-2 py-2">{idx + 1}</td>
-                      <td className="px-2 py-2 font-mono">{r.setting_key}</td>
-                      <td className="px-2 py-2">{r.setting_value || '-'}</td>
-                      {tabMeta.showJobType && <td className="px-2 py-2">{r.description || '-'}</td>}
-                      {tabMeta.showModelGroupAndJobType && (
-                        <>
-                          <td className="px-2 py-2">{modelMeta?.model_group || '-'}</td>
-                          <td className="px-2 py-2">{modelMeta?.job_type || '-'}</td>
-                        </>
-                      )}
-                      <td className="px-2 py-2 text-right">
-                        <div className="inline-flex gap-2">
-                          <Button type="button" size="sm" variant="outline" onClick={() => onEdit(r)}>Edit</Button>
-                          <Button type="button" size="sm" variant="destructive" onClick={() => onDelete(r.setting_id)}>Delete</Button>
-                        </div>
-                      </td>
+                            <TableCell>{modelMeta?.model_group || '—'}</TableCell>
+                            <TableCell>{modelMeta?.job_type || '—'}</TableCell>
                           </>
-                        )
-                      })()}
-                    </tr>
-                  ))
+                        ) : null}
+                        <TableCell className="text-right">
+                          <div className="flex justify-end gap-1">
+                            <Button type="button" size="sm" variant="ghost" className="gap-1 text-primary" onClick={() => onEdit(r)}>
+                              <Pencil className="h-3.5 w-3.5" />
+                              Edit
+                            </Button>
+                            <Button
+                              type="button"
+                              size="sm"
+                              variant="ghost"
+                              className="gap-1 text-destructive hover:bg-destructive/10"
+                              onClick={() => onDelete(r.setting_id)}
+                            >
+                              <Trash2 className="h-3.5 w-3.5" />
+                              Delete
+                            </Button>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    )
+                  })
                 )}
-              </tbody>
-            </table>
+              </TableBody>
+            </Table>
           </div>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
     </div>
   )
 }
-

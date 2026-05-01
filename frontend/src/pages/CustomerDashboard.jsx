@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import { customerApi } from '../services/api'
 import { Car, Wrench, DollarSign, Calendar, AlertTriangle, Plus } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import LoadingSpinner from '@/components/LoadingSpinner'
 
 export default function CustomerDashboard() {
   const { data: summary, isLoading: summaryLoading } = useQuery({
@@ -17,11 +18,9 @@ export default function CustomerDashboard() {
 
   if (summaryLoading || servicesLoading) {
     return (
-      <div className="flex justify-center items-center h-64">
-        <div className="flex flex-col items-center gap-4">
-          <div className="h-12 w-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin" />
-          <p className="text-muted-foreground">Loading your dashboard...</p>
-        </div>
+      <div className="flex min-h-[320px] flex-col items-center justify-center gap-4 rounded-2xl border border-dashed border-border/80 bg-card/40 py-16">
+        <LoadingSpinner size="lg" />
+        <p className="text-sm font-medium text-muted-foreground">Loading your dashboard…</p>
       </div>
     )
   }
@@ -32,69 +31,69 @@ export default function CustomerDashboard() {
     <div className="space-y-6 animate-fade-in">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
-            My Dashboard
+          <h1 className="font-display text-2xl font-bold tracking-tight text-foreground sm:text-3xl lg:text-4xl">
+            My dashboard
           </h1>
-          <p className="text-sm sm:text-base text-muted-foreground mt-1">
-            Welcome back! Here's your service overview.
+          <p className="mt-1 text-sm text-muted-foreground sm:text-base">
+            Welcome back — here&apos;s your service overview.
           </p>
         </div>
       </div>
 
       {/* Summary Cards */}
       <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-        <div className="bg-card rounded-xl shadow-sm border p-4 sm:p-6 hover:shadow-md transition-all duration-200 group">
+        <div className="group rounded-2xl border border-border/70 bg-card p-4 shadow-sm transition-all duration-300 hover:border-primary/20 hover:shadow-md hover:shadow-primary/[0.06] sm:p-6">
           <div className="flex items-center justify-between">
-            <div className="flex-1 min-w-0">
-              <p className="text-muted-foreground text-xs sm:text-sm font-medium">Total Payments</p>
-              <p className="text-xl sm:text-2xl lg:text-3xl font-bold mt-2 text-foreground">
+            <div className="min-w-0 flex-1">
+              <p className="text-xs font-medium text-muted-foreground sm:text-sm">Total payments</p>
+              <p className="mt-2 font-display text-xl font-bold text-foreground sm:text-2xl lg:text-3xl">
                 ETB {summary?.data?.total_payments?.toLocaleString() || '0'}
               </p>
             </div>
-            <div className="ml-4 p-3 rounded-lg bg-green-500/10 group-hover:bg-green-500/20 transition-colors">
-              <DollarSign className="text-green-600" size={24} />
+            <div className="ml-4 rounded-xl bg-emerald-500/12 p-3 transition-colors group-hover:bg-emerald-500/18">
+              <DollarSign className="text-emerald-600" size={24} strokeWidth={2} />
             </div>
           </div>
         </div>
 
-        <div className="bg-card rounded-xl shadow-sm border p-4 sm:p-6 hover:shadow-md transition-all duration-200 group">
+        <div className="group rounded-2xl border border-border/70 bg-card p-4 shadow-sm transition-all duration-300 hover:border-primary/20 hover:shadow-md hover:shadow-primary/[0.06] sm:p-6">
           <div className="flex items-center justify-between">
-            <div className="flex-1 min-w-0">
-              <p className="text-muted-foreground text-xs sm:text-sm font-medium">Vehicles</p>
-              <p className="text-xl sm:text-2xl lg:text-3xl font-bold mt-2 text-foreground">
+            <div className="min-w-0 flex-1">
+              <p className="text-xs font-medium text-muted-foreground sm:text-sm">Vehicles</p>
+              <p className="mt-2 font-display text-xl font-bold text-foreground sm:text-2xl lg:text-3xl">
                 {summary?.data?.vehicles_count || 0}
               </p>
             </div>
-            <div className="ml-4 p-3 rounded-lg bg-blue-500/10 group-hover:bg-blue-500/20 transition-colors">
-              <Car className="text-blue-600" size={24} />
+            <div className="ml-4 rounded-xl bg-teal-500/12 p-3 transition-colors group-hover:bg-teal-500/18">
+              <Car className="text-teal-600" size={24} strokeWidth={2} />
             </div>
           </div>
         </div>
 
-        <div className="bg-card rounded-xl shadow-sm border p-4 sm:p-6 hover:shadow-md transition-all duration-200 group">
+        <div className="group rounded-2xl border border-border/70 bg-card p-4 shadow-sm transition-all duration-300 hover:border-primary/20 hover:shadow-md hover:shadow-primary/[0.06] sm:p-6">
           <div className="flex items-center justify-between">
-            <div className="flex-1 min-w-0">
-              <p className="text-muted-foreground text-xs sm:text-sm font-medium">Total Services</p>
-              <p className="text-xl sm:text-2xl lg:text-3xl font-bold mt-2 text-foreground">
+            <div className="min-w-0 flex-1">
+              <p className="text-xs font-medium text-muted-foreground sm:text-sm">Total services</p>
+              <p className="mt-2 font-display text-xl font-bold text-foreground sm:text-2xl lg:text-3xl">
                 {summary?.data?.total_services || 0}
               </p>
             </div>
-            <div className="ml-4 p-3 rounded-lg bg-purple-500/10 group-hover:bg-purple-500/20 transition-colors">
-              <Wrench className="text-purple-600" size={24} />
+            <div className="ml-4 rounded-xl bg-violet-500/12 p-3 transition-colors group-hover:bg-violet-500/18">
+              <Wrench className="text-violet-600" size={24} strokeWidth={2} />
             </div>
           </div>
         </div>
 
-        <div className="bg-card rounded-xl shadow-sm border p-4 sm:p-6 hover:shadow-md transition-all duration-200 group border-red-200/50">
+        <div className="group rounded-2xl border border-rose-200/60 bg-card p-4 shadow-sm ring-1 ring-rose-500/10 transition-all duration-300 hover:shadow-md sm:p-6">
           <div className="flex items-center justify-between">
-            <div className="flex-1 min-w-0">
-              <p className="text-muted-foreground text-xs sm:text-sm font-medium">Services Due</p>
-              <p className="text-xl sm:text-2xl lg:text-3xl font-bold mt-2 text-red-600">
+            <div className="min-w-0 flex-1">
+              <p className="text-xs font-medium text-muted-foreground sm:text-sm">Services due</p>
+              <p className="mt-2 font-display text-xl font-bold text-rose-600 sm:text-2xl lg:text-3xl">
                 {dueServices.length}
               </p>
             </div>
-            <div className="ml-4 p-3 rounded-lg bg-red-500/10 group-hover:bg-red-500/20 transition-colors">
-              <AlertTriangle className="text-red-600" size={24} />
+            <div className="ml-4 rounded-xl bg-rose-500/12 p-3 transition-colors group-hover:bg-rose-500/18">
+              <AlertTriangle className="text-rose-600" size={24} strokeWidth={2} />
             </div>
           </div>
         </div>
@@ -134,11 +133,11 @@ export default function CustomerDashboard() {
           <div className="space-y-3">
             {dueServices.map((service, index) => (
               <div key={index} className="bg-white rounded-lg p-4">
-                <p className="font-semibold text-gray-800">{service.vehicle}</p>
-                <p className="text-sm text-gray-600">
+                <p className="font-semibold text-foreground">{service.vehicle}</p>
+                <p className="text-sm text-muted-foreground">
                   {service.remaining_km.toLocaleString()} km remaining until next service
                 </p>
-                <p className="text-sm text-gray-500 mt-1">
+                <p className="text-sm text-muted-foreground mt-1">
                   Next service at: {service.next_service_mileage.toLocaleString()} km
                 </p>
               </div>
@@ -157,25 +156,25 @@ export default function CustomerDashboard() {
         </div>
         <div className="space-y-4">
           {services?.data?.slice(0, 5).map((service) => (
-            <div key={service.service_id} className="border-b border-gray-200 pb-4 last:border-0">
+            <div key={service.service_id} className="border-b border-border pb-4 last:border-0">
               <div className="flex justify-between items-start">
                 <div>
-                  <p className="font-semibold text-gray-800">
+                  <p className="font-semibold text-foreground">
                     {service.vehicle.make} {service.vehicle.model} ({service.vehicle.license_plate})
                   </p>
-                  <p className="text-sm text-gray-600">{service.service_type}</p>
-                  <p className="text-sm text-gray-500">
+                  <p className="text-sm text-muted-foreground">{service.service_type}</p>
+                  <p className="text-sm text-muted-foreground">
                     {new Date(service.service_date).toLocaleDateString()} • 
                     {service.mileage_at_service.toLocaleString()} km
                   </p>
                   {service.parts.length > 0 && (
-                    <p className="text-xs text-gray-500 mt-1">
+                    <p className="text-xs text-muted-foreground mt-1">
                       Parts: {service.parts.filter(p => p.was_replaced).length} replaced
                     </p>
                   )}
                 </div>
                 <div className="text-right">
-                  <p className="font-semibold text-gray-800">
+                  <p className="font-semibold text-foreground">
                     ETB {service.grand_total.toLocaleString()}
                   </p>
                   <span className={`text-xs px-2 py-1 rounded-full ${
@@ -190,7 +189,7 @@ export default function CustomerDashboard() {
             </div>
           ))}
           {(!services?.data || services.data.length === 0) && (
-            <p className="text-gray-500 text-center py-8">No services yet</p>
+            <p className="text-muted-foreground text-center py-8">No services yet</p>
           )}
         </div>
       </div>

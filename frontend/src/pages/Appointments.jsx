@@ -1,14 +1,20 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { appointmentsApi, serviceTypesApi } from '../services/api'
-import { Plus, Calendar, Clock, CheckCircle, XCircle, Filter, Search } from 'lucide-react'
+import { Plus, Clock, Filter } from 'lucide-react'
 import { format } from 'date-fns'
 import CreateAppointmentModal from '../components/CreateAppointmentModal'
+import { PageHeader, PageLoading } from '@/components/PageChrome'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { DataTableShell } from '@/components/ui/table'
+import { SortableTh, TableSearchBar } from '@/components/ui/sortable-table'
+import { useClientTableSortFilter } from '@/lib/tableSortFilter'
 
 export default function Appointments() {
   const [selectedDate, setSelectedDate] = useState('')
   const [statusFilter, setStatusFilter] = useState('')
-  const [searchTerm, setSearchTerm] = useState('')
   const [isModalOpen, setIsModalOpen] = useState(false)
   const queryClient = useQueryClient()
 
@@ -43,64 +49,82 @@ export default function Appointments() {
   })
 
   if (isLoading) {
-    return <div className="flex justify-center items-center h-64">Loading...</div>
+    return <PageLoading label="Loading appointments…" />
   }
+
+  const searchFields = useMemo(
+    () => [
+      (apt) =>
+        `${apt.vehicle?.customer?.first_name || ''} ${apt.vehicle?.customer?.last_name || ''} ${apt.vehicle?.customer?.phone || ''} ${apt.vehicle?.license_plate || ''} ${apt.vehicle?.make || ''} ${apt.vehicle?.model || ''} ${apt.service_type?.type_name || ''} ${apt.status || ''}`,
+    ],
+    []
+  )
+
+  const sortAccessors = useMemo(
+    () => ({
+      customer: (a) =>
+        `${a.vehicle?.customer?.first_name || ''} ${a.vehicle?.customer?.last_name || ''}`.trim(),
+      vehicle: (a) =>
+        `${a.vehicle?.license_plate || ''} ${a.vehicle?.make || ''} ${a.vehicle?.model || ''}`.trim(),
+      service: (a) => a.service_type?.type_name || '',
+      date: (a) => a.scheduled_date || '',
+      time: (a) => String(a.scheduled_time ?? ''),
+      status: (a) => a.status || '',
+    }),
+    []
+  )
+
+  const { query, setQuery, sort, toggleSort, items: tableRows } = useClientTableSortFilter(
+    appointments || [],
+    searchFields,
+    sortAccessors
+  )
 
   const statusColors = {
     Scheduled: 'bg-blue-100 text-blue-800',
     'In Progress': 'bg-yellow-100 text-yellow-800',
     Completed: 'bg-green-100 text-green-800',
     Cancelled: 'bg-red-100 text-red-800',
-    'No Show': 'bg-gray-100 text-gray-800',
+    'No Show': 'bg-muted text-foreground',
   }
 
-  // Filter appointments by search term
-  const filteredAppointments = appointments?.filter((apt) => {
-    const customerName = `${apt.vehicle?.customer?.first_name || ''} ${apt.vehicle?.customer?.last_name || ''}`.toLowerCase()
-    const vehicleInfo = `${apt.vehicle?.license_plate || ''} ${apt.vehicle?.make || ''} ${apt.vehicle?.model || ''}`.toLowerCase()
-    const serviceType = apt.service_type?.type_name?.toLowerCase() || ''
-    const searchLower = searchTerm.toLowerCase()
-    
-    return (
-      customerName.includes(searchLower) ||
-      vehicleInfo.includes(searchLower) ||
-      serviceType.includes(searchLower)
-    )
-  }) || []
-
   return (
-    <div>
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold text-gray-800">Appointments</h1>
-        <button 
-          onClick={() => setIsModalOpen(true)}
-          className="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 flex items-center space-x-2"
-        >
-          <Plus size={20} />
-          <span>New Appointment</span>
-        </button>
-      </div>
+    <div className="space-y-8">
+      <PageHeader
+        eyebrow="Scheduling"
+        title="Appointments"
+        description="Review today’s queue, filter the master list, and progress visits from scheduled through completion."
+        actions={
+          <Button type="button" className="gap-2 shadow-md shadow-primary/15" onClick={() => setIsModalOpen(true)}>
+            <Plus size={20} />
+            New appointment
+          </Button>
+        }
+      />
 
       <CreateAppointmentModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
 
       {/* Today's Appointments Summary */}
       {todayAppointments?.data && todayAppointments.data.length > 0 && (
-        <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-          <h2 className="text-xl font-semibold mb-4">Today's Appointments</h2>
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-lg">Today&apos;s appointments</CardTitle>
+          </CardHeader>
+          <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {todayAppointments.data.map((apt) => (
-              <div key={apt.appointment_id} className="border border-gray-200 rounded-lg p-4">
+              <div key={apt.appointment_id} className="border border-border rounded-lg p-4">
                 <div className="flex justify-between items-start mb-2">
                   <div>
-                    <p className="font-semibold text-gray-800">{apt.customer_name}</p>
-                    <p className="text-sm text-gray-600">{apt.license_plate}</p>
+                    <p className="font-semibold text-foreground">{apt.customer_name}</p>
+                    <p className="text-sm text-muted-foreground">{apt.license_plate}</p>
                   </div>
-                  <span className={`px-2 py-1 rounded-full text-xs ${statusColors[apt.status] || 'bg-gray-100'}`}>
+                  <span className={`px-2 py-1 rounded-full text-xs ${statusColors[apt.status] || 'bg-muted'}`}>
                     {apt.status}
                   </span>
                 </div>
-                <p className="text-sm text-gray-600 mb-2">{apt.service_type}</p>
-                <div className="flex items-center space-x-2 text-sm text-gray-500">
+                <p className="text-sm text-muted-foreground mb-2">{apt.service_type}</p>
+                <div className="flex items-center space-x-2 text-sm text-muted-foreground">
                   <Clock size={16} />
                   <span>{apt.scheduled_time}</span>
                 </div>
@@ -125,41 +149,33 @@ export default function Appointments() {
               </div>
             ))}
           </div>
-        </div>
+          </CardContent>
+        </Card>
       )}
 
       {/* All Appointments */}
-      <div className="bg-white rounded-lg shadow-md p-6">
-        <div className="mb-6">
-          <h2 className="text-xl font-semibold mb-4">All Appointments</h2>
-          
+      <Card>
+        <CardHeader className="pb-2">
+          <CardTitle className="text-lg">All appointments</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6">
           {/* Filters */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
-              <input
-                type="text"
-                placeholder="Search by customer, vehicle, or service..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
-              />
-            </div>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+            <TableSearchBar
+              value={query}
+              onChange={setQuery}
+              placeholder="Filter list by customer, vehicle, service, status…"
+              className="mb-0 max-w-none md:col-span-1"
+            />
             <div>
-              <input
-                type="date"
-                value={selectedDate}
-                onChange={(e) => setSelectedDate(e.target.value)}
-                placeholder="Filter by date"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
-              />
+              <Input type="date" value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)} />
             </div>
-            <div className="flex items-center space-x-2">
-              <Filter size={20} className="text-gray-600" />
+            <div className="flex items-center gap-2">
+              <Filter size={20} className="shrink-0 text-muted-foreground" />
               <select
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
-                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+                className="flex h-11 w-full flex-1 rounded-xl border border-input bg-background px-4 text-sm shadow-[inset_0_1px_2px_rgba(15,23,42,0.04)] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500/30"
               >
                 <option value="">All Statuses</option>
                 <option value="Scheduled">Scheduled</option>
@@ -172,66 +188,84 @@ export default function Appointments() {
           </div>
 
           {/* Clear Filters */}
-          {(selectedDate || statusFilter || searchTerm) && (
-            <button
+          {(selectedDate || statusFilter || query) && (
+            <Button
+              type="button"
+              variant="ghost"
+              className="h-auto px-0 text-sm text-primary hover:text-primary/90"
               onClick={() => {
                 setSelectedDate('')
                 setStatusFilter('')
-                setSearchTerm('')
+                setQuery('')
               }}
-              className="text-sm text-primary-600 hover:text-primary-700 mb-4"
             >
               Clear all filters
-            </button>
+            </Button>
           )}
-        </div>
 
-        <div className="overflow-x-auto">
+        <DataTableShell>
           <table className="w-full">
             <thead>
-              <tr className="border-b border-gray-200 bg-gray-50">
-                <th className="text-left py-3 px-4 font-semibold text-gray-700">Customer</th>
-                <th className="text-left py-3 px-4 font-semibold text-gray-700">Vehicle</th>
-                <th className="text-left py-3 px-4 font-semibold text-gray-700">Service</th>
-                <th className="text-left py-3 px-4 font-semibold text-gray-700">Date</th>
-                <th className="text-left py-3 px-4 font-semibold text-gray-700">Time</th>
-                <th className="text-left py-3 px-4 font-semibold text-gray-700">Status</th>
-                <th className="text-left py-3 px-4 font-semibold text-gray-700">Actions</th>
+              <tr className="border-b border-border/65 bg-muted/60 shadow-[inset_0_-1px_0_0_rgba(255,255,255,0.45)]">
+                <SortableTh columnKey="customer" sort={sort} onSort={toggleSort}>
+                  Customer
+                </SortableTh>
+                <SortableTh columnKey="vehicle" sort={sort} onSort={toggleSort}>
+                  Vehicle
+                </SortableTh>
+                <SortableTh columnKey="service" sort={sort} onSort={toggleSort}>
+                  Service
+                </SortableTh>
+                <SortableTh columnKey="date" sort={sort} onSort={toggleSort}>
+                  Date
+                </SortableTh>
+                <SortableTh columnKey="time" sort={sort} onSort={toggleSort}>
+                  Time
+                </SortableTh>
+                <SortableTh columnKey="status" sort={sort} onSort={toggleSort}>
+                  Status
+                </SortableTh>
+                <th className="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-[0.08em] text-muted-foreground">
+                  Actions
+                </th>
               </tr>
             </thead>
-            <tbody>
-              {filteredAppointments.length === 0 ? (
+            <tbody className="[&_tr:nth-child(even)]:bg-muted/[0.22]">
+              {tableRows.length === 0 ? (
                 <tr>
-                  <td colSpan="7" className="py-8 text-center text-gray-500">
+                  <td colSpan="7" className="px-4 py-10 text-center text-sm text-muted-foreground">
                     {isLoading ? 'Loading appointments...' : 'No appointments found'}
                   </td>
                 </tr>
               ) : (
-                filteredAppointments.map((apt) => (
-                  <tr key={apt.appointment_id} className="border-b border-gray-100 hover:bg-gray-50">
-                    <td className="py-3 px-4">
-                      <div className="font-medium text-gray-900">
+                tableRows.map((apt) => (
+                  <tr
+                    key={apt.appointment_id}
+                    className="border-b border-border/55 transition-colors duration-150 hover:bg-primary/[0.055]"
+                  >
+                    <td className="px-4 py-4 text-[13px]">
+                      <div className="font-medium text-foreground">
                         {apt.vehicle?.customer?.first_name} {apt.vehicle?.customer?.last_name}
                       </div>
                       {apt.vehicle?.customer?.phone && (
-                        <div className="text-sm text-gray-500">{apt.vehicle.customer.phone}</div>
+                        <div className="text-sm text-muted-foreground">{apt.vehicle.customer.phone}</div>
                       )}
                     </td>
-                    <td className="py-3 px-4">
-                      <div className="font-medium text-gray-900">{apt.vehicle?.license_plate}</div>
-                      <div className="text-sm text-gray-500">
+                    <td className="px-4 py-4 text-[13px]">
+                      <div className="font-medium text-foreground">{apt.vehicle?.license_plate}</div>
+                      <div className="text-sm text-muted-foreground">
                         {apt.vehicle?.make} {apt.vehicle?.model} ({apt.vehicle?.year})
                       </div>
                     </td>
-                    <td className="py-3 px-4">{apt.service_type?.type_name || '-'}</td>
-                    <td className="py-3 px-4">
+                    <td className="px-4 py-4 text-[13px]">{apt.service_type?.type_name || '-'}</td>
+                    <td className="px-4 py-4 text-[13px]">
                       {apt.scheduled_date ? format(new Date(apt.scheduled_date), 'MMM dd, yyyy') : '-'}
                     </td>
-                    <td className="py-3 px-4">
+                    <td className="px-4 py-4 text-[13px]">
                       {apt.scheduled_time ? (typeof apt.scheduled_time === 'string' ? apt.scheduled_time : apt.scheduled_time.substring(0, 5)) : '-'}
                     </td>
-                    <td className="py-3 px-4">
-                      <span className={`px-2 py-1 rounded-full text-xs font-semibold ${statusColors[apt.status] || 'bg-gray-100 text-gray-800'}`}>
+                    <td className="px-4 py-4 text-[13px]">
+                      <span className={`px-2 py-1 rounded-full text-xs font-semibold ${statusColors[apt.status] || 'bg-muted text-foreground'}`}>
                         {apt.status}
                       </span>
                     </td>
@@ -260,8 +294,9 @@ export default function Appointments() {
               )}
             </tbody>
           </table>
-        </div>
-      </div>
+        </DataTableShell>
+        </CardContent>
+      </Card>
     </div>
   )
 }

@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { GARAGE_INVOICES_MENU } from './GarageInvoicesSidebarMenu'
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { PageHeader } from '@/components/PageChrome'
 
 const BLURBS = {
   '/garage-invoices/proforma': 'Draft or print proforma invoices before converting to cash or credit.',
@@ -29,12 +30,16 @@ export default function GarageInvoicesHub() {
   const groups = [1, 2, 3, 4, 5]
   return (
     <div className="space-y-8">
-      <div className="space-y-2 max-w-3xl">
-        <h1 className="text-2xl font-semibold tracking-tight text-foreground">Garage Invoices</h1>
-        <p className="text-sm text-muted-foreground leading-relaxed">
-          HillMaster-style <strong>Garage Invoices</strong> menu. Each card opens the matching screen in this application.
-        </p>
-      </div>
+      <PageHeader
+        eyebrow="Billing"
+        title="Garage Invoices"
+        description={
+          <>
+            HillMaster-style <strong>Garage Invoices</strong> menu. Each card opens the matching screen in this
+            application.
+          </>
+        }
+      />
 
       <div className="space-y-8">
         {groups.map((g) => {

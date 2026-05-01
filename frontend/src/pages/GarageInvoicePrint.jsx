@@ -42,27 +42,27 @@ export default function GarageInvoicePrint() {
         <div className="border-b pb-4 mb-4">
           <div className="flex items-start justify-between gap-4">
             <div>
-              <div className="text-xl font-bold text-gray-900">GARAGE INVOICE</div>
-              <div className="text-sm text-gray-600">Invoice Type: <span className="font-medium">{invoice.invoice_type}</span></div>
-              <div className="text-sm text-gray-600">Status: <span className="font-medium">{invoice.status}</span></div>
+              <div className="text-xl font-bold text-foreground">GARAGE INVOICE</div>
+              <div className="text-sm text-muted-foreground">Invoice Type: <span className="font-medium">{invoice.invoice_type}</span></div>
+              <div className="text-sm text-muted-foreground">Status: <span className="font-medium">{invoice.status}</span></div>
             </div>
             <div className="text-right">
-              <div className="text-sm text-gray-600">Invoice No</div>
+              <div className="text-sm text-muted-foreground">Invoice No</div>
               <div className="text-lg font-mono font-semibold">{invoice.invoice_number}</div>
-              <div className="text-xs text-gray-500">Created: {invoice.created_at ? new Date(invoice.created_at).toLocaleString() : '-'}</div>
+              <div className="text-xs text-muted-foreground">Created: {invoice.created_at ? new Date(invoice.created_at).toLocaleString() : '-'}</div>
             </div>
           </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
           <div className="text-sm">
-            <div className="font-semibold text-gray-800 mb-1">Job</div>
+            <div className="font-semibold text-foreground mb-1">Job</div>
             <div>Job No: <span className="font-mono">{payload.job_order_number}</span></div>
             <div>Status: {payload.job_order_status}</div>
             <div>Closed At: {payload.closed_at ? new Date(payload.closed_at).toLocaleString() : '-'}</div>
           </div>
           <div className="text-sm">
-            <div className="font-semibold text-gray-800 mb-1">Customer / Vehicle</div>
+            <div className="font-semibold text-foreground mb-1">Customer / Vehicle</div>
             <div>Customer: {payload.customer_name || '-'}</div>
             <div>Phone: {payload.customer_phone || '-'}</div>
             <div>Vehicle: {payload.vehicle_plate || '-'} {payload.vehicle_make ? `(${payload.vehicle_make} ${payload.vehicle_model || ''})` : ''}</div>
@@ -72,7 +72,7 @@ export default function GarageInvoicePrint() {
         <div className="space-y-6">
           {payload.labor_lines?.length > 0 && (
             <div>
-              <div className="font-semibold text-gray-800 mb-2">Labor</div>
+              <div className="font-semibold text-foreground mb-2">Labor</div>
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
@@ -102,7 +102,7 @@ export default function GarageInvoicePrint() {
 
           {payload.part_lines?.length > 0 && (
             <div>
-              <div className="font-semibold text-gray-800 mb-2">Parts</div>
+              <div className="font-semibold text-foreground mb-2">Parts</div>
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
@@ -130,7 +130,7 @@ export default function GarageInvoicePrint() {
 
           {payload.charge_lines?.length > 0 && (
             <div>
-              <div className="font-semibold text-gray-800 mb-2">Additional Charges</div>
+              <div className="font-semibold text-foreground mb-2">Additional Charges</div>
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
@@ -160,7 +160,7 @@ export default function GarageInvoicePrint() {
             </div>
           )}
 
-          {!hasLines && <div className="text-sm text-gray-500">No billable lines found.</div>}
+          {!hasLines && <div className="text-sm text-muted-foreground">No billable lines found.</div>}
 
           <div className="border-t pt-4">
             <div className="max-w-md ml-auto text-sm">

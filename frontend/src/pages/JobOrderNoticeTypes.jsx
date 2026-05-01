@@ -4,6 +4,8 @@ import { jobOrderNoticeTypesApi } from '../services/api'
 import { Button } from '../components/ui/button'
 import { Input } from '../components/ui/input'
 import { Card } from '../components/ui/card'
+import { SortableTh, TableSearchBar } from '@/components/ui/sortable-table'
+import { useClientTableSortFilter } from '@/lib/tableSortFilter'
 
 export default function JobOrderNoticeTypes() {
   const queryClient = useQueryClient()
@@ -17,6 +19,25 @@ export default function JobOrderNoticeTypes() {
   })
 
   const rows = useMemo(() => data?.data || [], [data])
+
+  const searchFields = useMemo(
+    () => [(r) => `${r.notice_type_name || ''} ${r.is_active ? 'active' : 'inactive'}`],
+    []
+  )
+
+  const sortAccessors = useMemo(
+    () => ({
+      name: (r) => r.notice_type_name || '',
+      status: (r) => !!r.is_active,
+    }),
+    []
+  )
+
+  const { query, setQuery, sort, toggleSort, items: displayRows } = useClientTableSortFilter(
+    rows,
+    searchFields,
+    sortAccessors
+  )
 
   const createMutation = useMutation({
     mutationFn: (payload) => jobOrderNoticeTypesApi.create(payload),
@@ -67,7 +88,7 @@ export default function JobOrderNoticeTypes() {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold text-gray-800 mb-6">Job Order Notice Types</h1>
+      <h1 className="text-3xl font-bold text-foreground mb-6">Job Order Notice Types</h1>
 
       <Card className="p-6 mb-6">
         <form onSubmit={onCreate} className="flex flex-col sm:flex-row gap-3">
@@ -92,19 +113,36 @@ export default function JobOrderNoticeTypes() {
           <div className="text-red-600">Failed to load notice types</div>
         ) : (
           <div className="overflow-x-auto">
+            <TableSearchBar
+              value={query}
+              onChange={setQuery}
+              placeholder="Filter by name or status…"
+              className="max-w-lg"
+            />
             <table className="w-full">
               <thead>
-                <tr className="border-b border-gray-200">
-                  <th className="text-left py-3 px-4 font-semibold text-gray-700">Name</th>
-                  <th className="text-left py-3 px-4 font-semibold text-gray-700">Status</th>
-                  <th className="text-right py-3 px-4 font-semibold text-gray-700">Actions</th>
+                <tr className="border-b border-border">
+                  <SortableTh columnKey="name" sort={sort} onSort={toggleSort} className="text-foreground/90">
+                    Name
+                  </SortableTh>
+                  <SortableTh columnKey="status" sort={sort} onSort={toggleSort} className="text-foreground/90">
+                    Status
+                  </SortableTh>
+                  <th className="text-right py-3 px-4 font-semibold text-foreground/90">Actions</th>
                 </tr>
               </thead>
               <tbody>
-                {rows.map((row) => {
+                {displayRows.length === 0 ? (
+                  <tr>
+                    <td colSpan={3} className="py-6 px-4 text-center text-muted-foreground">
+                      {rows.length === 0 ? 'No notice types' : 'No matching notice types'}
+                    </td>
+                  </tr>
+                ) : (
+                  displayRows.map((row) => {
                   const isEditing = editingId === row.notice_type_id
                   return (
-                    <tr key={row.notice_type_id} className="border-b border-gray-100 hover:bg-gray-50">
+                    <tr key={row.notice_type_id} className="border-b border-border/60 hover:bg-muted/45">
                       <td className="py-3 px-4">
                         {isEditing ? (
                           <Input value={editingName} onChange={(e) => setEditingName(e.target.value)} />
@@ -115,7 +153,7 @@ export default function JobOrderNoticeTypes() {
                       <td className="py-3 px-4">
                         <span
                           className={`px-2 py-1 rounded-full text-xs ${
-                            row.is_active ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-700'
+                            row.is_active ? 'bg-green-100 text-green-800' : 'bg-muted text-foreground'
                           }`}
                         >
                           {row.is_active ? 'Active' : 'Inactive'}
@@ -155,13 +193,7 @@ export default function JobOrderNoticeTypes() {
                       </td>
                     </tr>
                   )
-                })}
-                {rows.length === 0 && (
-                  <tr>
-                    <td colSpan={3} className="py-6 px-4 text-center text-gray-500">
-                      No notice types
-                    </td>
-                  </tr>
+                  })
                 )}
               </tbody>
             </table>

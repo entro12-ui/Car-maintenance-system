@@ -4,6 +4,10 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { Button } from '../components/ui/button'
 import { Input } from '../components/ui/input'
 import SetupScreenFrame from './SetupScreenFrame'
+import GarageIssueVoucher from './GarageIssueVoucher'
+import InternalFuelLubricantIssue from './InternalFuelLubricantIssue'
+import FuelIssueKmEditing from './FuelIssueKmEditing'
+import ItemReserve from './ItemReserve'
 import { TRANSACTION_MENU } from './TransactionSidebarMenu'
 import {
   customersApi,
@@ -33,289 +37,7 @@ const TRANSACTION_REDIRECTS = {
 }
 
 function ItemIssuePage() {
-  const [salesPersonId, setSalesPersonId] = useState('')
-  const [jobOrderId, setJobOrderId] = useState('')
-  const [requisitionNo, setRequisitionNo] = useState('')
-  const [storeName, setStoreName] = useState('')
-  const [partId, setPartId] = useState('')
-  const [quantity, setQuantity] = useState('')
-  const [issueId, setIssueId] = useState(null)
-  const [issueNo, setIssueNo] = useState('')
-  const [error, setError] = useState('')
-  const [success, setSuccess] = useState('')
-  const [isClockedIn, setIsClockedIn] = useState(null)
-
-  const jobsQuery = useQuery({
-    queryKey: ['jobOrders', { screen: 'transaction-item-issue' }],
-    queryFn: () => jobOrdersApi.list({ limit: 500 }),
-  })
-  const vehiclesQuery = useQuery({
-    queryKey: ['vehicles', { screen: 'transaction-item-issue' }],
-    queryFn: () => vehiclesApi.getAll({ limit: 500 }),
-  })
-  const customersQuery = useQuery({
-    queryKey: ['customers', { screen: 'transaction-item-issue' }],
-    queryFn: () => customersApi.getAll({ limit: 500 }),
-  })
-  const employeesQuery = useQuery({
-    queryKey: ['employees', { screen: 'transaction-item-issue' }],
-    queryFn: () => employeesApi.list({ limit: 500 }),
-  })
-  const partsQuery = useQuery({
-    queryKey: ['parts', { screen: 'transaction-item-issue' }],
-    queryFn: () => partsApi.getAll({ limit: 500 }),
-  })
-
-  const jobs = useMemo(
-    () =>
-      (jobsQuery.data?.data || []).filter(
-        (j) => !j.delivered_at && j.status !== 'Closed' && j.status !== 'Cancelled',
-      ),
-    [jobsQuery.data],
-  )
-  const vehicles = useMemo(() => vehiclesQuery.data?.data || [], [vehiclesQuery.data])
-  const customers = useMemo(() => customersQuery.data?.data || [], [customersQuery.data])
-  const employees = useMemo(() => employeesQuery.data?.data || [], [employeesQuery.data])
-  const parts = useMemo(() => partsQuery.data?.data || [], [partsQuery.data])
-
-  const selectedJob = useMemo(() => {
-    const id = Number(jobOrderId)
-    return jobs.find((j) => Number(j.job_order_id) === id) || null
-  }, [jobOrderId, jobs])
-  const selectedVehicle = useMemo(() => {
-    const id = Number(selectedJob?.vehicle_id)
-    return vehicles.find((v) => Number(v.vehicle_id) === id) || null
-  }, [selectedJob, vehicles])
-  const selectedCustomer = useMemo(() => {
-    const id = Number(selectedJob?.customer_id)
-    return customers.find((c) => Number(c.customer_id) === id) || null
-  }, [selectedJob, customers])
-  const selectedPart = useMemo(() => {
-    const id = Number(partId)
-    return parts.find((p) => Number(p.part_id) === id) || null
-  }, [partId, parts])
-
-  useEffect(() => {
-    let cancelled = false
-    const run = async () => {
-      if (!selectedJob?.job_order_id) {
-        setIsClockedIn(null)
-        return
-      }
-      try {
-        const res = await jobOrdersApi.listClocks(selectedJob.job_order_id)
-        const clocks = res?.data || []
-        const active = clocks.some((c) => !c.clock_out_at)
-        if (!cancelled) setIsClockedIn(active)
-      } catch {
-        if (!cancelled) setIsClockedIn(null)
-      }
-    }
-    run()
-    return () => {
-      cancelled = true
-    }
-  }, [selectedJob?.job_order_id])
-
-  const createIssueMutation = useMutation({
-    mutationFn: (payload) => jobOrderInventoryApi.createIssue(Number(jobOrderId), payload),
-    onSuccess: (res) => {
-      setIssueId(res?.data?.issue_id || null)
-      setIssueNo(res?.data?.issue_number || '')
-      setSuccess('Issue voucher started.')
-    },
-    onError: (e) => setError(e?.response?.data?.detail || 'Failed to start issue voucher.'),
-  })
-
-  const addLineMutation = useMutation({
-    mutationFn: ({ id, payload }) => jobOrderInventoryApi.addIssueLine(id, payload),
-    onSuccess: () => setSuccess('Issue line added.'),
-    onError: (e) => setError(e?.response?.data?.detail || 'Failed to add issue line.'),
-  })
-
-  const finalizeMutation = useMutation({
-    mutationFn: (id) => jobOrderInventoryApi.finalizeIssue(id),
-    onSuccess: () => setSuccess('Issue voucher finalized.'),
-    onError: (e) => setError(e?.response?.data?.detail || 'Failed to finalize issue voucher.'),
-  })
-
-  const onRefresh = () => {
-    setSalesPersonId('')
-    setJobOrderId('')
-    setRequisitionNo('')
-    setStoreName('')
-    setPartId('')
-    setQuantity('')
-    setIssueId(null)
-    setIssueNo('')
-    setError('')
-    setSuccess('')
-    setIsClockedIn(null)
-  }
-
-  const onAddNew = () => {
-    setError('')
-    setSuccess('')
-    if (!selectedJob?.job_order_id) {
-      setError('Select job order first.')
-      return
-    }
-    if (isClockedIn === false) {
-      setError('This job has no active clock-in for technician. Item issue is blocked.')
-      return
-    }
-    const remarks = [
-      salesPersonId ? `SalesPersonId:${salesPersonId}` : null,
-      requisitionNo ? `RequisitionNo:${requisitionNo}` : null,
-      storeName ? `Store:${storeName}` : null,
-    ]
-      .filter(Boolean)
-      .join(' | ')
-    createIssueMutation.mutate({ remarks: remarks || null })
-  }
-
-  const onSaveLine = () => {
-    setError('')
-    setSuccess('')
-    if (!issueId) {
-      setError('Click Add New first to open an issue voucher.')
-      return
-    }
-    const pid = Number(partId)
-    const qty = Number(quantity)
-    if (!Number.isFinite(pid) || pid <= 0) {
-      setError('Select item code.')
-      return
-    }
-    if (!Number.isFinite(qty) || qty <= 0) {
-      setError('Enter valid quantity.')
-      return
-    }
-    addLineMutation.mutate({ id: issueId, payload: { part_id: pid, quantity: qty } })
-    setQuantity('')
-  }
-
-  const onFinish = () => {
-    if (!issueId) {
-      setError('No issue voucher to finalize.')
-      return
-    }
-    finalizeMutation.mutate(issueId)
-  }
-
-  return (
-    <SetupScreenFrame
-      hubTo="/transactions-hub"
-      hubLabel="Transaction"
-      title="Garage Issue Voucher"
-      subtitle="Process item issue transactions for active job orders."
-      actions={
-        <div className="flex flex-wrap items-center gap-2">
-          <Button type="button" variant="outline" onClick={onAddNew} disabled={createIssueMutation.isPending}>
-            Add New
-          </Button>
-          <Button type="button" variant="outline" onClick={onFinish} disabled={!issueId || finalizeMutation.isPending}>
-            Finish Issue Voucher
-          </Button>
-          <Button type="button" variant="outline" onClick={onRefresh}>Refresh</Button>
-          <span className="text-sm text-blue-700">Ready</span>
-        </div>
-      }
-    >
-      <div className="space-y-4">
-        <div className="rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm text-slate-700">
-          Item issue is performed for active job orders. Select job order, salesperson, store, item, and quantity.
-          The selected job should be clocked-in for a technician before finalizing issue.
-        </div>
-        {error && <div className="rounded border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">{error}</div>}
-        {success && <div className="rounded border border-green-200 bg-green-50 px-3 py-2 text-sm text-green-700">{success}</div>}
-
-        <div className="bg-white border rounded-lg shadow-sm p-4 space-y-3">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
-            <label className="text-sm space-y-1">
-              <div className="font-medium text-gray-800">Sales Person</div>
-              <select className="w-full border rounded px-2 py-2 text-sm" value={salesPersonId} onChange={(e) => setSalesPersonId(e.target.value)}>
-                <option value="">Select...</option>
-                {employees.map((e) => (
-                  <option key={e.employee_id} value={String(e.employee_id)}>
-                    {`${e.first_name || ''} ${e.last_name || ''}`.trim() || e.employee_code || `#${e.employee_id}`}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label className="text-sm space-y-1">
-              <div className="font-medium text-gray-800">Job Card No</div>
-              <select className="w-full border rounded px-2 py-2 text-sm" value={jobOrderId} onChange={(e) => setJobOrderId(e.target.value)}>
-                <option value="">Select active job...</option>
-                {jobs.map((j) => (
-                  <option key={j.job_order_id} value={String(j.job_order_id)}>
-                    {j.job_order_number || `#${j.job_order_id}`}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label className="text-sm space-y-1">
-              <div className="font-medium text-gray-800">Issue Voucher No</div>
-              <Input readOnly value={issueNo || '(auto after Add New)'} />
-            </label>
-            <label className="text-sm space-y-1">
-              <div className="font-medium text-gray-800">Requisition No</div>
-              <Input value={requisitionNo} onChange={(e) => setRequisitionNo(e.target.value)} />
-            </label>
-            <label className="text-sm space-y-1">
-              <div className="font-medium text-gray-800">Plate No</div>
-              <Input readOnly value={selectedVehicle?.license_plate || ''} />
-            </label>
-            <label className="text-sm space-y-1 md:col-span-2">
-              <div className="font-medium text-gray-800">Customer</div>
-              <Input readOnly value={selectedCustomer ? `${selectedCustomer.first_name || ''} ${selectedCustomer.last_name || ''}`.trim() : ''} />
-            </label>
-            <label className="text-sm space-y-1">
-              <div className="font-medium text-gray-800">Clocked-In Status</div>
-              <Input readOnly value={isClockedIn == null ? 'Unknown' : isClockedIn ? 'Clocked-In' : 'Not Clocked-In'} />
-            </label>
-            <label className="text-sm space-y-1 md:col-span-4">
-              <div className="font-medium text-gray-800">Address</div>
-              <Input readOnly value={selectedCustomer?.address || ''} />
-            </label>
-          </div>
-        </div>
-
-        <div className="bg-white border rounded-lg shadow-sm p-4 space-y-3">
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-3">
-            <label className="text-sm space-y-1">
-              <div className="font-medium text-gray-800">Store</div>
-              <Input value={storeName} onChange={(e) => setStoreName(e.target.value)} placeholder="Store code/name" />
-            </label>
-            <label className="text-sm space-y-1 md:col-span-2">
-              <div className="font-medium text-gray-800">Item Code</div>
-              <select className="w-full border rounded px-2 py-2 text-sm" value={partId} onChange={(e) => setPartId(e.target.value)}>
-                <option value="">Select item...</option>
-                {parts.map((p) => (
-                  <option key={p.part_id} value={String(p.part_id)}>
-                    {p.part_number || `#${p.part_id}`} - {p.part_name || '-'}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label className="text-sm space-y-1">
-              <div className="font-medium text-gray-800">Qty on Hand</div>
-              <Input readOnly value={selectedPart?.stock_quantity != null ? String(selectedPart.stock_quantity) : ''} />
-            </label>
-            <label className="text-sm space-y-1">
-              <div className="font-medium text-gray-800">Quantity</div>
-              <Input value={quantity} onChange={(e) => setQuantity(e.target.value)} />
-            </label>
-          </div>
-          <div className="flex flex-wrap gap-2">
-            <Button type="button" onClick={onSaveLine} disabled={!issueId || addLineMutation.isPending}>
-              Save Line
-            </Button>
-          </div>
-        </div>
-      </div>
-    </SetupScreenFrame>
-  )
+  return <GarageIssueVoucher />
 }
 
 const RESERVE_CAT = 'item_reserve_transactions'
@@ -568,7 +290,7 @@ function ItemIssueFromReservePage() {
         <div className="bg-white border rounded-lg shadow-sm p-4 space-y-3">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
             <label className="text-sm space-y-1">
-              <div className="font-medium text-gray-800">Sales Person</div>
+              <div className="font-medium text-foreground">Sales Person</div>
               <select className="w-full border rounded px-2 py-2 text-sm" value={salesPersonId} onChange={(e) => setSalesPersonId(e.target.value)}>
                 <option value="">Select...</option>
                 {employees.map((e) => (
@@ -579,7 +301,7 @@ function ItemIssueFromReservePage() {
               </select>
             </label>
             <label className="text-sm space-y-1">
-              <div className="font-medium text-gray-800">Job Card No</div>
+              <div className="font-medium text-foreground">Job Card No</div>
               <select className="w-full border rounded px-2 py-2 text-sm" value={jobOrderId} onChange={(e) => setJobOrderId(e.target.value)}>
                 <option value="">Select active job...</option>
                 {jobs.map((j) => (
@@ -590,19 +312,19 @@ function ItemIssueFromReservePage() {
               </select>
             </label>
             <label className="text-sm space-y-1">
-              <div className="font-medium text-gray-800">Issue Voucher No</div>
+              <div className="font-medium text-foreground">Issue Voucher No</div>
               <Input readOnly value={issueNo || '(auto after Add New)'} />
             </label>
             <label className="text-sm space-y-1">
-              <div className="font-medium text-gray-800">Requisition No</div>
+              <div className="font-medium text-foreground">Requisition No</div>
               <Input value={requisitionNo} onChange={(e) => setRequisitionNo(e.target.value)} />
             </label>
             <label className="text-sm space-y-1">
-              <div className="font-medium text-gray-800">Plate No</div>
+              <div className="font-medium text-foreground">Plate No</div>
               <Input readOnly value={selectedVehicle?.license_plate || ''} />
             </label>
             <label className="text-sm space-y-1 md:col-span-3">
-              <div className="font-medium text-gray-800">Customer Name</div>
+              <div className="font-medium text-foreground">Customer Name</div>
               <Input readOnly value={selectedCustomer ? `${selectedCustomer.first_name || ''} ${selectedCustomer.last_name || ''}`.trim() : ''} />
             </label>
           </div>
@@ -611,7 +333,7 @@ function ItemIssueFromReservePage() {
         <div className="bg-white border rounded-lg shadow-sm p-4 space-y-3">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
             <label className="text-sm space-y-1 md:col-span-2">
-              <div className="font-medium text-gray-800">Item Code</div>
+              <div className="font-medium text-foreground">Item Code</div>
               <select className="w-full border rounded px-2 py-2 text-sm" value={partId} onChange={(e) => setPartId(e.target.value)}>
                 <option value="">Select reserved item...</option>
                 {reserveRows.map((r, idx) => (
@@ -622,14 +344,14 @@ function ItemIssueFromReservePage() {
               </select>
             </label>
             <label className="text-sm space-y-1">
-              <div className="font-medium text-gray-800">Quantity</div>
+              <div className="font-medium text-foreground">Quantity</div>
               <Input value={quantity} onChange={(e) => setQuantity(e.target.value)} />
             </label>
           </div>
 
           <div className="overflow-auto border rounded">
             <table className="min-w-[900px] w-full text-sm">
-              <thead className="bg-gray-100 text-xs text-gray-600 uppercase">
+              <thead className="bg-muted text-xs text-muted-foreground uppercase">
                 <tr>
                   <th className="py-2 px-2 text-left">Reserve No</th>
                   <th className="py-2 px-2 text-left">Item Code</th>
@@ -642,7 +364,7 @@ function ItemIssueFromReservePage() {
               <tbody>
                 {reserveRows.length === 0 ? (
                   <tr>
-                    <td colSpan={6} className="py-5 px-2 text-center text-gray-500">
+                    <td colSpan={6} className="py-5 px-2 text-center text-muted-foreground">
                       No reserve transaction found for this job.
                     </td>
                   </tr>
@@ -651,7 +373,7 @@ function ItemIssueFromReservePage() {
                   const supplied = Number(r.supplied_qty || 0)
                   const available = reserved - supplied
                   return (
-                    <tr key={`${r.part_id || r.item_code || idx}-${idx}`} className="border-t border-gray-100">
+                    <tr key={`${r.part_id || r.item_code || idx}-${idx}`} className="border-t border-border/60">
                       <td className="py-2 px-2">{r.reserve_no || '-'}</td>
                       <td className="py-2 px-2 font-medium">{r.item_code || `#${r.part_id}`}</td>
                       <td className="py-2 px-2">{r.description || '-'}</td>
@@ -854,15 +576,15 @@ function GarageIssueRequisitionPage() {
         <div className="bg-white border rounded-lg shadow-sm p-4 space-y-3">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
             <label className="text-sm space-y-1">
-              <div className="font-medium text-gray-800">Requisition No</div>
+              <div className="font-medium text-foreground">Requisition No</div>
               <Input readOnly value={requisitionNo || '(auto after Add New)'} />
             </label>
             <label className="text-sm space-y-1">
-              <div className="font-medium text-gray-800">Order Date</div>
+              <div className="font-medium text-foreground">Order Date</div>
               <Input readOnly value={orderDate} />
             </label>
             <label className="text-sm space-y-1 md:col-span-2">
-              <div className="font-medium text-gray-800">Job Card No</div>
+              <div className="font-medium text-foreground">Job Card No</div>
               <select className="w-full border rounded px-2 py-2 text-sm" value={jobOrderId} onChange={(e) => setJobOrderId(e.target.value)}>
                 <option value="">Select job...</option>
                 {jobs.map((j) => (
@@ -873,15 +595,15 @@ function GarageIssueRequisitionPage() {
               </select>
             </label>
             <label className="text-sm space-y-1 md:col-span-2">
-              <div className="font-medium text-gray-800">Customer Name</div>
+              <div className="font-medium text-foreground">Customer Name</div>
               <Input readOnly value={selectedCustomer ? `${selectedCustomer.first_name || ''} ${selectedCustomer.last_name || ''}`.trim() : ''} />
             </label>
             <label className="text-sm space-y-1 md:col-span-2">
-              <div className="font-medium text-gray-800">Plate No</div>
+              <div className="font-medium text-foreground">Plate No</div>
               <Input readOnly value={selectedVehicle?.license_plate || ''} />
             </label>
             <label className="text-sm space-y-1 md:col-span-2">
-              <div className="font-medium text-gray-800">Item Code</div>
+              <div className="font-medium text-foreground">Item Code</div>
               <select className="w-full border rounded px-2 py-2 text-sm" value={partId} onChange={(e) => setPartId(e.target.value)}>
                 <option value="">Select item...</option>
                 {parts.map((p) => (
@@ -892,11 +614,11 @@ function GarageIssueRequisitionPage() {
               </select>
             </label>
             <label className="text-sm space-y-1">
-              <div className="font-medium text-gray-800">Quantity</div>
+              <div className="font-medium text-foreground">Quantity</div>
               <Input value={quantity} onChange={(e) => setQuantity(e.target.value)} />
             </label>
             <label className="text-sm space-y-1 md:col-span-3">
-              <div className="font-medium text-gray-800">Remark If Any</div>
+              <div className="font-medium text-foreground">Remark If Any</div>
               <Input value={remark} onChange={(e) => setRemark(e.target.value)} />
             </label>
           </div>
@@ -905,7 +627,7 @@ function GarageIssueRequisitionPage() {
         <div className="bg-white border rounded-lg shadow-sm p-4">
           <div className="overflow-auto">
             <table className="min-w-[900px] w-full text-sm">
-              <thead className="bg-gray-100 text-xs text-gray-600 uppercase">
+              <thead className="bg-muted text-xs text-muted-foreground uppercase">
                 <tr>
                   <th className="py-2 px-2 text-left">No</th>
                   <th className="py-2 px-2 text-left">Job Order No</th>
@@ -919,10 +641,10 @@ function GarageIssueRequisitionPage() {
               <tbody>
                 {lines.length === 0 ? (
                   <tr>
-                    <td colSpan={7} className="py-5 px-2 text-center text-gray-500">No requisition lines yet.</td>
+                    <td colSpan={7} className="py-5 px-2 text-center text-muted-foreground">No requisition lines yet.</td>
                   </tr>
                 ) : lines.map((ln, idx) => (
-                  <tr key={`${ln.item_code}-${idx}`} className="border-t border-gray-100">
+                  <tr key={`${ln.item_code}-${idx}`} className="border-t border-border/60">
                     <td className="py-2 px-2">{idx + 1}</td>
                     <td className="py-2 px-2">{ln.job_order_no}</td>
                     <td className="py-2 px-2">{ln.item_code}</td>
@@ -1176,7 +898,7 @@ function LaborChargeEntryPage() {
         <div className="bg-white border rounded-lg shadow-sm p-4 grid grid-cols-1 lg:grid-cols-2 gap-4">
           <div className="space-y-3">
             <label className="text-sm space-y-1 block">
-              <div className="font-medium text-gray-800">Job Order No</div>
+              <div className="font-medium text-foreground">Job Order No</div>
               <select className="w-full border rounded px-2 py-2 text-sm" value={jobOrderId} onChange={(e) => setJobOrderId(e.target.value)}>
                 <option value="">Select job...</option>
                 {jobs.map((j) => (
@@ -1187,20 +909,20 @@ function LaborChargeEntryPage() {
               </select>
             </label>
             <label className="text-sm space-y-1 block">
-              <div className="font-medium text-gray-800">Plate No</div>
+              <div className="font-medium text-foreground">Plate No</div>
               <Input readOnly value={selectedVehicle?.license_plate || ''} />
             </label>
             <label className="text-sm space-y-1 block">
-              <div className="font-medium text-gray-800">Customer</div>
+              <div className="font-medium text-foreground">Customer</div>
               <Input readOnly value={selectedCustomer ? `${selectedCustomer.first_name || ''} ${selectedCustomer.last_name || ''}`.trim() : ''} />
             </label>
             <label className="text-sm space-y-1 block">
-              <div className="font-medium text-gray-800">Address</div>
+              <div className="font-medium text-foreground">Address</div>
               <Input readOnly value={selectedCustomer?.address || ''} />
             </label>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
               <label className="text-sm space-y-1 block md:col-span-2">
-                <div className="font-medium text-gray-800">Charge Code</div>
+                <div className="font-medium text-foreground">Charge Code</div>
                 <select className="w-full border rounded px-2 py-2 text-sm" value={chargeTypeId} onChange={(e) => setChargeTypeId(e.target.value)}>
                   <option value="">Select labor charge...</option>
                   {laborTypes.map((l) => (
@@ -1211,31 +933,31 @@ function LaborChargeEntryPage() {
                 </select>
               </label>
               <label className="text-sm space-y-1 block">
-                <div className="font-medium text-gray-800">Hour Spent</div>
+                <div className="font-medium text-foreground">Hour Spent</div>
                 <Input value={hoursSpent} onChange={(e) => setHoursSpent(e.target.value)} />
               </label>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               <label className="text-sm space-y-1 block">
-                <div className="font-medium text-gray-800">Description</div>
+                <div className="font-medium text-foreground">Description</div>
                 <Input readOnly value={selectedCharge?.labor_type_name || ''} />
               </label>
               <label className="text-sm space-y-1 block">
-                <div className="font-medium text-gray-800">Amount</div>
+                <div className="font-medium text-foreground">Amount</div>
                 <Input readOnly value={amount} />
               </label>
             </div>
             <label className="text-sm space-y-1 block">
-              <div className="font-medium text-gray-800">Remark</div>
+              <div className="font-medium text-foreground">Remark</div>
               <Input value={remark} onChange={(e) => setRemark(e.target.value)} />
             </label>
           </div>
 
           <div className="border rounded p-3">
-            <div className="text-sm font-semibold text-gray-800 mb-2">Technician Distribution</div>
+            <div className="text-sm font-semibold text-foreground mb-2">Technician Distribution</div>
             <div className="overflow-auto">
               <table className="min-w-full text-sm">
-                <thead className="bg-gray-100 text-xs text-gray-600 uppercase">
+                <thead className="bg-muted text-xs text-muted-foreground uppercase">
                   <tr>
                     <th className="py-2 px-2 text-left">Tech Code</th>
                     <th className="py-2 px-2 text-left">Technician Name</th>
@@ -1245,11 +967,11 @@ function LaborChargeEntryPage() {
                 </thead>
                 <tbody>
                   {loadingClocks ? (
-                    <tr><td colSpan={4} className="py-4 px-2 text-center text-gray-500">Loading...</td></tr>
+                    <tr><td colSpan={4} className="py-4 px-2 text-center text-muted-foreground">Loading...</td></tr>
                   ) : technicianRows.length === 0 ? (
-                    <tr><td colSpan={4} className="py-4 px-2 text-center text-gray-500">No technician clock records.</td></tr>
+                    <tr><td colSpan={4} className="py-4 px-2 text-center text-muted-foreground">No technician clock records.</td></tr>
                   ) : technicianRows.map((r, idx) => (
-                    <tr key={`${r.techCode}-${idx}`} className="border-t border-gray-100">
+                    <tr key={`${r.techCode}-${idx}`} className="border-t border-border/60">
                       <td className="py-2 px-2">{r.techCode}</td>
                       <td className="py-2 px-2">{r.technicianName}</td>
                       <td className="py-2 px-2">{r.pct}</td>
@@ -1265,7 +987,7 @@ function LaborChargeEntryPage() {
         <div className="bg-white border rounded-lg shadow-sm p-4">
           <div className="overflow-auto">
             <table className="min-w-[900px] w-full text-sm">
-              <thead className="bg-gray-100 text-xs text-gray-600 uppercase">
+              <thead className="bg-muted text-xs text-muted-foreground uppercase">
                 <tr>
                   <th className="py-2 px-2 text-left">No</th>
                   <th className="py-2 px-2 text-left">Date</th>
@@ -1279,10 +1001,10 @@ function LaborChargeEntryPage() {
               <tbody>
                 {laborRows.length === 0 ? (
                   <tr>
-                    <td colSpan={7} className="py-5 px-2 text-center text-gray-500">No labor charge transaction yet.</td>
+                    <td colSpan={7} className="py-5 px-2 text-center text-muted-foreground">No labor charge transaction yet.</td>
                   </tr>
                 ) : laborRows.map((r, idx) => (
-                  <tr key={r.labor_charge_id || idx} className="border-t border-gray-100">
+                  <tr key={r.labor_charge_id || idx} className="border-t border-border/60">
                     <td className="py-2 px-2">{idx + 1}</td>
                     <td className="py-2 px-2">{String(r.created_at || '').slice(0, 10) || '-'}</td>
                     <td className="py-2 px-2">{r.charge_code || '-'}</td>
@@ -1295,7 +1017,7 @@ function LaborChargeEntryPage() {
               </tbody>
             </table>
           </div>
-          <div className="mt-3 text-sm text-gray-700 flex gap-6">
+          <div className="mt-3 text-sm text-foreground/90 flex gap-6">
             <div>Total Hours: <span className="font-semibold">{totalHours.toFixed(2)}</span></div>
             <div>Total Amount: <span className="font-semibold">{totalAmount.toFixed(2)}</span></div>
           </div>
@@ -1444,7 +1166,7 @@ function MiscOrFuelChargeEntryPage({ mode = 'misc' }) {
         <div className="bg-white border rounded-lg shadow-sm p-4 space-y-3">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
             <label className="text-sm space-y-1 md:col-span-2">
-              <div className="font-medium text-gray-800">JobOrder No.</div>
+              <div className="font-medium text-foreground">JobOrder No.</div>
               <select className="w-full border rounded px-2 py-2 text-sm" value={jobOrderId} onChange={(e) => setJobOrderId(e.target.value)}>
                 <option value="">Select job...</option>
                 {jobs.map((j) => (
@@ -1453,19 +1175,19 @@ function MiscOrFuelChargeEntryPage({ mode = 'misc' }) {
               </select>
             </label>
             <label className="text-sm space-y-1">
-              <div className="font-medium text-gray-800">Plate No</div>
+              <div className="font-medium text-foreground">Plate No</div>
               <Input readOnly value={selectedVehicle?.license_plate || ''} />
             </label>
             <label className="text-sm space-y-1">
-              <div className="font-medium text-gray-800">Date</div>
+              <div className="font-medium text-foreground">Date</div>
               <Input readOnly value={new Date().toISOString().slice(0, 10)} />
             </label>
             <label className="text-sm space-y-1 md:col-span-2">
-              <div className="font-medium text-gray-800">Customer</div>
+              <div className="font-medium text-foreground">Customer</div>
               <Input readOnly value={selectedCustomer ? `${selectedCustomer.first_name || ''} ${selectedCustomer.last_name || ''}`.trim() : ''} />
             </label>
             <label className="text-sm space-y-1 md:col-span-2">
-              <div className="font-medium text-gray-800">Address</div>
+              <div className="font-medium text-foreground">Address</div>
               <Input readOnly value={selectedCustomer?.address || ''} />
             </label>
           </div>
@@ -1474,7 +1196,7 @@ function MiscOrFuelChargeEntryPage({ mode = 'misc' }) {
         <div className="bg-white border rounded-lg shadow-sm p-4 space-y-3">
           <div className="grid grid-cols-1 md:grid-cols-5 gap-3">
             <label className="text-sm space-y-1 md:col-span-2">
-              <div className="font-medium text-gray-800">{isFuel ? 'Fuel & Lubricant' : 'Misc Charge'}</div>
+              <div className="font-medium text-foreground">{isFuel ? 'Fuel & Lubricant' : 'Misc Charge'}</div>
               <select className="w-full border rounded px-2 py-2 text-sm" value={chargeTypeId} onChange={(e) => setChargeTypeId(e.target.value)}>
                 <option value="">Select charge type...</option>
                 {typeRows.map((t) => {
@@ -1489,38 +1211,38 @@ function MiscOrFuelChargeEntryPage({ mode = 'misc' }) {
               </select>
             </label>
             <label className="text-sm space-y-1">
-              <div className="font-medium text-gray-800">Charge Code</div>
+              <div className="font-medium text-foreground">Charge Code</div>
               <Input readOnly value={isFuel ? (selectedType?.item_code || '') : (selectedType?.charge_code || '')} />
             </label>
             <label className="text-sm space-y-1">
-              <div className="font-medium text-gray-800">Quantity</div>
+              <div className="font-medium text-foreground">Quantity</div>
               <Input value={isFuel ? quantity : '1'} onChange={(e) => setQuantity(e.target.value)} readOnly={!isFuel} />
             </label>
             <label className="text-sm space-y-1">
-              <div className="font-medium text-gray-800">Unit Price</div>
+              <div className="font-medium text-foreground">Unit Price</div>
               <Input readOnly value={unitPrice ? unitPrice.toFixed(2) : ''} />
             </label>
             <label className="text-sm space-y-1 md:col-span-2">
-              <div className="font-medium text-gray-800">Description</div>
+              <div className="font-medium text-foreground">Description</div>
               <Input readOnly value={selectedType?.description || ''} />
             </label>
             <label className="text-sm space-y-1">
-              <div className="font-medium text-gray-800">Amount</div>
+              <div className="font-medium text-foreground">Amount</div>
               <Input readOnly value={amount ? amount.toFixed(2) : ''} />
             </label>
             <label className="text-sm space-y-1">
-              <div className="font-medium text-gray-800">VAT</div>
+              <div className="font-medium text-foreground">VAT</div>
               <Input readOnly value={vat ? vat.toFixed(2) : '0.00'} />
             </label>
             <label className="text-sm space-y-1">
-              <div className="font-medium text-gray-800">Total Inc VAT</div>
+              <div className="font-medium text-foreground">Total Inc VAT</div>
               <Input readOnly value={totalIncVat ? totalIncVat.toFixed(2) : '0.00'} />
             </label>
           </div>
 
           <div className="overflow-auto border rounded">
             <table className="min-w-[900px] w-full text-sm">
-              <thead className="bg-gray-100 text-xs text-gray-600 uppercase">
+              <thead className="bg-muted text-xs text-muted-foreground uppercase">
                 <tr>
                   <th className="py-2 px-2 text-left">No</th>
                   <th className="py-2 px-2 text-left">Date</th>
@@ -1537,7 +1259,7 @@ function MiscOrFuelChargeEntryPage({ mode = 'misc' }) {
               <tbody>
                 {chargeRows.length === 0 ? (
                   <tr>
-                    <td colSpan={10} className="py-5 px-2 text-center text-gray-500">No transaction records yet.</td>
+                    <td colSpan={10} className="py-5 px-2 text-center text-muted-foreground">No transaction records yet.</td>
                   </tr>
                 ) : chargeRows.map((r, idx) => {
                   const lineVat = Number(r.tax_amount || 0)
@@ -1545,7 +1267,7 @@ function MiscOrFuelChargeEntryPage({ mode = 'misc' }) {
                   const code = isFuel ? r.item_code : r.charge_code
                   const qty = r.quantity != null ? Number(r.quantity) : 1
                   return (
-                    <tr key={r.entry_id || idx} className="border-t border-gray-100">
+                    <tr key={r.entry_id || idx} className="border-t border-border/60">
                       <td className="py-2 px-2">{idx + 1}</td>
                       <td className="py-2 px-2">{String(r.created_at || '').slice(0, 10) || '-'}</td>
                       <td className="py-2 px-2">{code || '-'}</td>
@@ -1562,7 +1284,7 @@ function MiscOrFuelChargeEntryPage({ mode = 'misc' }) {
               </tbody>
             </table>
           </div>
-          <div className="text-sm text-gray-700 flex gap-6">
+          <div className="text-sm text-foreground/90 flex gap-6">
             <div>Total: <span className="font-semibold">{totals.subtotal.toFixed(2)}</span></div>
             <div>VAT: <span className="font-semibold">{totals.vatTotal.toFixed(2)}</span></div>
             <div>Total Inc. VAT: <span className="font-semibold">{totals.total.toFixed(2)}</span></div>
@@ -1720,7 +1442,7 @@ function SubletOrOtherChargeEntryPage({ mode = 'sublet' }) {
         <div className="bg-white border rounded-lg shadow-sm p-4 space-y-3">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
             <label className="text-sm space-y-1 md:col-span-2">
-              <div className="font-medium text-gray-800">JobOrder No.</div>
+              <div className="font-medium text-foreground">JobOrder No.</div>
               <select className="w-full border rounded px-2 py-2 text-sm" value={jobOrderId} onChange={(e) => setJobOrderId(e.target.value)}>
                 <option value="">Select job...</option>
                 {jobs.map((j) => (
@@ -1729,19 +1451,19 @@ function SubletOrOtherChargeEntryPage({ mode = 'sublet' }) {
               </select>
             </label>
             <label className="text-sm space-y-1">
-              <div className="font-medium text-gray-800">Plate No</div>
+              <div className="font-medium text-foreground">Plate No</div>
               <Input readOnly value={selectedVehicle?.license_plate || ''} />
             </label>
             <label className="text-sm space-y-1">
-              <div className="font-medium text-gray-800">Date</div>
+              <div className="font-medium text-foreground">Date</div>
               <Input readOnly value={new Date().toISOString().slice(0, 10)} />
             </label>
             <label className="text-sm space-y-1 md:col-span-2">
-              <div className="font-medium text-gray-800">Customer</div>
+              <div className="font-medium text-foreground">Customer</div>
               <Input readOnly value={selectedCustomer ? `${selectedCustomer.first_name || ''} ${selectedCustomer.last_name || ''}`.trim() : ''} />
             </label>
             <label className="text-sm space-y-1 md:col-span-2">
-              <div className="font-medium text-gray-800">Address</div>
+              <div className="font-medium text-foreground">Address</div>
               <Input readOnly value={selectedCustomer?.address || ''} />
             </label>
           </div>
@@ -1750,7 +1472,7 @@ function SubletOrOtherChargeEntryPage({ mode = 'sublet' }) {
         <div className="bg-white border rounded-lg shadow-sm p-4 space-y-3">
           <div className="grid grid-cols-1 md:grid-cols-5 gap-3">
             <label className="text-sm space-y-1 md:col-span-2">
-              <div className="font-medium text-gray-800">{isSublet ? 'SubLet Charge' : 'Other Charge'}</div>
+              <div className="font-medium text-foreground">{isSublet ? 'SubLet Charge' : 'Other Charge'}</div>
               <select className="w-full border rounded px-2 py-2 text-sm" value={chargeTypeId} onChange={(e) => setChargeTypeId(e.target.value)}>
                 <option value="">Select charge type...</option>
                 {typeRows.map((t) => {
@@ -1765,44 +1487,44 @@ function SubletOrOtherChargeEntryPage({ mode = 'sublet' }) {
               </select>
             </label>
             <label className="text-sm space-y-1">
-              <div className="font-medium text-gray-800">Charge Code</div>
+              <div className="font-medium text-foreground">Charge Code</div>
               <Input readOnly value={isSublet ? (selectedType?.work_code || '') : (selectedType?.charge_code || '')} />
             </label>
             <label className="text-sm space-y-1">
-              <div className="font-medium text-gray-800">Quantity</div>
+              <div className="font-medium text-foreground">Quantity</div>
               <Input value={quantity} onChange={(e) => setQuantity(e.target.value)} />
             </label>
             <label className="text-sm space-y-1">
-              <div className="font-medium text-gray-800">Unit Price</div>
+              <div className="font-medium text-foreground">Unit Price</div>
               <Input readOnly value={unitPrice ? unitPrice.toFixed(2) : ''} />
             </label>
             <label className="text-sm space-y-1 md:col-span-2">
-              <div className="font-medium text-gray-800">Description</div>
+              <div className="font-medium text-foreground">Description</div>
               <Input readOnly value={selectedType?.description || ''} />
             </label>
             {isSublet && (
               <label className="text-sm space-y-1 md:col-span-2">
-                <div className="font-medium text-gray-800">Supplier</div>
+                <div className="font-medium text-foreground">Supplier</div>
                 <Input readOnly value={supplierName} />
               </label>
             )}
             <label className="text-sm space-y-1">
-              <div className="font-medium text-gray-800">Amount</div>
+              <div className="font-medium text-foreground">Amount</div>
               <Input readOnly value={amount ? amount.toFixed(2) : ''} />
             </label>
             <label className="text-sm space-y-1">
-              <div className="font-medium text-gray-800">VAT</div>
+              <div className="font-medium text-foreground">VAT</div>
               <Input readOnly value={vat ? vat.toFixed(2) : '0.00'} />
             </label>
             <label className="text-sm space-y-1">
-              <div className="font-medium text-gray-800">Total Inc VAT</div>
+              <div className="font-medium text-foreground">Total Inc VAT</div>
               <Input readOnly value={totalIncVat ? totalIncVat.toFixed(2) : '0.00'} />
             </label>
           </div>
 
           <div className="overflow-auto border rounded">
             <table className="min-w-[900px] w-full text-sm">
-              <thead className="bg-gray-100 text-xs text-gray-600 uppercase">
+              <thead className="bg-muted text-xs text-muted-foreground uppercase">
                 <tr>
                   <th className="py-2 px-2 text-left">No</th>
                   <th className="py-2 px-2 text-left">Date</th>
@@ -1819,7 +1541,7 @@ function SubletOrOtherChargeEntryPage({ mode = 'sublet' }) {
               <tbody>
                 {chargeRows.length === 0 ? (
                   <tr>
-                    <td colSpan={10} className="py-5 px-2 text-center text-gray-500">No transaction records yet.</td>
+                    <td colSpan={10} className="py-5 px-2 text-center text-muted-foreground">No transaction records yet.</td>
                   </tr>
                 ) : chargeRows.map((r, idx) => {
                   const lineVat = Number(r.tax_amount || 0)
@@ -1827,7 +1549,7 @@ function SubletOrOtherChargeEntryPage({ mode = 'sublet' }) {
                   const code = isSublet ? r.work_code : r.charge_code
                   const qty = r.quantity != null ? Number(r.quantity) : 1
                   return (
-                    <tr key={r.entry_id || idx} className="border-t border-gray-100">
+                    <tr key={r.entry_id || idx} className="border-t border-border/60">
                       <td className="py-2 px-2">{idx + 1}</td>
                       <td className="py-2 px-2">{String(r.created_at || '').slice(0, 10) || '-'}</td>
                       <td className="py-2 px-2">{code || '-'}</td>
@@ -1844,7 +1566,7 @@ function SubletOrOtherChargeEntryPage({ mode = 'sublet' }) {
               </tbody>
             </table>
           </div>
-          <div className="text-sm text-gray-700 flex gap-6">
+          <div className="text-sm text-foreground/90 flex gap-6">
             <div>Total: <span className="font-semibold">{totals.subtotal.toFixed(2)}</span></div>
             <div>VAT: <span className="font-semibold">{totals.vatTotal.toFixed(2)}</span></div>
             <div>Total Inc. VAT: <span className="font-semibold">{totals.total.toFixed(2)}</span></div>
@@ -2037,15 +1759,15 @@ function RequestForReturnPage() {
         <div className="bg-white border rounded-lg shadow-sm p-4 space-y-3">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
             <label className="text-sm space-y-1">
-              <div className="font-medium text-gray-800">Requisition No</div>
+              <div className="font-medium text-foreground">Requisition No</div>
               <Input readOnly value={returnNo || '(auto after Add New)'} />
             </label>
             <label className="text-sm space-y-1">
-              <div className="font-medium text-gray-800">Date</div>
+              <div className="font-medium text-foreground">Date</div>
               <Input readOnly value={new Date().toISOString().slice(0, 10)} />
             </label>
             <label className="text-sm space-y-1 md:col-span-2">
-              <div className="font-medium text-gray-800">Job Order No</div>
+              <div className="font-medium text-foreground">Job Order No</div>
               <select className="w-full border rounded px-2 py-2 text-sm" value={jobOrderId} onChange={(e) => { setJobOrderId(e.target.value); setIssueId(''); }}>
                 <option value="">Select job...</option>
                 {jobs.map((j) => (
@@ -2056,7 +1778,7 @@ function RequestForReturnPage() {
               </select>
             </label>
             <label className="text-sm space-y-1 md:col-span-2">
-              <div className="font-medium text-gray-800">MRV Reference No</div>
+              <div className="font-medium text-foreground">MRV Reference No</div>
               <select className="w-full border rounded px-2 py-2 text-sm" value={issueId} onChange={(e) => setIssueId(e.target.value)} disabled={!jobOrderId}>
                 <option value="">Select MRV...</option>
                 {issues.map((iss) => (
@@ -2067,18 +1789,18 @@ function RequestForReturnPage() {
               </select>
             </label>
             <label className="text-sm space-y-1">
-              <div className="font-medium text-gray-800">Return Reason</div>
+              <div className="font-medium text-foreground">Return Reason</div>
               <select className="w-full border rounded px-2 py-2 text-sm" value={returnReason} onChange={(e) => setReturnReason(e.target.value)}>
                 <option value="">Select reason...</option>
                 {reasons.map((r) => <option key={r} value={r}>{r}</option>)}
               </select>
             </label>
             <label className="text-sm space-y-1">
-              <div className="font-medium text-gray-800">Return To (Authority)</div>
+              <div className="font-medium text-foreground">Return To (Authority)</div>
               <Input value={returnTo} onChange={(e) => setReturnTo(e.target.value)} />
             </label>
             <label className="text-sm space-y-1 md:col-span-2">
-              <div className="font-medium text-gray-800">Invoice Reference</div>
+              <div className="font-medium text-foreground">Invoice Reference</div>
               <select className="w-full border rounded px-2 py-2 text-sm" value={invoiceId} onChange={(e) => setInvoiceId(e.target.value)}>
                 <option value="">Select invoice...</option>
                 {invoices.map((inv) => (
@@ -2089,19 +1811,19 @@ function RequestForReturnPage() {
               </select>
             </label>
             <label className="text-sm space-y-1">
-              <div className="font-medium text-gray-800">Customer Name</div>
+              <div className="font-medium text-foreground">Customer Name</div>
               <Input readOnly value={selectedCustomer ? `${selectedCustomer.first_name || ''} ${selectedCustomer.last_name || ''}`.trim() : ''} />
             </label>
             <label className="text-sm space-y-1">
-              <div className="font-medium text-gray-800">Plate</div>
+              <div className="font-medium text-foreground">Plate</div>
               <Input readOnly value={selectedVehicle?.license_plate || ''} />
             </label>
             <label className="text-sm space-y-1">
-              <div className="font-medium text-gray-800">Qty To Return</div>
+              <div className="font-medium text-foreground">Qty To Return</div>
               <Input value={qtyToReturn} onChange={(e) => setQtyToReturn(e.target.value)} />
             </label>
             <label className="text-sm space-y-1 md:col-span-2">
-              <div className="font-medium text-gray-800">Remark</div>
+              <div className="font-medium text-foreground">Remark</div>
               <Input value={itemRemark} onChange={(e) => setItemRemark(e.target.value)} />
             </label>
           </div>
@@ -2110,7 +1832,7 @@ function RequestForReturnPage() {
         <div className="bg-white border rounded-lg shadow-sm p-4">
           <div className="overflow-auto border rounded">
             <table className="min-w-[900px] w-full text-sm">
-              <thead className="bg-gray-100 text-xs text-gray-600 uppercase">
+              <thead className="bg-muted text-xs text-muted-foreground uppercase">
                 <tr>
                   <th className="py-2 px-2 text-left">Item Code</th>
                   <th className="py-2 px-2 text-left">Description</th>
@@ -2121,9 +1843,9 @@ function RequestForReturnPage() {
               </thead>
               <tbody>
                 {items.length === 0 ? (
-                  <tr><td colSpan={5} className="py-5 px-2 text-center text-gray-500">No accepted return items yet.</td></tr>
+                  <tr><td colSpan={5} className="py-5 px-2 text-center text-muted-foreground">No accepted return items yet.</td></tr>
                 ) : items.map((it, idx) => (
-                  <tr key={`${it.item_code}-${idx}`} className="border-t border-gray-100">
+                  <tr key={`${it.item_code}-${idx}`} className="border-t border-border/60">
                     <td className="py-2 px-2">{it.item_code}</td>
                     <td className="py-2 px-2">{it.description}</td>
                     <td className="py-2 px-2">{Number(it.quantity).toFixed(2)}</td>
@@ -2134,13 +1856,13 @@ function RequestForReturnPage() {
               </tbody>
             </table>
           </div>
-          <div className="mt-3 text-sm text-gray-700 flex gap-6">
+          <div className="mt-3 text-sm text-foreground/90 flex gap-6">
             <div>Total: <span className="font-semibold">{totals.subtotal.toFixed(2)}</span></div>
             <div>VAT: <span className="font-semibold">{totals.vat.toFixed(2)}</span></div>
             <div>Total Inc. VAT: <span className="font-semibold">{totals.total.toFixed(2)}</span></div>
           </div>
           {selectedInvoice && (
-            <div className="mt-3 text-xs text-gray-500">
+            <div className="mt-3 text-xs text-muted-foreground">
               Selected invoice: {selectedInvoice.invoice_number || `#${selectedInvoice.garage_invoice_id}`}
             </div>
           )}
@@ -2236,10 +1958,10 @@ function ApproveRequestForReturnPage() {
 
         <div className="grid grid-cols-1 lg:grid-cols-[340px_1fr] gap-4">
           <div className="bg-white border rounded-lg shadow-sm p-3">
-            <div className="text-sm font-semibold text-gray-800 mb-2">Pending Return Requests</div>
+            <div className="text-sm font-semibold text-foreground mb-2">Pending Return Requests</div>
             <div className="overflow-auto max-h-[520px] border rounded">
               <table className="min-w-full text-sm">
-                <thead className="bg-gray-100 text-xs text-gray-600 uppercase">
+                <thead className="bg-muted text-xs text-muted-foreground uppercase">
                   <tr>
                     <th className="py-2 px-2 text-left">Req. No</th>
                     <th className="py-2 px-2 text-left">Request For</th>
@@ -2249,12 +1971,12 @@ function ApproveRequestForReturnPage() {
                 <tbody>
                   {pendingRows.length === 0 ? (
                     <tr>
-                      <td colSpan={3} className="py-5 px-2 text-center text-gray-500">No requests awaiting approval.</td>
+                      <td colSpan={3} className="py-5 px-2 text-center text-muted-foreground">No requests awaiting approval.</td>
                     </tr>
                   ) : pendingRows.map((r) => (
                     <tr
                       key={r.return_request_id}
-                      className={`border-t border-gray-100 cursor-pointer ${Number(selectedRequestId) === Number(r.return_request_id) ? 'bg-indigo-50' : 'hover:bg-gray-50'}`}
+                      className={`border-t border-border/60 cursor-pointer ${Number(selectedRequestId) === Number(r.return_request_id) ? 'bg-indigo-50' : 'hover:bg-muted/45'}`}
                       onDoubleClick={() => setSelectedRequestId(r.return_request_id)}
                       onClick={() => setSelectedRequestId(r.return_request_id)}
                       title="Double click to open details"
@@ -2271,47 +1993,47 @@ function ApproveRequestForReturnPage() {
 
           <div className="bg-white border rounded-lg shadow-sm p-4 space-y-3">
             {!selected ? (
-              <div className="text-sm text-gray-500">Select a request on the left (double click) to view details.</div>
+              <div className="text-sm text-muted-foreground">Select a request on the left (double click) to view details.</div>
             ) : (
               <>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                   <label className="text-sm space-y-1">
-                    <div className="font-medium text-gray-800">Requisition No</div>
+                    <div className="font-medium text-foreground">Requisition No</div>
                     <Input readOnly value={selected.return_number || `RR-${selected.return_request_id}`} />
                   </label>
                   <label className="text-sm space-y-1">
-                    <div className="font-medium text-gray-800">Request For</div>
+                    <div className="font-medium text-foreground">Request For</div>
                     <Input readOnly value={selected.request_for || 'MRV'} />
                   </label>
                   <label className="text-sm space-y-1">
-                    <div className="font-medium text-gray-800">Status</div>
+                    <div className="font-medium text-foreground">Status</div>
                     <Input readOnly value={selected.status || ''} />
                   </label>
                   <label className="text-sm space-y-1">
-                    <div className="font-medium text-gray-800">Reason</div>
+                    <div className="font-medium text-foreground">Reason</div>
                     <Input readOnly value={selected.return_reason || ''} />
                   </label>
                   <label className="text-sm space-y-1 md:col-span-2">
-                    <div className="font-medium text-gray-800">Return To</div>
+                    <div className="font-medium text-foreground">Return To</div>
                     <Input readOnly value={selected.authority_name || ''} />
                   </label>
                   <label className="text-sm space-y-1">
-                    <div className="font-medium text-gray-800">Invoice Ref</div>
+                    <div className="font-medium text-foreground">Invoice Ref</div>
                     <Input readOnly value={selected.invoice_id != null ? String(selected.invoice_id) : ''} />
                   </label>
                   <label className="text-sm space-y-1">
-                    <div className="font-medium text-gray-800">Issue/MRV Ref</div>
+                    <div className="font-medium text-foreground">Issue/MRV Ref</div>
                     <Input readOnly value={selected.issue_id != null ? String(selected.issue_id) : ''} />
                   </label>
                   <label className="text-sm space-y-1">
-                    <div className="font-medium text-gray-800">Requested By</div>
+                    <div className="font-medium text-foreground">Requested By</div>
                     <Input readOnly value={selected.created_by || ''} />
                   </label>
                 </div>
 
                 <div className="overflow-auto border rounded">
                   <table className="min-w-[800px] w-full text-sm">
-                    <thead className="bg-gray-100 text-xs text-gray-600 uppercase">
+                    <thead className="bg-muted text-xs text-muted-foreground uppercase">
                       <tr>
                         <th className="py-2 px-2 text-left">Item Code</th>
                         <th className="py-2 px-2 text-left">Description</th>
@@ -2323,10 +2045,10 @@ function ApproveRequestForReturnPage() {
                     <tbody>
                       {lines.length === 0 ? (
                         <tr>
-                          <td colSpan={5} className="py-5 px-2 text-center text-gray-500">No detail lines.</td>
+                          <td colSpan={5} className="py-5 px-2 text-center text-muted-foreground">No detail lines.</td>
                         </tr>
                       ) : lines.map((ln, idx) => (
-                        <tr key={`${ln.part_id || ln.item_code || idx}-${idx}`} className="border-t border-gray-100">
+                        <tr key={`${ln.part_id || ln.item_code || idx}-${idx}`} className="border-t border-border/60">
                           <td className="py-2 px-2">{ln.item_code || ln.part_code || `#${ln.part_id || ''}`}</td>
                           <td className="py-2 px-2">{ln.description || ln.part_name || '-'}</td>
                           <td className="py-2 px-2">{Number(ln.quantity || 0).toFixed(2)}</td>
@@ -2337,7 +2059,7 @@ function ApproveRequestForReturnPage() {
                     </tbody>
                   </table>
                 </div>
-                <div className="text-sm text-gray-700 flex gap-6">
+                <div className="text-sm text-foreground/90 flex gap-6">
                   <div>Total: <span className="font-semibold">{totals.subtotal.toFixed(2)}</span></div>
                   <div>VAT: <span className="font-semibold">{totals.vat.toFixed(2)}</span></div>
                   <div>Total Inc. VAT: <span className="font-semibold">{totals.total.toFixed(2)}</span></div>
@@ -2369,6 +2091,12 @@ export default function TransactionToolPage() {
   if (slug === 'garage-issue-requisition') {
     return <GarageIssueRequisitionPage />
   }
+  if (slug === 'internal-fuel-and-lubricant-issue') {
+    return <InternalFuelLubricantIssue />
+  }
+  if (slug === 'fuel-issue-km-editing') {
+    return <FuelIssueKmEditing />
+  }
   if (slug === 'labour-charge-entry') {
     return <LaborChargeEntryPage />
   }
@@ -2383,6 +2111,9 @@ export default function TransactionToolPage() {
   }
   if (slug === 'other-charges') {
     return <SubletOrOtherChargeEntryPage mode="other" />
+  }
+  if (slug === 'item-reserve') {
+    return <ItemReserve />
   }
   if (slug === 'request-for-return') {
     return <RequestForReturnPage />

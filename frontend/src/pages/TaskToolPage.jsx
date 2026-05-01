@@ -266,7 +266,7 @@ function CustomerNotificationEntryPanel() {
         <div className="px-6 pb-6 space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <label className="text-sm">
-              <span className="text-gray-600">Job Order No.</span>
+              <span className="text-muted-foreground">Job Order No.</span>
               <select
                 className="w-full mt-1 border rounded px-3 py-2"
                 value={form.job_order_id}
@@ -282,20 +282,20 @@ function CustomerNotificationEntryPanel() {
               </select>
             </label>
             <label className="text-sm">
-              <span className="text-gray-600">Customer</span>
+              <span className="text-muted-foreground">Customer</span>
               <input
-                className="w-full mt-1 border rounded px-3 py-2 bg-gray-50"
+                className="w-full mt-1 border rounded px-3 py-2 bg-muted/35"
                 value={selectedJob?.customer_name || selectedJob?.customer_id || ''}
                 disabled
               />
             </label>
             <label className="text-sm">
-              <span className="text-gray-600">Plate No.</span>
-              <input className="w-full mt-1 border rounded px-3 py-2 bg-gray-50" value={selectedJob?.vehicle_plate || ''} disabled />
+              <span className="text-muted-foreground">Plate No.</span>
+              <input className="w-full mt-1 border rounded px-3 py-2 bg-muted/35" value={selectedJob?.vehicle_plate || ''} disabled />
             </label>
             <label className="text-sm">
-              <span className="text-gray-600">Invoice No.</span>
-              <input className="w-full mt-1 border rounded px-3 py-2 bg-gray-50" value={selectedJob?.invoice_number || ''} disabled />
+              <span className="text-muted-foreground">Invoice No.</span>
+              <input className="w-full mt-1 border rounded px-3 py-2 bg-muted/35" value={selectedJob?.invoice_number || ''} disabled />
             </label>
           </div>
         </div>
@@ -308,7 +308,7 @@ function CustomerNotificationEntryPanel() {
         <div className="px-6 pb-6 space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <label className="text-sm">
-              <span className="text-gray-600">Notice Date</span>
+              <span className="text-muted-foreground">Notice Date</span>
               <input
                 type="date"
                 className="w-full mt-1 border rounded px-3 py-2"
@@ -317,7 +317,7 @@ function CustomerNotificationEntryPanel() {
               />
             </label>
             <label className="text-sm">
-              <span className="text-gray-600">Notice Type</span>
+              <span className="text-muted-foreground">Notice Type</span>
               <select
                 className="w-full mt-1 border rounded px-3 py-2"
                 value={form.notice_type}
@@ -332,7 +332,7 @@ function CustomerNotificationEntryPanel() {
               </select>
             </label>
             <label className="text-sm">
-              <span className="text-gray-600">Notified To</span>
+              <span className="text-muted-foreground">Notified To</span>
               <input
                 className="w-full mt-1 border rounded px-3 py-2"
                 value={form.contact_name}
@@ -340,7 +340,7 @@ function CustomerNotificationEntryPanel() {
               />
             </label>
             <label className="text-sm">
-              <span className="text-gray-600">Phone</span>
+              <span className="text-muted-foreground">Phone</span>
               <input
                 className="w-full mt-1 border rounded px-3 py-2"
                 value={form.contact_phone}
@@ -348,7 +348,7 @@ function CustomerNotificationEntryPanel() {
               />
             </label>
             <label className="text-sm md:col-span-2">
-              <span className="text-gray-600">Remark</span>
+              <span className="text-muted-foreground">Remark</span>
               <input
                 className="w-full mt-1 border rounded px-3 py-2"
                 value={form.remark}
@@ -390,7 +390,7 @@ function CustomerNotificationEntryPanel() {
               <tbody>
                 {rows.length === 0 ? (
                   <tr>
-                    <td className="py-3 text-gray-500" colSpan={5}>No notifications found for selected job.</td>
+                    <td className="py-3 text-muted-foreground" colSpan={5}>No notifications found for selected job.</td>
                   </tr>
                 ) : (
                   rows.map((r, idx) => (
@@ -483,7 +483,7 @@ function EndOfWorkingDayCheckoutPanel() {
         <div className="px-6 pb-6 space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
             <label className="text-sm">
-              <span className="text-gray-600">Clock Out Date</span>
+              <span className="text-muted-foreground">Clock Out Date</span>
               <input
                 type="date"
                 className="w-full mt-1 border rounded px-3 py-2"
@@ -492,7 +492,7 @@ function EndOfWorkingDayCheckoutPanel() {
               />
             </label>
             <label className="text-sm">
-              <span className="text-gray-600">Clock Out Time</span>
+              <span className="text-muted-foreground">Clock Out Time</span>
               <input
                 type="time"
                 className="w-full mt-1 border rounded px-3 py-2"
@@ -501,7 +501,7 @@ function EndOfWorkingDayCheckoutPanel() {
               />
             </label>
             <label className="text-sm">
-              <span className="text-gray-600">Section (optional)</span>
+              <span className="text-muted-foreground">Section (optional)</span>
               <input
                 className="w-full mt-1 border rounded px-3 py-2"
                 value={form.section}
@@ -509,7 +509,7 @@ function EndOfWorkingDayCheckoutPanel() {
               />
             </label>
             <label className="text-sm">
-              <span className="text-gray-600">Reason</span>
+              <span className="text-muted-foreground">Reason</span>
               <input
                 className="w-full mt-1 border rounded px-3 py-2"
                 value={form.clock_out_reason}
@@ -517,7 +517,7 @@ function EndOfWorkingDayCheckoutPanel() {
               />
             </label>
             <label className="text-sm md:col-span-4">
-              <span className="text-gray-600">Remark If Any</span>
+              <span className="text-muted-foreground">Remark If Any</span>
               <textarea
                 className="w-full mt-1 border rounded px-3 py-2 min-h-[72px]"
                 value={form.clock_out_remark}
@@ -564,7 +564,7 @@ function EndOfWorkingDayCheckoutPanel() {
               <tbody>
                 {clockedInJobs.length === 0 ? (
                   <tr>
-                    <td className="py-3 text-gray-500" colSpan={6}>No active clocked-in jobs.</td>
+                    <td className="py-3 text-muted-foreground" colSpan={6}>No active clocked-in jobs.</td>
                   </tr>
                 ) : (
                   clockedInJobs.map((r, idx) => (
@@ -733,14 +733,14 @@ function DispatchJobToSectionPanel() {
             <Button type="button" variant="outline" onClick={onRefresh} disabled={loading}>
               {loading ? 'Refreshing...' : 'Refresh'}
             </Button>
-            <div className="text-sm text-gray-500 self-center">
+            <div className="text-sm text-muted-foreground self-center">
               {isAddMode ? 'Ready for new dispatch entry' : 'Click Add New to start'}
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
             <label className="text-sm md:col-span-2">
-              <span className="text-gray-600">Job Order No</span>
+              <span className="text-muted-foreground">Job Order No</span>
               <select
                 className="w-full mt-1 border rounded px-3 py-2"
                 value={form.job_order_id}
@@ -759,34 +759,34 @@ function DispatchJobToSectionPanel() {
             </label>
 
             <label className="text-sm">
-              <span className="text-gray-600">Plate No</span>
+              <span className="text-muted-foreground">Plate No</span>
               <input
-                className="w-full mt-1 border rounded px-3 py-2 bg-gray-50"
+                className="w-full mt-1 border rounded px-3 py-2 bg-muted/35"
                 value={selectedJob?.license_plate || ''}
                 readOnly
               />
             </label>
 
             <label className="text-sm md:col-span-2">
-              <span className="text-gray-600">Customer Name</span>
+              <span className="text-muted-foreground">Customer Name</span>
               <input
-                className="w-full mt-1 border rounded px-3 py-2 bg-gray-50"
+                className="w-full mt-1 border rounded px-3 py-2 bg-muted/35"
                 value={selectedJob?.customer_name || ''}
                 readOnly
               />
             </label>
 
             <label className="text-sm">
-              <span className="text-gray-600">Job Type</span>
+              <span className="text-muted-foreground">Job Type</span>
               <input
-                className="w-full mt-1 border rounded px-3 py-2 bg-gray-50"
+                className="w-full mt-1 border rounded px-3 py-2 bg-muted/35"
                 value={selectedJob?.service_type_name || ''}
                 readOnly
               />
             </label>
 
             <label className="text-sm md:col-span-2">
-              <span className="text-gray-600">Dispatch To (Section)</span>
+              <span className="text-muted-foreground">Dispatch To (Section)</span>
               <select
                 className="w-full mt-1 border rounded px-3 py-2"
                 value={form.dispatched_section}
@@ -801,26 +801,26 @@ function DispatchJobToSectionPanel() {
             </label>
 
             <label className="text-sm">
-              <span className="text-gray-600">Dispatch Date</span>
+              <span className="text-muted-foreground">Dispatch Date</span>
               <input
                 type="date"
-                className="w-full mt-1 border rounded px-3 py-2 bg-gray-50"
+                className="w-full mt-1 border rounded px-3 py-2 bg-muted/35"
                 value={form.dispatch_date}
                 readOnly
               />
             </label>
 
             <label className="text-sm">
-              <span className="text-gray-600">Dispatch Time (in 24)</span>
+              <span className="text-muted-foreground">Dispatch Time (in 24)</span>
               <input
-                className="w-full mt-1 border rounded px-3 py-2 bg-gray-50"
+                className="w-full mt-1 border rounded px-3 py-2 bg-muted/35"
                 value={form.dispatch_time}
                 readOnly
               />
             </label>
 
             <label className="text-sm md:col-span-3">
-              <span className="text-gray-600">Remark</span>
+              <span className="text-muted-foreground">Remark</span>
               <textarea
                 className="w-full mt-1 border rounded px-3 py-2 min-h-[72px]"
                 value={form.dispatch_remark}
@@ -856,7 +856,7 @@ function DispatchJobToSectionPanel() {
               <tbody>
                 {filteredHistory.length === 0 ? (
                   <tr>
-                    <td className="py-3 text-gray-500" colSpan={6}>No dispatch rows found.</td>
+                    <td className="py-3 text-muted-foreground" colSpan={6}>No dispatch rows found.</td>
                   </tr>
                 ) : (
                   filteredHistory.map((r, idx) => (
@@ -1001,7 +1001,7 @@ function ReceiveDispatchedJobPanel() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
             <label className="text-sm md:col-span-2">
-              <span className="text-gray-600">Job Order No</span>
+              <span className="text-muted-foreground">Job Order No</span>
               <select
                 className="w-full mt-1 border rounded px-3 py-2"
                 value={form.job_order_id}
@@ -1019,52 +1019,52 @@ function ReceiveDispatchedJobPanel() {
             </label>
 
             <label className="text-sm">
-              <span className="text-gray-600">Plate No</span>
-              <input className="w-full mt-1 border rounded px-3 py-2 bg-gray-50" value={selectedJob?.license_plate || ''} readOnly />
+              <span className="text-muted-foreground">Plate No</span>
+              <input className="w-full mt-1 border rounded px-3 py-2 bg-muted/35" value={selectedJob?.license_plate || ''} readOnly />
             </label>
 
             <label className="text-sm md:col-span-2">
-              <span className="text-gray-600">Customer Name</span>
-              <input className="w-full mt-1 border rounded px-3 py-2 bg-gray-50" value={selectedJob?.customer_name || ''} readOnly />
+              <span className="text-muted-foreground">Customer Name</span>
+              <input className="w-full mt-1 border rounded px-3 py-2 bg-muted/35" value={selectedJob?.customer_name || ''} readOnly />
             </label>
 
             <label className="text-sm">
-              <span className="text-gray-600">Job Type</span>
-              <input className="w-full mt-1 border rounded px-3 py-2 bg-gray-50" value={selectedJob?.service_type_name || ''} readOnly />
+              <span className="text-muted-foreground">Job Type</span>
+              <input className="w-full mt-1 border rounded px-3 py-2 bg-muted/35" value={selectedJob?.service_type_name || ''} readOnly />
             </label>
 
             <label className="text-sm md:col-span-2">
-              <span className="text-gray-600">Dispatch To</span>
-              <input className="w-full mt-1 border rounded px-3 py-2 bg-gray-50" value={selectedJob?.dispatched_section || ''} readOnly />
+              <span className="text-muted-foreground">Dispatch To</span>
+              <input className="w-full mt-1 border rounded px-3 py-2 bg-muted/35" value={selectedJob?.dispatched_section || ''} readOnly />
             </label>
 
             <label className="text-sm">
-              <span className="text-gray-600">Dispatch Date</span>
+              <span className="text-muted-foreground">Dispatch Date</span>
               <input
                 type="date"
-                className="w-full mt-1 border rounded px-3 py-2 bg-gray-50"
+                className="w-full mt-1 border rounded px-3 py-2 bg-muted/35"
                 value={String(selectedJob?.dispatched_at || '').slice(0, 10)}
                 readOnly
               />
             </label>
 
             <label className="text-sm">
-              <span className="text-gray-600">Dispatch Time (24 Hr)</span>
-              <input className="w-full mt-1 border rounded px-3 py-2 bg-gray-50" value={String(selectedJob?.dispatched_at || '').slice(11, 16)} readOnly />
+              <span className="text-muted-foreground">Dispatch Time (24 Hr)</span>
+              <input className="w-full mt-1 border rounded px-3 py-2 bg-muted/35" value={String(selectedJob?.dispatched_at || '').slice(11, 16)} readOnly />
             </label>
 
             <label className="text-sm">
-              <span className="text-gray-600">Receive Date</span>
-              <input type="date" className="w-full mt-1 border rounded px-3 py-2 bg-gray-50" value={form.receive_date} readOnly />
+              <span className="text-muted-foreground">Receive Date</span>
+              <input type="date" className="w-full mt-1 border rounded px-3 py-2 bg-muted/35" value={form.receive_date} readOnly />
             </label>
 
             <label className="text-sm">
-              <span className="text-gray-600">Receive Time (24Hr)</span>
-              <input className="w-full mt-1 border rounded px-3 py-2 bg-gray-50" value={form.receive_time} readOnly />
+              <span className="text-muted-foreground">Receive Time (24Hr)</span>
+              <input className="w-full mt-1 border rounded px-3 py-2 bg-muted/35" value={form.receive_time} readOnly />
             </label>
 
             <label className="text-sm md:col-span-3">
-              <span className="text-gray-600">Vehicle Location</span>
+              <span className="text-muted-foreground">Vehicle Location</span>
               <input
                 className="w-full mt-1 border rounded px-3 py-2"
                 value={form.received_vehicle_location}
@@ -1074,7 +1074,7 @@ function ReceiveDispatchedJobPanel() {
             </label>
 
             <label className="text-sm md:col-span-3">
-              <span className="text-gray-600">Received By Section</span>
+              <span className="text-muted-foreground">Received By Section</span>
               <input
                 className="w-full mt-1 border rounded px-3 py-2"
                 value={form.received_section}
@@ -1107,7 +1107,7 @@ function ReceiveDispatchedJobPanel() {
               </thead>
               <tbody>
                 {filteredHistory.length === 0 ? (
-                  <tr><td className="py-3 text-gray-500" colSpan={5}>No dispatched jobs found.</td></tr>
+                  <tr><td className="py-3 text-muted-foreground" colSpan={5}>No dispatched jobs found.</td></tr>
                 ) : (
                   filteredHistory.map((r, idx) => (
                     <tr key={`${r.job_order_id || idx}-${idx}`} className="border-b">
@@ -1285,7 +1285,7 @@ function JobClockInPanel() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
             <label className="text-sm md:col-span-2">
-              <span className="text-gray-600">Job Order No</span>
+              <span className="text-muted-foreground">Job Order No</span>
               <select
                 className="w-full mt-1 border rounded px-3 py-2"
                 value={form.job_order_id}
@@ -1303,19 +1303,19 @@ function JobClockInPanel() {
               </select>
             </label>
             <label className="text-sm">
-              <span className="text-gray-600">Plate No</span>
-              <input className="w-full mt-1 border rounded px-3 py-2 bg-gray-50" value={selectedJob?.license_plate || ''} readOnly />
+              <span className="text-muted-foreground">Plate No</span>
+              <input className="w-full mt-1 border rounded px-3 py-2 bg-muted/35" value={selectedJob?.license_plate || ''} readOnly />
             </label>
             <label className="text-sm md:col-span-3">
-              <span className="text-gray-600">Customer Name</span>
-              <input className="w-full mt-1 border rounded px-3 py-2 bg-gray-50" value={selectedJob?.customer_name || ''} readOnly />
+              <span className="text-muted-foreground">Customer Name</span>
+              <input className="w-full mt-1 border rounded px-3 py-2 bg-muted/35" value={selectedJob?.customer_name || ''} readOnly />
             </label>
             <label className="text-sm">
-              <span className="text-gray-600">Job Type</span>
-              <input className="w-full mt-1 border rounded px-3 py-2 bg-gray-50" value={selectedJob?.service_type_name || ''} readOnly />
+              <span className="text-muted-foreground">Job Type</span>
+              <input className="w-full mt-1 border rounded px-3 py-2 bg-muted/35" value={selectedJob?.service_type_name || ''} readOnly />
             </label>
             <label className="text-sm md:col-span-2">
-              <span className="text-gray-600">Technician</span>
+              <span className="text-muted-foreground">Technician</span>
               <select
                 className="w-full mt-1 border rounded px-3 py-2"
                 value={form.technician_employee_id}
@@ -1331,15 +1331,15 @@ function JobClockInPanel() {
               </select>
             </label>
             <label className="text-sm">
-              <span className="text-gray-600">Clock In Date</span>
-              <input type="date" className="w-full mt-1 border rounded px-3 py-2 bg-gray-50" value={form.clock_in_date} readOnly />
+              <span className="text-muted-foreground">Clock In Date</span>
+              <input type="date" className="w-full mt-1 border rounded px-3 py-2 bg-muted/35" value={form.clock_in_date} readOnly />
             </label>
             <label className="text-sm">
-              <span className="text-gray-600">Clock In Time (In 24Hr)</span>
-              <input className="w-full mt-1 border rounded px-3 py-2 bg-gray-50" value={form.clock_in_time} readOnly />
+              <span className="text-muted-foreground">Clock In Time (In 24Hr)</span>
+              <input className="w-full mt-1 border rounded px-3 py-2 bg-muted/35" value={form.clock_in_time} readOnly />
             </label>
             <label className="text-sm md:col-span-3">
-              <span className="text-gray-600">Remark</span>
+              <span className="text-muted-foreground">Remark</span>
               <input
                 className="w-full mt-1 border rounded px-3 py-2"
                 value={form.clock_in_remark}
@@ -1349,7 +1349,7 @@ function JobClockInPanel() {
               />
             </label>
             <label className="text-sm md:col-span-3">
-              <span className="text-gray-600">For Charge Type</span>
+              <span className="text-muted-foreground">For Charge Type</span>
               <select
                 className="w-full mt-1 border rounded px-3 py-2"
                 value={form.task_id}
@@ -1389,7 +1389,7 @@ function JobClockInPanel() {
             </thead>
             <tbody>
               {history.length === 0 ? (
-                <tr><td colSpan={6} className="py-3 text-gray-500">No active clock-ins.</td></tr>
+                <tr><td colSpan={6} className="py-3 text-muted-foreground">No active clock-ins.</td></tr>
               ) : (
                 history.map((r, idx) => (
                   <tr key={r.job_clock_id || idx} className="border-b">
@@ -1550,7 +1550,7 @@ function JobClockOutPanel() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
             <label className="text-sm md:col-span-2">
-              <span className="text-gray-600">Job Order No</span>
+              <span className="text-muted-foreground">Job Order No</span>
               <select
                 className="w-full mt-1 border rounded px-3 py-2"
                 value={form.job_order_id}
@@ -1565,43 +1565,43 @@ function JobClockOutPanel() {
               </select>
             </label>
             <label className="text-sm">
-              <span className="text-gray-600">Plate No</span>
-              <input className="w-full mt-1 border rounded px-3 py-2 bg-gray-50" value={selectedJob?.license_plate || ''} readOnly />
+              <span className="text-muted-foreground">Plate No</span>
+              <input className="w-full mt-1 border rounded px-3 py-2 bg-muted/35" value={selectedJob?.license_plate || ''} readOnly />
             </label>
             <label className="text-sm md:col-span-3">
-              <span className="text-gray-600">Customer Name</span>
-              <input className="w-full mt-1 border rounded px-3 py-2 bg-gray-50" value={selectedJob?.customer_name || ''} readOnly />
+              <span className="text-muted-foreground">Customer Name</span>
+              <input className="w-full mt-1 border rounded px-3 py-2 bg-muted/35" value={selectedJob?.customer_name || ''} readOnly />
             </label>
             <label className="text-sm">
-              <span className="text-gray-600">Job Type</span>
-              <input className="w-full mt-1 border rounded px-3 py-2 bg-gray-50" value={selectedJob?.service_type_name || ''} readOnly />
+              <span className="text-muted-foreground">Job Type</span>
+              <input className="w-full mt-1 border rounded px-3 py-2 bg-muted/35" value={selectedJob?.service_type_name || ''} readOnly />
             </label>
             <label className="text-sm md:col-span-2">
-              <span className="text-gray-600">Selected Technician</span>
+              <span className="text-muted-foreground">Selected Technician</span>
               <input
-                className="w-full mt-1 border rounded px-3 py-2 bg-gray-50"
+                className="w-full mt-1 border rounded px-3 py-2 bg-muted/35"
                 value={selectedClock?.technician_employee_id ? `#${selectedClock.technician_employee_id}` : ''}
                 readOnly
               />
             </label>
             <label className="text-sm">
-              <span className="text-gray-600">Clock In Date</span>
-              <input type="date" className="w-full mt-1 border rounded px-3 py-2 bg-gray-50" value={String(selectedClock?.clock_in_at || '').slice(0, 10)} readOnly />
+              <span className="text-muted-foreground">Clock In Date</span>
+              <input type="date" className="w-full mt-1 border rounded px-3 py-2 bg-muted/35" value={String(selectedClock?.clock_in_at || '').slice(0, 10)} readOnly />
             </label>
             <label className="text-sm">
-              <span className="text-gray-600">Clock In Time</span>
-              <input className="w-full mt-1 border rounded px-3 py-2 bg-gray-50" value={String(selectedClock?.clock_in_at || '').slice(11, 16)} readOnly />
+              <span className="text-muted-foreground">Clock In Time</span>
+              <input className="w-full mt-1 border rounded px-3 py-2 bg-muted/35" value={String(selectedClock?.clock_in_at || '').slice(11, 16)} readOnly />
             </label>
             <label className="text-sm">
-              <span className="text-gray-600">Clock Out Date</span>
-              <input type="date" className="w-full mt-1 border rounded px-3 py-2 bg-gray-50" value={form.clock_out_date} readOnly />
+              <span className="text-muted-foreground">Clock Out Date</span>
+              <input type="date" className="w-full mt-1 border rounded px-3 py-2 bg-muted/35" value={form.clock_out_date} readOnly />
             </label>
             <label className="text-sm">
-              <span className="text-gray-600">Clock Out Time</span>
-              <input className="w-full mt-1 border rounded px-3 py-2 bg-gray-50" value={form.clock_out_time} readOnly />
+              <span className="text-muted-foreground">Clock Out Time</span>
+              <input className="w-full mt-1 border rounded px-3 py-2 bg-muted/35" value={form.clock_out_time} readOnly />
             </label>
             <label className="text-sm md:col-span-3">
-              <span className="text-gray-600">Remark</span>
+              <span className="text-muted-foreground">Remark</span>
               <input
                 className="w-full mt-1 border rounded px-3 py-2"
                 value={form.clock_out_remark}
@@ -1610,7 +1610,7 @@ function JobClockOutPanel() {
               />
             </label>
             <label className="text-sm md:col-span-3">
-              <span className="text-gray-600">Reason For Out</span>
+              <span className="text-muted-foreground">Reason For Out</span>
               <select
                 className="w-full mt-1 border rounded px-3 py-2"
                 value={form.clock_out_reason}
@@ -1647,7 +1647,7 @@ function JobClockOutPanel() {
             </thead>
             <tbody>
               {clocks.length === 0 ? (
-                <tr><td colSpan={6} className="py-3 text-gray-500">No active clock entries.</td></tr>
+                <tr><td colSpan={6} className="py-3 text-muted-foreground">No active clock entries.</td></tr>
               ) : (
                 clocks.map((c, idx) => (
                   <tr
@@ -1880,7 +1880,7 @@ function TransferChargeCodeByTechnicianPanel() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
             <label className="text-sm md:col-span-2">
-              <span className="text-gray-600">Job Order No</span>
+              <span className="text-muted-foreground">Job Order No</span>
               <select
                 className="w-full mt-1 border rounded px-3 py-2"
                 value={form.job_order_id}
@@ -1896,15 +1896,15 @@ function TransferChargeCodeByTechnicianPanel() {
               </select>
             </label>
             <label className="text-sm">
-              <span className="text-gray-600">Plate No</span>
-              <input className="w-full mt-1 border rounded px-3 py-2 bg-gray-50" value={selectedJob?.license_plate || ''} readOnly />
+              <span className="text-muted-foreground">Plate No</span>
+              <input className="w-full mt-1 border rounded px-3 py-2 bg-muted/35" value={selectedJob?.license_plate || ''} readOnly />
             </label>
             <label className="text-sm md:col-span-3">
-              <span className="text-gray-600">Customer Name</span>
-              <input className="w-full mt-1 border rounded px-3 py-2 bg-gray-50" value={selectedJob?.customer_name || ''} readOnly />
+              <span className="text-muted-foreground">Customer Name</span>
+              <input className="w-full mt-1 border rounded px-3 py-2 bg-muted/35" value={selectedJob?.customer_name || ''} readOnly />
             </label>
             <label className="text-sm md:col-span-3">
-              <span className="text-gray-600">Technician</span>
+              <span className="text-muted-foreground">Technician</span>
               <select
                 className="w-full mt-1 border rounded px-3 py-2"
                 value={form.technician_employee_id}
@@ -1920,7 +1920,7 @@ function TransferChargeCodeByTechnicianPanel() {
               </select>
             </label>
             <label className="text-sm md:col-span-3">
-              <span className="text-gray-600">From Operation</span>
+              <span className="text-muted-foreground">From Operation</span>
               <select
                 className="w-full mt-1 border rounded px-3 py-2"
                 value={form.from_task_id}
@@ -1934,7 +1934,7 @@ function TransferChargeCodeByTechnicianPanel() {
               </select>
             </label>
             <label className="text-sm md:col-span-3">
-              <span className="text-gray-600">To Operation</span>
+              <span className="text-muted-foreground">To Operation</span>
               <select
                 className="w-full mt-1 border rounded px-3 py-2"
                 value={form.to_task_id}
@@ -1948,7 +1948,7 @@ function TransferChargeCodeByTechnicianPanel() {
               </select>
             </label>
             <label className="text-sm">
-              <span className="text-gray-600">Charge % To Transfer</span>
+              <span className="text-muted-foreground">Charge % To Transfer</span>
               <input
                 type="number"
                 min="0"
@@ -1960,7 +1960,7 @@ function TransferChargeCodeByTechnicianPanel() {
               />
             </label>
             <label className="text-sm md:col-span-2">
-              <span className="text-gray-600">Remark</span>
+              <span className="text-muted-foreground">Remark</span>
               <input
                 className="w-full mt-1 border rounded px-3 py-2"
                 value={form.remark}
@@ -1993,7 +1993,7 @@ function TransferChargeCodeByTechnicianPanel() {
             </thead>
             <tbody>
               {shownRows.length === 0 ? (
-                <tr><td colSpan={6} className="py-3 text-gray-500">No transfer records yet.</td></tr>
+                <tr><td colSpan={6} className="py-3 text-muted-foreground">No transfer records yet.</td></tr>
               ) : (
                 shownRows.map((r, idx) => (
                   <tr key={r.entry_id || idx} className="border-b">
@@ -2146,7 +2146,7 @@ function UpdateLastClockOutReasonPanel() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
             <label className="text-sm md:col-span-2">
-              <span className="text-gray-600">Job Order No</span>
+              <span className="text-muted-foreground">Job Order No</span>
               <select
                 className="w-full mt-1 border rounded px-3 py-2"
                 value={form.job_order_id}
@@ -2162,23 +2162,23 @@ function UpdateLastClockOutReasonPanel() {
               </select>
             </label>
             <label className="text-sm">
-              <span className="text-gray-600">Plate No</span>
-              <input className="w-full mt-1 border rounded px-3 py-2 bg-gray-50" value={selectedJob?.license_plate || ''} readOnly />
+              <span className="text-muted-foreground">Plate No</span>
+              <input className="w-full mt-1 border rounded px-3 py-2 bg-muted/35" value={selectedJob?.license_plate || ''} readOnly />
             </label>
             <label className="text-sm md:col-span-3">
-              <span className="text-gray-600">Customer Name</span>
-              <input className="w-full mt-1 border rounded px-3 py-2 bg-gray-50" value={selectedJob?.customer_name || ''} readOnly />
+              <span className="text-muted-foreground">Customer Name</span>
+              <input className="w-full mt-1 border rounded px-3 py-2 bg-muted/35" value={selectedJob?.customer_name || ''} readOnly />
             </label>
             <label className="text-sm md:col-span-3">
-              <span className="text-gray-600">Current Clock Out Reason</span>
-              <input className="w-full mt-1 border rounded px-3 py-2 bg-gray-50" value={lastClockedOut?.clock_out_reason || ''} readOnly />
+              <span className="text-muted-foreground">Current Clock Out Reason</span>
+              <input className="w-full mt-1 border rounded px-3 py-2 bg-muted/35" value={lastClockedOut?.clock_out_reason || ''} readOnly />
             </label>
             <label className="text-sm md:col-span-3">
-              <span className="text-gray-600">Current Clock Out Remark</span>
-              <textarea className="w-full mt-1 border rounded px-3 py-2 min-h-[80px] bg-gray-50" value={lastClockedOut?.clock_out_remark || ''} readOnly />
+              <span className="text-muted-foreground">Current Clock Out Remark</span>
+              <textarea className="w-full mt-1 border rounded px-3 py-2 min-h-[80px] bg-muted/35" value={lastClockedOut?.clock_out_remark || ''} readOnly />
             </label>
             <label className="text-sm md:col-span-3">
-              <span className="text-gray-600">New Clock Out Reason</span>
+              <span className="text-muted-foreground">New Clock Out Reason</span>
               <input
                 className="w-full mt-1 border rounded px-3 py-2"
                 value={form.clock_out_reason}
@@ -2211,7 +2211,7 @@ function UpdateLastClockOutReasonPanel() {
             </thead>
             <tbody>
               {clocks.filter((c) => c.clock_out_at).length === 0 ? (
-                <tr><td colSpan={5} className="py-3 text-gray-500">No clocked-out rows.</td></tr>
+                <tr><td colSpan={5} className="py-3 text-muted-foreground">No clocked-out rows.</td></tr>
               ) : (
                 clocks
                   .filter((c) => c.clock_out_at)
@@ -2359,7 +2359,7 @@ function JobTransferToStationPanel() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <label className="text-sm">
-              <span className="text-gray-600">Job Order No</span>
+              <span className="text-muted-foreground">Job Order No</span>
               <select className="w-full mt-1 border rounded px-3 py-2" value={form.job_order_id} disabled={!isAddMode}
                 onChange={(e) => setForm((p) => ({ ...p, job_order_id: e.target.value }))}>
                 <option value="">Select job</option>
@@ -2367,25 +2367,25 @@ function JobTransferToStationPanel() {
               </select>
             </label>
             <label className="text-sm">
-              <span className="text-gray-600">Customer</span>
-              <input className="w-full mt-1 border rounded px-3 py-2 bg-gray-50" value={selectedJob?.customer_name || ''} readOnly />
+              <span className="text-muted-foreground">Customer</span>
+              <input className="w-full mt-1 border rounded px-3 py-2 bg-muted/35" value={selectedJob?.customer_name || ''} readOnly />
             </label>
             <label className="text-sm">
-              <span className="text-gray-600">From Station</span>
+              <span className="text-muted-foreground">From Station</span>
               <input className="w-full mt-1 border rounded px-3 py-2" value={form.from_station} disabled={!isAddMode}
                 list="from-stations"
                 onChange={(e) => setForm((p) => ({ ...p, from_station: e.target.value }))} />
               <datalist id="from-stations">{stationOptions.map((s) => <option key={`f-${s}`} value={s} />)}</datalist>
             </label>
             <label className="text-sm">
-              <span className="text-gray-600">To Station</span>
+              <span className="text-muted-foreground">To Station</span>
               <input className="w-full mt-1 border rounded px-3 py-2" value={form.to_station} disabled={!isAddMode}
                 list="to-stations"
                 onChange={(e) => setForm((p) => ({ ...p, to_station: e.target.value }))} />
               <datalist id="to-stations">{stationOptions.map((s) => <option key={`t-${s}`} value={s} />)}</datalist>
             </label>
             <label className="text-sm md:col-span-2">
-              <span className="text-gray-600">Reason</span>
+              <span className="text-muted-foreground">Reason</span>
               <textarea className="w-full mt-1 border rounded px-3 py-2 min-h-[80px]" value={form.reason} disabled={!isAddMode}
                 onChange={(e) => setForm((p) => ({ ...p, reason: e.target.value }))} />
             </label>
@@ -2515,7 +2515,7 @@ function ChangeJobOrderStationPanel() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <label className="text-sm">
-              <span className="text-gray-600">Job Order No</span>
+              <span className="text-muted-foreground">Job Order No</span>
               <select className="w-full mt-1 border rounded px-3 py-2" value={form.job_order_id} disabled={!isAddMode}
                 onChange={(e) => setForm((p) => ({ ...p, job_order_id: e.target.value }))}>
                 <option value="">Select job</option>
@@ -2523,21 +2523,21 @@ function ChangeJobOrderStationPanel() {
               </select>
             </label>
             <label className="text-sm">
-              <span className="text-gray-600">Customer</span>
-              <input className="w-full mt-1 border rounded px-3 py-2 bg-gray-50" value={selectedJob?.customer_name || ''} readOnly />
+              <span className="text-muted-foreground">Customer</span>
+              <input className="w-full mt-1 border rounded px-3 py-2 bg-muted/35" value={selectedJob?.customer_name || ''} readOnly />
             </label>
             <label className="text-sm">
-              <span className="text-gray-600">Old Station</span>
+              <span className="text-muted-foreground">Old Station</span>
               <input className="w-full mt-1 border rounded px-3 py-2" value={form.old_station} disabled={!isAddMode}
                 onChange={(e) => setForm((p) => ({ ...p, old_station: e.target.value }))} />
             </label>
             <label className="text-sm">
-              <span className="text-gray-600">New Station</span>
+              <span className="text-muted-foreground">New Station</span>
               <input className="w-full mt-1 border rounded px-3 py-2" value={form.new_station} disabled={!isAddMode}
                 onChange={(e) => setForm((p) => ({ ...p, new_station: e.target.value }))} />
             </label>
             <label className="text-sm md:col-span-2">
-              <span className="text-gray-600">Change Note</span>
+              <span className="text-muted-foreground">Change Note</span>
               <textarea className="w-full mt-1 border rounded px-3 py-2 min-h-[80px]" value={form.change_note} disabled={!isAddMode}
                 onChange={(e) => setForm((p) => ({ ...p, change_note: e.target.value }))} />
             </label>
@@ -2651,7 +2651,7 @@ function InOutEnquiryPanel() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
             {tab === 'technician' && (
               <label className="text-sm md:col-span-2">
-                <span className="text-gray-600">Technician</span>
+                <span className="text-muted-foreground">Technician</span>
                 <select
                   className="w-full mt-1 border rounded px-3 py-2"
                   value={filters.technician_employee_id}
@@ -2668,7 +2668,7 @@ function InOutEnquiryPanel() {
             )}
             {tab === 'job_order' && (
               <label className="text-sm md:col-span-2">
-                <span className="text-gray-600">Job Order No</span>
+                <span className="text-muted-foreground">Job Order No</span>
                 <select
                   className="w-full mt-1 border rounded px-3 py-2"
                   value={filters.job_order_id}
@@ -2685,7 +2685,7 @@ function InOutEnquiryPanel() {
             )}
             {tab === 'sales' && (
               <label className="text-sm md:col-span-2">
-                <span className="text-gray-600">Sales By Job Order No</span>
+                <span className="text-muted-foreground">Sales By Job Order No</span>
                 <select
                   className="w-full mt-1 border rounded px-3 py-2"
                   value={filters.sales_job_order_id}
@@ -2701,7 +2701,7 @@ function InOutEnquiryPanel() {
               </label>
             )}
             <label className="text-sm">
-              <span className="text-gray-600">From Date</span>
+              <span className="text-muted-foreground">From Date</span>
               <input
                 type="date"
                 className="w-full mt-1 border rounded px-3 py-2"
@@ -2710,7 +2710,7 @@ function InOutEnquiryPanel() {
               />
             </label>
             <label className="text-sm">
-              <span className="text-gray-600">To Date</span>
+              <span className="text-muted-foreground">To Date</span>
               <input
                 type="date"
                 className="w-full mt-1 border rounded px-3 py-2"
@@ -2724,7 +2724,7 @@ function InOutEnquiryPanel() {
                 checked={filters.include_closed}
                 onChange={(e) => setFilters((p) => ({ ...p, include_closed: e.target.checked }))}
               />
-              <span className="text-gray-700">Include Closed Jobs</span>
+              <span className="text-foreground/90">Include Closed Jobs</span>
             </label>
             <div className="flex items-end gap-2">
               <Button type="button" onClick={loadData} disabled={loading}>
@@ -2765,7 +2765,7 @@ function InOutEnquiryPanel() {
               <tbody>
                 {rows.length === 0 ? (
                   <tr>
-                    <td className="py-3 text-gray-500" colSpan={11}>No data loaded.</td>
+                    <td className="py-3 text-muted-foreground" colSpan={11}>No data loaded.</td>
                   </tr>
                 ) : (
                   rows.map((r, idx) => {
@@ -2880,7 +2880,7 @@ function TechnicianEnquiryPanel() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
             <label className="text-sm">
-              <span className="text-gray-600">Section / Unit</span>
+              <span className="text-muted-foreground">Section / Unit</span>
               <select
                 className="w-full mt-1 border rounded px-3 py-2"
                 value={section}
@@ -2922,7 +2922,7 @@ function TechnicianEnquiryPanel() {
                 </thead>
                 <tbody>
                   {freeRows.length === 0 ? (
-                    <tr><td colSpan={5} className="py-3 text-gray-500">No free technicians.</td></tr>
+                    <tr><td colSpan={5} className="py-3 text-muted-foreground">No free technicians.</td></tr>
                   ) : (
                     freeRows.map((r, idx) => (
                       <tr key={r.employee_id || idx} className="border-b">
@@ -2953,7 +2953,7 @@ function TechnicianEnquiryPanel() {
                 </thead>
                 <tbody>
                   {clockedInJobs.length === 0 ? (
-                    <tr><td colSpan={7} className="py-3 text-gray-500">No clocked-in jobs.</td></tr>
+                    <tr><td colSpan={7} className="py-3 text-muted-foreground">No clocked-in jobs.</td></tr>
                   ) : (
                     clockedInJobs.map((r, idx) => (
                       <tr key={r.job_clock_id || idx} className="border-b">
@@ -2985,7 +2985,7 @@ function TechnicianEnquiryPanel() {
                 </thead>
                 <tbody>
                   {dispatchedJobs.length === 0 ? (
-                    <tr><td colSpan={6} className="py-3 text-gray-500">No dispatched jobs.</td></tr>
+                    <tr><td colSpan={6} className="py-3 text-muted-foreground">No dispatched jobs.</td></tr>
                   ) : (
                     dispatchedJobs.map((r, idx) => (
                       <tr key={r.job_order_id || idx} className="border-b">
@@ -3017,7 +3017,7 @@ function TechnicianEnquiryPanel() {
                 </thead>
                 <tbody>
                   {allTechs.length === 0 ? (
-                    <tr><td colSpan={7} className="py-3 text-gray-500">No technicians found.</td></tr>
+                    <tr><td colSpan={7} className="py-3 text-muted-foreground">No technicians found.</td></tr>
                   ) : (
                     allTechs.map((r, idx) => (
                       <tr key={r.employee_id || idx} className="border-b">
@@ -3410,7 +3410,7 @@ export default function TaskToolPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {fields.map((f) => (
                 <label key={f.key} className={`block text-sm ${f.type === 'textarea' ? 'md:col-span-2' : ''}`}>
-                  <span className="text-gray-600">{f.label}</span>
+                  <span className="text-muted-foreground">{f.label}</span>
                   {f.type === 'textarea' ? (
                     <textarea className="w-full mt-1 border rounded px-3 py-2 min-h-[84px]" value={form[f.key] || ''} onChange={(e) => update(f.key, e.target.value)} />
                   ) : f.type === 'select' ? (

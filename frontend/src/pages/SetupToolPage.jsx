@@ -157,7 +157,7 @@ function WorkingHoursSetupPanel() {
             <Button type="button" variant="outline" onClick={load} disabled={loading}>{loading ? 'Refreshing...' : 'Refresh'}</Button>
           </div>
           <label className="text-sm block max-w-sm">
-            <span className="text-gray-600">Working Day</span>
+            <span className="text-muted-foreground">Working Day</span>
             <select className="w-full mt-1 border rounded px-3 py-2" value={selectedDay} onChange={(e) => setSelectedDay(e.target.value)}>
               {Object.keys(dayData).map((day, i) => <option key={day} value={day}>{day} - {i + 1}</option>)}
             </select>
@@ -310,9 +310,9 @@ function WorkingCalendarSetupPanel() {
             <Button type="button" variant="outline" onClick={() => setSuccess(`Effective Working Hour - Year view based on monthly setup for ${year}`)}>Calculate Working Hour - Year</Button>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <label className="text-sm"><span className="text-gray-600">Fiscal Year</span><input type="number" className="w-full mt-1 border rounded px-3 py-2" value={year} onChange={(e) => setYear(Number(e.target.value) || year)} /></label>
+            <label className="text-sm"><span className="text-muted-foreground">Fiscal Year</span><input type="number" className="w-full mt-1 border rounded px-3 py-2" value={year} onChange={(e) => setYear(Number(e.target.value) || year)} /></label>
             <label className="text-sm">
-              <span className="text-gray-600">Month</span>
+              <span className="text-muted-foreground">Month</span>
               <select className="w-full mt-1 border rounded px-3 py-2" value={month} onChange={(e) => setMonth(Number(e.target.value))}>
                 {Array.from({ length: 12 }).map((_, i) => <option key={i + 1} value={i + 1}>{new Date(2000, i, 1).toLocaleString('default', { month: 'long' })}</option>)}
               </select>
@@ -592,17 +592,17 @@ function WorkGroupSetupPanel() {
           {activeTab === 'work-group' ? (
             <div className="space-y-3">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                <label className="text-sm"><span className="text-gray-600">Work Group Name</span>
+                <label className="text-sm"><span className="text-muted-foreground">Work Group Name</span>
                   <input className="w-full mt-1 border rounded px-3 py-2" value={workForm.name} onChange={(e) => setWorkForm((p) => ({ ...p, name: e.target.value }))} />
                 </label>
-                <label className="text-sm"><span className="text-gray-600">Work Group Type</span>
+                <label className="text-sm"><span className="text-muted-foreground">Work Group Type</span>
                   <select className="w-full mt-1 border rounded px-3 py-2" value={workForm.group_type} onChange={(e) => setWorkForm((p) => ({ ...p, group_type: e.target.value }))}>
                     <option>Department</option>
                     <option>Section</option>
                     <option>Unit</option>
                   </select>
                 </label>
-                <label className="text-sm md:col-span-2"><span className="text-gray-600">Reports To</span>
+                <label className="text-sm md:col-span-2"><span className="text-muted-foreground">Reports To</span>
                   <select className="w-full mt-1 border rounded px-3 py-2" value={workForm.parent_id} onChange={(e) => setWorkForm((p) => ({ ...p, parent_id: e.target.value }))}>
                     <option value="">None</option>
                     {store.workGroups.filter((g) => Number(g.id) !== Number(workForm.id)).map((g) => (
@@ -615,7 +615,7 @@ function WorkGroupSetupPanel() {
                 <table className="min-w-full text-sm">
                   <thead className="bg-muted/40"><tr><th className="px-2 py-2 text-left">Id</th><th className="px-2 py-2 text-left">Name</th><th className="px-2 py-2 text-left">Type</th><th className="px-2 py-2 text-left">Reports To</th></tr></thead>
                   <tbody>
-                    {store.workGroups.length === 0 ? <tr><td colSpan={4} className="px-3 py-4 text-center text-gray-500">No work groups yet.</td></tr> : store.workGroups.map((g) => (
+                    {store.workGroups.length === 0 ? <tr><td colSpan={4} className="px-3 py-4 text-center text-muted-foreground">No work groups yet.</td></tr> : store.workGroups.map((g) => (
                       <tr key={g.id} className="border-t cursor-pointer hover:bg-muted/20" onDoubleClick={() => setWorkForm({ id: g.id, name: g.name || '', group_type: g.group_type || 'Department', parent_id: g.parent_id || '' })}>
                         <td className="px-2 py-2">{g.id}</td><td className="px-2 py-2">{g.name}</td><td className="px-2 py-2">{g.group_type}</td><td className="px-2 py-2">{store.workGroups.find((x) => Number(x.id) === Number(g.parent_id))?.name || '-'}</td>
                       </tr>
@@ -627,13 +627,13 @@ function WorkGroupSetupPanel() {
           ) : (
             <div className="space-y-3">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                <label className="text-sm"><span className="text-gray-600">Station Name</span>
+                <label className="text-sm"><span className="text-muted-foreground">Station Name</span>
                   <input className="w-full mt-1 border rounded px-3 py-2" value={stationForm.station_name} onChange={(e) => setStationForm((p) => ({ ...p, station_name: e.target.value }))} />
                 </label>
-                <label className="text-sm"><span className="text-gray-600">Line Name</span>
+                <label className="text-sm"><span className="text-muted-foreground">Line Name</span>
                   <input className="w-full mt-1 border rounded px-3 py-2" value={stationForm.line_name} onChange={(e) => setStationForm((p) => ({ ...p, line_name: e.target.value }))} />
                 </label>
-                <label className="text-sm md:col-span-2"><span className="text-gray-600">Description</span>
+                <label className="text-sm md:col-span-2"><span className="text-muted-foreground">Description</span>
                   <textarea className="w-full mt-1 border rounded px-3 py-2 min-h-[80px]" value={stationForm.description} onChange={(e) => setStationForm((p) => ({ ...p, description: e.target.value }))} />
                 </label>
               </div>
@@ -641,7 +641,7 @@ function WorkGroupSetupPanel() {
                 <table className="min-w-full text-sm">
                   <thead className="bg-muted/40"><tr><th className="px-2 py-2 text-left">Id</th><th className="px-2 py-2 text-left">Station</th><th className="px-2 py-2 text-left">Line</th><th className="px-2 py-2 text-left">Description</th></tr></thead>
                   <tbody>
-                    {store.assemblyStations.length === 0 ? <tr><td colSpan={4} className="px-3 py-4 text-center text-gray-500">No assembly stations yet.</td></tr> : store.assemblyStations.map((s) => (
+                    {store.assemblyStations.length === 0 ? <tr><td colSpan={4} className="px-3 py-4 text-center text-muted-foreground">No assembly stations yet.</td></tr> : store.assemblyStations.map((s) => (
                       <tr key={s.id} className="border-t cursor-pointer hover:bg-muted/20" onDoubleClick={() => setStationForm({ id: s.id, station_name: s.station_name || '', line_name: s.line_name || '', description: s.description || '' })}>
                         <td className="px-2 py-2">{s.id}</td><td className="px-2 py-2">{s.station_name}</td><td className="px-2 py-2">{s.line_name || '-'}</td><td className="px-2 py-2">{s.description || '-'}</td>
                       </tr>

@@ -106,9 +106,9 @@ export default function JobTypeAllowedByUser() {
     >
     <div className="space-y-4">
       <div className="bg-white border rounded p-2 flex items-center gap-3 text-sm">
-        <button type="button" className="hover:text-black text-gray-700" onClick={() => { setSelectedUserId(''); setSelectedJobTypes(new Set()) }}>Add New</button>
-        <button type="button" className="hover:text-black text-gray-700" onClick={onSave}>Save Data</button>
-        <button type="button" className="hover:text-black text-gray-700" onClick={() => { loadBase(); loadList() }}>Refresh</button>
+        <button type="button" className="hover:text-black text-foreground/90" onClick={() => { setSelectedUserId(''); setSelectedJobTypes(new Set()) }}>Add New</button>
+        <button type="button" className="hover:text-black text-foreground/90" onClick={onSave}>Save Data</button>
+        <button type="button" className="hover:text-black text-foreground/90" onClick={() => { loadBase(); loadList() }}>Refresh</button>
         <span className="text-blue-700 font-semibold">Ready</span>
       </div>
 
@@ -120,14 +120,14 @@ export default function JobTypeAllowedByUser() {
           <button
             type="button"
             onClick={() => setTab('assign')}
-            className={`px-4 py-2 text-sm ${tab === 'assign' ? 'bg-gray-100 font-semibold' : 'text-gray-600'}`}
+            className={`px-4 py-2 text-sm ${tab === 'assign' ? 'bg-muted font-semibold' : 'text-muted-foreground'}`}
           >
             Allowed Job Type By User
           </button>
           <button
             type="button"
             onClick={() => setTab('list')}
-            className={`px-4 py-2 text-sm border-l ${tab === 'list' ? 'bg-gray-100 font-semibold' : 'text-gray-600'}`}
+            className={`px-4 py-2 text-sm border-l ${tab === 'list' ? 'bg-muted font-semibold' : 'text-muted-foreground'}`}
           >
             Job Type Allowed By User List
           </button>
@@ -136,7 +136,7 @@ export default function JobTypeAllowedByUser() {
         {tab === 'assign' ? (
           <div className="p-3 space-y-3">
             <label className="block text-sm">
-              <span className="text-gray-700">User:</span>
+              <span className="text-foreground/90">User:</span>
               <select
                 value={selectedUserId}
                 onChange={(e) => setSelectedUserId(e.target.value)}
@@ -154,7 +154,7 @@ export default function JobTypeAllowedByUser() {
 
             <div className="border rounded overflow-x-auto">
               <table className="min-w-full text-sm">
-                <thead className="bg-gray-50">
+                <thead className="bg-muted/35">
                   <tr>
                     <th className="px-3 py-2 text-left w-10">
                       <input
@@ -166,7 +166,7 @@ export default function JobTypeAllowedByUser() {
                         }}
                       />
                     </th>
-                    <th className="px-3 py-2 text-left font-medium text-gray-600">Job Type</th>
+                    <th className="px-3 py-2 text-left font-medium text-muted-foreground">Job Type</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -186,7 +186,7 @@ export default function JobTypeAllowedByUser() {
                   ))}
                   {jobTypes.length === 0 && (
                     <tr>
-                      <td colSpan={2} className="px-3 py-4 text-center text-gray-500">
+                      <td colSpan={2} className="px-3 py-4 text-center text-muted-foreground">
                         No job types found. Setup `job_type` values first in Global Parameters.
                       </td>
                     </tr>
@@ -194,12 +194,12 @@ export default function JobTypeAllowedByUser() {
                 </tbody>
               </table>
             </div>
-            {userLabel && <div className="text-xs text-gray-500">Selected: {userLabel}</div>}
+            {userLabel && <div className="text-xs text-muted-foreground">Selected: {userLabel}</div>}
           </div>
         ) : (
           <div className="p-3 overflow-x-auto">
             <table className="min-w-full text-sm border">
-              <thead className="bg-gray-50">
+              <thead className="bg-muted/35">
                 <tr>
                   <th className="px-3 py-2 text-left">User Name</th>
                   <th className="px-3 py-2 text-left">Job Type</th>
@@ -220,7 +220,7 @@ export default function JobTypeAllowedByUser() {
                 ))}
                 {allRows.length === 0 && (
                   <tr>
-                    <td colSpan={5} className="px-3 py-4 text-center text-gray-500">
+                    <td colSpan={5} className="px-3 py-4 text-center text-muted-foreground">
                       No access records found.
                     </td>
                   </tr>

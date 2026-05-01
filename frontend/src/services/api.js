@@ -402,6 +402,8 @@ export const jobOrderAdditionalChargesApi = {
   // Fuel & Lubricant
   listFuel: (jobOrderId) => api.get(`/job-orders/${jobOrderId}/fuel-lubricant-charges`),
   createFuel: (jobOrderId, data) => api.post(`/job-orders/${jobOrderId}/fuel-lubricant-charges`, data),
+  updateFuelCharge: (jobOrderId, entryId, data) =>
+    api.put(`/job-orders/${jobOrderId}/fuel-lubricant-charges/${entryId}`, data),
   deleteFuel: (jobOrderId, entryId) => api.delete(`/job-orders/${jobOrderId}/fuel-lubricant-charges/${entryId}`),
 
   // Sublet
@@ -415,9 +417,14 @@ export const jobOrderAdditionalChargesApi = {
   deleteOther: (jobOrderId, entryId) => api.delete(`/job-orders/${jobOrderId}/other-charges/${entryId}`),
 }
 
-// AI customer support (authenticated; requires OPENAI_API_KEY on backend)
+// AI assistant (authenticated; requires OPENAI_API_KEY on backend)
 export const supportApi = {
-  chat: (messages) => api.post('/support/chat', { messages }),
+  /** @param {Array<{role:string,content:string}>} messages @param {{ assistant_mode?: 'support' | 'maintenance' | 'reports' }} [opts] */
+  chat: (messages, opts = {}) =>
+    api.post('/support/chat', {
+      messages,
+      assistant_mode: opts.assistant_mode ?? 'support',
+    }),
 }
 
 // Job Order Sublet Orders (Entry + Approval + Receiving)

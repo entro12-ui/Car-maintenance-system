@@ -72,8 +72,8 @@ export default function EnterpriseAdmin() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-semibold text-gray-800">Enterprise Admin</h1>
-      <p className="text-sm text-gray-600">
+      <h1 className="text-2xl font-semibold text-foreground">Enterprise Admin</h1>
+      <p className="text-sm text-muted-foreground">
         Remaining manual parity features: memo templates, user-defined reports, and GL auto-posting rules.
       </p>
       {error && <div className="text-sm text-red-600 bg-red-50 border border-red-200 rounded p-3">{error}</div>}
@@ -86,7 +86,7 @@ export default function EnterpriseAdmin() {
           <input className="border rounded px-2 py-1 w-full text-sm" placeholder="Category" value={templateForm.category} onChange={(e) => setTemplateForm({ ...templateForm, category: e.target.value })} />
           <textarea className="border rounded px-2 py-1 w-full text-sm min-h-[90px]" placeholder="Body template" value={templateForm.body} onChange={(e) => setTemplateForm({ ...templateForm, body: e.target.value })} />
           <button className="px-3 py-1.5 text-sm bg-indigo-600 text-white rounded hover:bg-indigo-700">Add Template</button>
-          <div className="text-xs text-gray-500">Existing: {templates.length}</div>
+          <div className="text-xs text-muted-foreground">Existing: {templates.length}</div>
         </form>
 
         <form onSubmit={createReport} className="bg-white shadow rounded-lg p-4 space-y-2">
@@ -97,7 +97,7 @@ export default function EnterpriseAdmin() {
           <input className="border rounded px-2 py-1 w-full text-sm" placeholder="Description" value={reportForm.description} onChange={(e) => setReportForm({ ...reportForm, description: e.target.value })} />
           <textarea className="border rounded px-2 py-1 w-full text-sm min-h-[70px]" placeholder="Query definition / logic" value={reportForm.query_definition} onChange={(e) => setReportForm({ ...reportForm, query_definition: e.target.value })} />
           <button className="px-3 py-1.5 text-sm bg-indigo-600 text-white rounded hover:bg-indigo-700">Add Report</button>
-          <div className="text-xs text-gray-500">Existing: {reports.length}</div>
+          <div className="text-xs text-muted-foreground">Existing: {reports.length}</div>
         </form>
 
         <form onSubmit={createRule} className="bg-white shadow rounded-lg p-4 space-y-2">
@@ -122,7 +122,7 @@ export default function EnterpriseAdmin() {
             <option value="DISCOUNT_AMOUNT">DISCOUNT_AMOUNT</option>
           </select>
           <button className="px-3 py-1.5 text-sm bg-indigo-600 text-white rounded hover:bg-indigo-700">Add Rule</button>
-          <div className="text-xs text-gray-500">Existing: {rules.length}</div>
+          <div className="text-xs text-muted-foreground">Existing: {rules.length}</div>
         </form>
       </div>
     </div>

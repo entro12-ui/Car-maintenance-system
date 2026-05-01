@@ -152,6 +152,7 @@ class JobOrderFuelLubricantCharge(Base):
     amount = Column(Numeric(12, 2), nullable=False)
 
     remark = Column(Text, nullable=True)
+    odometer_km = Column(Numeric(14, 2), nullable=True)
 
     recorded_by_employee_id = Column(Integer, ForeignKey("employees.employee_id", ondelete="SET NULL"), nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)

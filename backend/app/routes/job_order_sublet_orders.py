@@ -6,8 +6,10 @@ from typing import List, Optional
 from app.database import get_db
 from app.auth import get_current_admin
 
+from decimal import Decimal
+
 from app.models.job_order import JobOrder, JobOrderStatus
-from app.models.job_order_additional_charges import SubletWorkType
+from app.models.job_order_additional_charges import JobOrderSubletWorkCharge, SubletWorkType
 from app.models.job_order_sublet_orders import JobOrderSubletOrder, JobOrderSubletOrderStatus
 from app.schemas.job_order_sublet_orders import (
     JobOrderSubletOrderCreate,
@@ -340,6 +342,31 @@ def receive_sublet_order(
     row.received_at = datetime.utcnow()
     row.received_by_employee_id = _get_employee_id(current_user)
     row.status = JobOrderSubletOrderStatus.RECEIVED
+
+    if payload.post_charge_to_job:
+        job = db.query(JobOrder).filter(JobOrder.job_order_id == row.job_order_id).first()
+        if not job:
+            raise HTTPException(status_code=404, detail="Job order not found")
+        if getattr(job, "is_blocked", False):
+            raise HTTPException(status_code=400, detail="Job order is blocked")
+        if job.status == JobOrderStatus.CANCELLED:
+            raise HTTPException(status_code=400, detail="Cannot post sublet charges to a cancelled job order")
+
+        qty = Decimal(str(row.quantity))
+        unit_price = Decimal(str(row.unit_price))
+        amount = qty * unit_price
+        remark = _clean_text(f"Receipt {row.sublet_order_number} (DO {delivery_no})") or f"Receipt {row.sublet_order_number}"
+
+        charge = JobOrderSubletWorkCharge(
+            job_order_id=row.job_order_id,
+            sublet_work_type_id=row.sublet_work_type_id,
+            quantity=qty,
+            unit_price=unit_price,
+            amount=amount,
+            remark=remark,
+            recorded_by_employee_id=_get_employee_id(current_user),
+        )
+        db.add(charge)
 
     db.commit()
     db.refresh(row)

@@ -44,7 +44,7 @@ export default function PendingApprovals() {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-64">
-        <div className="text-gray-500">Loading pending approvals...</div>
+        <div className="text-muted-foreground">Loading pending approvals...</div>
       </div>
     )
   }
@@ -69,8 +69,8 @@ export default function PendingApprovals() {
         <div className="flex items-center space-x-3">
           <UserCheck className="text-primary-600" size={32} />
           <div>
-            <h1 className="text-3xl font-bold text-gray-800">Pending Approvals</h1>
-            <p className="text-gray-500 mt-1">
+            <h1 className="text-3xl font-bold text-foreground">Pending Approvals</h1>
+            <p className="text-muted-foreground mt-1">
               {totalCount} {totalCount === 1 ? 'account' : 'accounts'} waiting for approval
             </p>
           </div>
@@ -84,14 +84,14 @@ export default function PendingApprovals() {
       </div>
 
       {/* Tabs */}
-      <div className="mb-6 border-b border-gray-200">
+      <div className="mb-6 border-b border-border">
         <nav className="flex space-x-8">
           <button
             onClick={() => setActiveTab('customers')}
             className={`py-4 px-1 border-b-2 font-medium text-sm ${
               activeTab === 'customers'
                 ? 'border-primary-500 text-primary-600'
-                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                : 'border-transparent text-muted-foreground hover:text-foreground hover:border-border'
             }`}
           >
             <div className="flex items-center space-x-2">
@@ -104,7 +104,7 @@ export default function PendingApprovals() {
             className={`py-4 px-1 border-b-2 font-medium text-sm ${
               activeTab === 'accountants'
                 ? 'border-primary-500 text-primary-600'
-                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                : 'border-transparent text-muted-foreground hover:text-foreground hover:border-border'
             }`}
           >
             <div className="flex items-center space-x-2">
@@ -120,44 +120,44 @@ export default function PendingApprovals() {
         <div className="bg-white rounded-lg shadow-md overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead className="bg-gray-50">
+              <thead className="bg-muted/35">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                     Customer
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                     Contact
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                     Location
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                     Registered
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                     Status
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                     Actions
                   </th>
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
+              <tbody className="bg-white divide-y divide-border">
                 {pendingCustomersList.map((customer) => (
-                  <tr key={customer.customer_id} className="hover:bg-gray-50 transition-colors">
+                  <tr key={customer.customer_id} className="hover:bg-muted/45 transition-colors">
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="font-medium text-gray-900">
+                      <div className="font-medium text-foreground">
                         {customer.first_name} {customer.last_name}
                       </div>
-                      <div className="text-sm text-gray-500">ID: {customer.customer_id}</div>
+                      <div className="text-sm text-muted-foreground">ID: {customer.customer_id}</div>
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex flex-col space-y-1">
-                        <div className="flex items-center space-x-2 text-gray-600">
+                        <div className="flex items-center space-x-2 text-muted-foreground">
                           <Mail size={14} />
                           <span className="text-sm">{customer.email}</span>
                         </div>
-                        <div className="flex items-center space-x-2 text-gray-600">
+                        <div className="flex items-center space-x-2 text-muted-foreground">
                           <Phone size={14} />
                           <span className="text-sm">{customer.phone}</span>
                         </div>
@@ -165,16 +165,16 @@ export default function PendingApprovals() {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       {customer.city ? (
-                        <div className="flex items-center space-x-2 text-gray-600">
+                        <div className="flex items-center space-x-2 text-muted-foreground">
                           <MapPin size={14} />
                           <span>{customer.city}</span>
                         </div>
                       ) : (
-                        <span className="text-gray-400">-</span>
+                        <span className="text-muted-foreground/75">-</span>
                       )}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex items-center space-x-2 text-gray-600">
+                      <div className="flex items-center space-x-2 text-muted-foreground">
                         <Calendar size={14} />
                         <span className="text-sm">
                           {customer.registration_date
@@ -220,44 +220,44 @@ export default function PendingApprovals() {
         <div className="bg-white rounded-lg shadow-md overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead className="bg-gray-50">
+              <thead className="bg-muted/35">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                     Accountant
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                     Contact
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                     Location
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                     Registered
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                     Status
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                     Actions
                   </th>
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
+              <tbody className="bg-white divide-y divide-border">
                 {pendingAccountantsList.map((accountant) => (
-                  <tr key={accountant.accountant_id} className="hover:bg-gray-50 transition-colors">
+                  <tr key={accountant.accountant_id} className="hover:bg-muted/45 transition-colors">
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="font-medium text-gray-900">
+                      <div className="font-medium text-foreground">
                         {accountant.first_name} {accountant.last_name}
                       </div>
-                      <div className="text-sm text-gray-500">ID: {accountant.accountant_id}</div>
+                      <div className="text-sm text-muted-foreground">ID: {accountant.accountant_id}</div>
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex flex-col space-y-1">
-                        <div className="flex items-center space-x-2 text-gray-600">
+                        <div className="flex items-center space-x-2 text-muted-foreground">
                           <Mail size={14} />
                           <span className="text-sm">{accountant.email}</span>
                         </div>
-                        <div className="flex items-center space-x-2 text-gray-600">
+                        <div className="flex items-center space-x-2 text-muted-foreground">
                           <Phone size={14} />
                           <span className="text-sm">{accountant.phone}</span>
                         </div>
@@ -265,16 +265,16 @@ export default function PendingApprovals() {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       {accountant.city ? (
-                        <div className="flex items-center space-x-2 text-gray-600">
+                        <div className="flex items-center space-x-2 text-muted-foreground">
                           <MapPin size={14} />
                           <span>{accountant.city}</span>
                         </div>
                       ) : (
-                        <span className="text-gray-400">-</span>
+                        <span className="text-muted-foreground/75">-</span>
                       )}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex items-center space-x-2 text-gray-600">
+                      <div className="flex items-center space-x-2 text-muted-foreground">
                         <Calendar size={14} />
                         <span className="text-sm">
                           {accountant.registration_date
@@ -319,9 +319,9 @@ export default function PendingApprovals() {
       {((activeTab === 'customers' && pendingCustomersList.length === 0) ||
         (activeTab === 'accountants' && pendingAccountantsList.length === 0)) && (
         <div className="bg-white rounded-lg shadow-md p-12 text-center">
-          <XCircle className="mx-auto text-gray-400 mb-4" size={48} />
-          <p className="text-gray-500 text-lg font-medium">No pending {activeTab}</p>
-          <p className="text-gray-400 text-sm mt-2">
+          <XCircle className="mx-auto text-muted-foreground/75 mb-4" size={48} />
+          <p className="text-muted-foreground text-lg font-medium">No pending {activeTab}</p>
+          <p className="text-muted-foreground/75 text-sm mt-2">
             All {activeTab === 'customers' ? 'customer' : 'accountant'} accounts have been approved
           </p>
         </div>

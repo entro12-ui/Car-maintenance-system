@@ -142,11 +142,11 @@ export default function EnquiryToolPage() {
         <div className="bg-white border rounded-lg shadow-sm p-4 space-y-3">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
             <label className="text-sm space-y-1">
-              <div className="font-medium text-gray-800">Locator</div>
+              <div className="font-medium text-foreground">Locator</div>
               <Input value={locator} onChange={(e) => setLocator(e.target.value)} placeholder="Enter job no, invoice no, part no..." />
             </label>
             <label className="text-sm space-y-1 md:col-span-2">
-              <div className="font-medium text-gray-800">Criteria</div>
+              <div className="font-medium text-foreground">Criteria</div>
               <Input value={criteria} onChange={(e) => setCriteria(e.target.value)} placeholder="Filter by status, customer, supplier, reference..." />
             </label>
           </div>
@@ -158,7 +158,7 @@ export default function EnquiryToolPage() {
           ) : (
             <div className="overflow-auto border rounded">
               <table className="min-w-[900px] w-full text-sm">
-                <thead className="bg-gray-100 text-xs text-gray-600 uppercase">
+                <thead className="bg-muted text-xs text-muted-foreground uppercase">
                   <tr>
                     <th className="py-2 px-2 text-left">{source.columns[0]}</th>
                     <th className="py-2 px-2 text-left">{source.columns[1]}</th>
@@ -169,15 +169,15 @@ export default function EnquiryToolPage() {
                 <tbody>
                   {dataQuery.isLoading ? (
                     <tr>
-                      <td colSpan={4} className="py-5 px-2 text-center text-gray-500">Loading...</td>
+                      <td colSpan={4} className="py-5 px-2 text-center text-muted-foreground">Loading...</td>
                     </tr>
                   ) : filtered.length === 0 ? (
                     <tr>
-                      <td colSpan={4} className="py-5 px-2 text-center text-gray-500">No matching records.</td>
+                      <td colSpan={4} className="py-5 px-2 text-center text-muted-foreground">No matching records.</td>
                     </tr>
                   ) : (
                     filtered.map((r, idx) => (
-                      <tr key={`${r.locator}-${idx}`} className="border-t border-gray-100 hover:bg-gray-50">
+                      <tr key={`${r.locator}-${idx}`} className="border-t border-border/60 hover:bg-muted/45">
                         <td className="py-2 px-2 font-medium">{r.primary}</td>
                         <td className="py-2 px-2">{r.secondary}</td>
                         <td className="py-2 px-2">{r.detail1}</td>

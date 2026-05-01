@@ -175,7 +175,7 @@ export default function NameValueParameter() {
         <div className="bg-white border rounded-lg shadow-sm p-4 space-y-4">
           <div className="flex flex-wrap gap-3 items-end">
             <label className="text-xs">
-              <span className="block text-gray-600 mb-1">Search</span>
+              <span className="block text-muted-foreground mb-1">Search</span>
               <input
                 className="border rounded px-2 py-1.5 text-sm min-w-[260px]"
                 value={search}
@@ -190,9 +190,9 @@ export default function NameValueParameter() {
 
           <form onSubmit={save} className="grid grid-cols-1 md:grid-cols-2 gap-3 border rounded p-3 bg-slate-50/60">
             <label className="text-xs">
-              <span className="text-gray-600">Parameter Key</span>
+              <span className="text-muted-foreground">Parameter Key</span>
               <input
-                className="w-full mt-1 border rounded px-2 py-1.5 text-sm disabled:bg-gray-100"
+                className="w-full mt-1 border rounded px-2 py-1.5 text-sm disabled:bg-muted"
                 value={form.setting_key}
                 disabled={!!form.setting_id}
                 onChange={(e) => setForm((p) => ({ ...p, setting_key: e.target.value }))}
@@ -200,7 +200,7 @@ export default function NameValueParameter() {
               />
             </label>
             <label className="text-xs">
-              <span className="text-gray-600">Parameter Value</span>
+              <span className="text-muted-foreground">Parameter Value</span>
               <input
                 className="w-full mt-1 border rounded px-2 py-1.5 text-sm"
                 value={form.setting_value}
@@ -209,7 +209,7 @@ export default function NameValueParameter() {
               />
             </label>
             <label className="text-xs">
-              <span className="text-gray-600">Category</span>
+              <span className="text-muted-foreground">Category</span>
               <input
                 className="w-full mt-1 border rounded px-2 py-1.5 text-sm"
                 value={form.category}
@@ -218,7 +218,7 @@ export default function NameValueParameter() {
               />
             </label>
             <label className="text-xs">
-              <span className="text-gray-600">Type</span>
+              <span className="text-muted-foreground">Type</span>
               <input
                 className="w-full mt-1 border rounded px-2 py-1.5 text-sm"
                 value={form.setting_type}
@@ -227,7 +227,7 @@ export default function NameValueParameter() {
               />
             </label>
             <label className="text-xs md:col-span-2">
-              <span className="text-gray-600">Description</span>
+              <span className="text-muted-foreground">Description</span>
               <input
                 className="w-full mt-1 border rounded px-2 py-1.5 text-sm"
                 value={form.description}
@@ -243,7 +243,7 @@ export default function NameValueParameter() {
                 Clear
               </Button>
             </div>
-            <label className="md:col-span-2 inline-flex items-center gap-2 text-xs text-gray-700">
+            <label className="md:col-span-2 inline-flex items-center gap-2 text-xs text-foreground/90">
               <input
                 type="checkbox"
                 checked={implementerConsent}
@@ -256,12 +256,12 @@ export default function NameValueParameter() {
 
         <div className="bg-white border rounded-lg shadow-sm overflow-hidden">
           <div className="border-b px-4 py-2 flex items-center justify-between">
-            <h2 className="text-sm font-semibold text-gray-700">Name value parameters ({rows.length})</h2>
-            {loading && <span className="text-xs text-gray-500">Loading...</span>}
+            <h2 className="text-sm font-semibold text-foreground/90">Name value parameters ({rows.length})</h2>
+            {loading && <span className="text-xs text-muted-foreground">Loading...</span>}
           </div>
           <div className="overflow-x-auto">
             <table className="min-w-full text-sm">
-              <thead className="bg-gray-50 text-xs text-gray-600">
+              <thead className="bg-muted/35 text-xs text-muted-foreground">
                 <tr>
                   <th className="px-3 py-2 text-left">Parameter Key</th>
                   <th className="px-3 py-2 text-left">Description</th>
@@ -275,7 +275,7 @@ export default function NameValueParameter() {
               <tbody>
                 {rows.length === 0 ? (
                   <tr>
-                    <td colSpan={7} className="px-3 py-6 text-center text-gray-500">
+                    <td colSpan={7} className="px-3 py-6 text-center text-muted-foreground">
                       {loading ? 'Loading...' : 'No name value parameters found.'}
                     </td>
                   </tr>
@@ -285,9 +285,9 @@ export default function NameValueParameter() {
                       <td className="px-3 py-2 font-mono text-xs">{row.setting_key}</td>
                       <td className="px-3 py-2">{row.description || '-'}</td>
                       <td className="px-3 py-2">{row.setting_value || '-'}</td>
-                      <td className="px-3 py-2 text-xs text-gray-600">{row.created_by || row.created_by_name || '-'}</td>
-                      <td className="px-3 py-2 text-xs text-gray-600">{row.created_at || row.created_on || '-'}</td>
-                      <td className="px-3 py-2 text-xs text-gray-600">{row.created_ws || '-'}</td>
+                      <td className="px-3 py-2 text-xs text-muted-foreground">{row.created_by || row.created_by_name || '-'}</td>
+                      <td className="px-3 py-2 text-xs text-muted-foreground">{row.created_at || row.created_on || '-'}</td>
+                      <td className="px-3 py-2 text-xs text-muted-foreground">{row.created_ws || '-'}</td>
                       <td className="px-3 py-2 text-right">
                         <div className="inline-flex gap-2">
                           <Button type="button" size="sm" variant="outline" onClick={() => editRow(row)}>

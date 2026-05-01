@@ -127,7 +127,7 @@ export default function CustomerVehicles() {
         </div>
       )}
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold text-gray-800">My Vehicles</h1>
+        <h1 className="text-3xl font-bold text-foreground">My Vehicles</h1>
         <button
           onClick={() => setIsModalOpen(true)}
           className="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 flex items-center space-x-2"
@@ -149,41 +149,41 @@ export default function CustomerVehicles() {
                   <Car className="text-primary-600" size={24} />
                 </div>
                 <div className="flex-1">
-                  <p className="font-semibold text-gray-800 text-lg">
+                  <p className="font-semibold text-foreground text-lg">
                     {vehicle.make} {vehicle.model}
                   </p>
-                  <p className="text-sm text-gray-600">{vehicle.license_plate}</p>
+                  <p className="text-sm text-muted-foreground">{vehicle.license_plate}</p>
                 </div>
               </div>
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Year:</span>
+                  <span className="text-muted-foreground">Year:</span>
                   <span className="font-medium">{vehicle.year}</span>
                 </div>
                 {vehicle.color && (
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Color:</span>
+                    <span className="text-muted-foreground">Color:</span>
                     <span className="font-medium">{vehicle.color}</span>
                   </div>
                 )}
                 {vehicle.fuel_type && (
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Fuel Type:</span>
+                    <span className="text-muted-foreground">Fuel Type:</span>
                     <span className="font-medium">{vehicle.fuel_type}</span>
                   </div>
                 )}
                 {vehicle.transmission_type && (
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Transmission:</span>
+                    <span className="text-muted-foreground">Transmission:</span>
                     <span className="font-medium">{vehicle.transmission_type}</span>
                   </div>
                 )}
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Current Mileage:</span>
+                  <span className="text-muted-foreground">Current Mileage:</span>
                   <span className="font-medium">{vehicle.current_mileage.toLocaleString()} km</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Next Service:</span>
+                  <span className="text-muted-foreground">Next Service:</span>
                   <span className="font-medium text-primary-600">
                     {vehicle.next_service_mileage.toLocaleString()} km
                   </span>
@@ -194,8 +194,8 @@ export default function CustomerVehicles() {
         </div>
       ) : (
         <div className="bg-white rounded-lg shadow-md p-12 text-center">
-          <Car className="mx-auto text-gray-400 mb-4" size={48} />
-          <p className="text-gray-500 text-lg mb-4">No vehicles added yet</p>
+          <Car className="mx-auto text-muted-foreground/75 mb-4" size={48} />
+          <p className="text-muted-foreground text-lg mb-4">No vehicles added yet</p>
           <button
             onClick={() => setIsModalOpen(true)}
             className="bg-primary-600 text-white px-6 py-2 rounded-lg hover:bg-primary-700 inline-flex items-center space-x-2"
@@ -208,13 +208,13 @@ export default function CustomerVehicles() {
 
       {/* Add Vehicle Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center z-50 p-4">
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex justify-center items-center z-50 p-4">
           <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
             <div className="flex justify-between items-center border-b pb-4 p-6 sticky top-0 bg-white">
-              <h2 className="text-2xl font-semibold text-gray-800">Add New Vehicle</h2>
+              <h2 className="text-2xl font-semibold text-foreground">Add New Vehicle</h2>
               <button
                 onClick={() => setIsModalOpen(false)}
-                className="text-gray-500 hover:text-gray-700"
+                className="text-muted-foreground hover:text-foreground"
               >
                 <X size={24} />
               </button>
@@ -228,7 +228,7 @@ export default function CustomerVehicles() {
               )}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label htmlFor="license_plate" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label htmlFor="license_plate" className="block text-sm font-medium text-foreground/90 mb-2">
                     License Plate <span className="text-red-500">*</span>
                   </label>
                   <input
@@ -238,7 +238,7 @@ export default function CustomerVehicles() {
                     value={formData.license_plate}
                     onChange={handleChange}
                     className={`w-full px-4 py-2 border ${
-                      errors.license_plate ? 'border-red-500' : 'border-gray-300'
+                      errors.license_plate ? 'border-red-500' : 'border-border'
                     } rounded-lg focus:ring-2 focus:ring-primary-500`}
                     required
                   />
@@ -248,7 +248,7 @@ export default function CustomerVehicles() {
                 </div>
 
                 <div>
-                  <label htmlFor="vin" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label htmlFor="vin" className="block text-sm font-medium text-foreground/90 mb-2">
                     VIN (Optional)
                   </label>
                   <input
@@ -258,12 +258,12 @@ export default function CustomerVehicles() {
                     value={formData.vin}
                     onChange={handleChange}
                     maxLength={17}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+                    className="w-full px-4 py-2 border border-border rounded-lg focus:ring-2 focus:ring-primary-500"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="make" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label htmlFor="make" className="block text-sm font-medium text-foreground/90 mb-2">
                     Make <span className="text-red-500">*</span>
                   </label>
                   <input
@@ -273,7 +273,7 @@ export default function CustomerVehicles() {
                     value={formData.make}
                     onChange={handleChange}
                     className={`w-full px-4 py-2 border ${
-                      errors.make ? 'border-red-500' : 'border-gray-300'
+                      errors.make ? 'border-red-500' : 'border-border'
                     } rounded-lg focus:ring-2 focus:ring-primary-500`}
                     required
                   />
@@ -281,7 +281,7 @@ export default function CustomerVehicles() {
                 </div>
 
                 <div>
-                  <label htmlFor="model" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label htmlFor="model" className="block text-sm font-medium text-foreground/90 mb-2">
                     Model <span className="text-red-500">*</span>
                   </label>
                   <input
@@ -291,7 +291,7 @@ export default function CustomerVehicles() {
                     value={formData.model}
                     onChange={handleChange}
                     className={`w-full px-4 py-2 border ${
-                      errors.model ? 'border-red-500' : 'border-gray-300'
+                      errors.model ? 'border-red-500' : 'border-border'
                     } rounded-lg focus:ring-2 focus:ring-primary-500`}
                     required
                   />
@@ -299,7 +299,7 @@ export default function CustomerVehicles() {
                 </div>
 
                 <div>
-                  <label htmlFor="year" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label htmlFor="year" className="block text-sm font-medium text-foreground/90 mb-2">
                     Year <span className="text-red-500">*</span>
                   </label>
                   <input
@@ -311,7 +311,7 @@ export default function CustomerVehicles() {
                     min="1900"
                     max={new Date().getFullYear() + 1}
                     className={`w-full px-4 py-2 border ${
-                      errors.year ? 'border-red-500' : 'border-gray-300'
+                      errors.year ? 'border-red-500' : 'border-border'
                     } rounded-lg focus:ring-2 focus:ring-primary-500`}
                     required
                   />
@@ -319,7 +319,7 @@ export default function CustomerVehicles() {
                 </div>
 
                 <div>
-                  <label htmlFor="color" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label htmlFor="color" className="block text-sm font-medium text-foreground/90 mb-2">
                     Color
                   </label>
                   <input
@@ -328,12 +328,12 @@ export default function CustomerVehicles() {
                     name="color"
                     value={formData.color}
                     onChange={handleChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+                    className="w-full px-4 py-2 border border-border rounded-lg focus:ring-2 focus:ring-primary-500"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="fuel_type" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label htmlFor="fuel_type" className="block text-sm font-medium text-foreground/90 mb-2">
                     Fuel Type
                   </label>
                   <select
@@ -341,7 +341,7 @@ export default function CustomerVehicles() {
                     name="fuel_type"
                     value={formData.fuel_type}
                     onChange={handleChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+                    className="w-full px-4 py-2 border border-border rounded-lg focus:ring-2 focus:ring-primary-500"
                   >
                     <option value="">Select Fuel Type</option>
                     <option value="Petrol">Petrol</option>
@@ -352,7 +352,7 @@ export default function CustomerVehicles() {
                 </div>
 
                 <div>
-                  <label htmlFor="transmission_type" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label htmlFor="transmission_type" className="block text-sm font-medium text-foreground/90 mb-2">
                     Transmission
                   </label>
                   <select
@@ -360,7 +360,7 @@ export default function CustomerVehicles() {
                     name="transmission_type"
                     value={formData.transmission_type}
                     onChange={handleChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+                    className="w-full px-4 py-2 border border-border rounded-lg focus:ring-2 focus:ring-primary-500"
                   >
                     <option value="">Select Transmission</option>
                     <option value="Manual">Manual</option>
@@ -370,7 +370,7 @@ export default function CustomerVehicles() {
                 </div>
 
                 <div className="md:col-span-2">
-                  <label htmlFor="current_mileage" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label htmlFor="current_mileage" className="block text-sm font-medium text-foreground/90 mb-2">
                     Current Mileage (km)
                   </label>
                   <input
@@ -382,7 +382,7 @@ export default function CustomerVehicles() {
                     min="0"
                     max="99999999"
                     className={`w-full px-4 py-2 border ${
-                      errors.current_mileage ? 'border-red-500' : 'border-gray-300'
+                      errors.current_mileage ? 'border-red-500' : 'border-border'
                     } rounded-lg focus:ring-2 focus:ring-primary-500`}
                   />
                   {errors.current_mileage && (
@@ -395,7 +395,7 @@ export default function CustomerVehicles() {
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50"
+                  className="px-6 py-2 border border-border rounded-lg text-foreground/90 hover:bg-muted/45"
                 >
                   Cancel
                 </button>

@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { SETUP_MENU } from './SetupSidebarMenu'
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { PageHeader } from '@/components/PageChrome'
 
 const BLURBS = {
   '/global-parameters':
@@ -15,13 +16,11 @@ const BLURBS = {
 export default function SetupHub() {
   return (
     <div className="space-y-8">
-      <div className="space-y-2 max-w-3xl">
-        <h1 className="text-2xl font-semibold tracking-tight text-foreground">Setup</h1>
-        <p className="text-sm text-muted-foreground leading-relaxed">
-          HillMaster-style maintenance setup. Open any card for a structured screen with a review checklist and related
-          links. Placeholder routes show a sample layout until backend rules are wired.
-        </p>
-      </div>
+      <PageHeader
+        eyebrow="Configuration"
+        title="Setup"
+        description="HillMaster-style maintenance setup. Open any card for a structured screen with a review checklist and related links. Placeholder routes show a sample layout until backend rules are wired."
+      />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
         {SETUP_MENU.map((item) => (

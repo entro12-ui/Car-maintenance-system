@@ -626,11 +626,11 @@ export default function WorkOrderCreation() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <div className="space-y-3">
         <label className="block text-sm">
-          <span className="text-gray-600">Job Order No.</span>
-          <input className="w-full mt-1 border rounded px-3 py-2 bg-gray-50" value={form.job_order_number || '(auto)'} disabled />
+          <span className="text-muted-foreground">Job Order No.</span>
+          <input className="w-full mt-1 border rounded px-3 py-2 bg-muted/35" value={form.job_order_number || '(auto)'} disabled />
         </label>
         <label className="block text-sm">
-          <span className="text-gray-600">Vehicle</span>
+          <span className="text-muted-foreground">Vehicle</span>
           <select className="w-full mt-1 border rounded px-3 py-2" value={form.vehicle_id} onChange={(e) => handleChange('vehicle_id', e.target.value)}>
             <option value="">Select vehicle...</option>
             {vehicles.map((v) => (
@@ -641,7 +641,7 @@ export default function WorkOrderCreation() {
           </select>
         </label>
         <label className="block text-sm">
-          <span className="text-gray-600">Plate No.</span>
+          <span className="text-muted-foreground">Plate No.</span>
           <input
             className="w-full mt-1 border rounded px-3 py-2"
             value={form.license_plate}
@@ -651,7 +651,7 @@ export default function WorkOrderCreation() {
           />
         </label>
         <label className="block text-sm">
-          <span className="text-gray-600">Invoice Type</span>
+          <span className="text-muted-foreground">Invoice Type</span>
           <select className="w-full mt-1 border rounded px-3 py-2" value={form.invoice_type} onChange={(e) => handleChange('invoice_type', e.target.value)}>
             <option value="Cash">Cash Sales</option>
             <option value="Credit">Credit Sales</option>
@@ -659,7 +659,7 @@ export default function WorkOrderCreation() {
           </select>
         </label>
         <label className="block text-sm">
-          <span className="text-gray-600">Customer</span>
+          <span className="text-muted-foreground">Customer</span>
           <select className="w-full mt-1 border rounded px-3 py-2" value={form.customer_id} onChange={(e) => handleChange('customer_id', e.target.value)}>
             <option value="">From vehicle / select customer...</option>
             {customers.map((c) => (
@@ -670,14 +670,14 @@ export default function WorkOrderCreation() {
           </select>
         </label>
         <label className="block text-sm">
-          <span className="text-gray-600">Address</span>
-          <input className="w-full mt-1 border rounded px-3 py-2 bg-gray-50" value={selectedCustomer?.address || ''} disabled />
+          <span className="text-muted-foreground">Address</span>
+          <input className="w-full mt-1 border rounded px-3 py-2 bg-muted/35" value={selectedCustomer?.address || ''} disabled />
         </label>
         </div>
 
         <div className="space-y-3">
         <label className="block text-sm">
-          <span className="text-gray-600">Chassis/VIN/Frame #</span>
+          <span className="text-muted-foreground">Chassis/VIN/Frame #</span>
           <input
             className="w-full mt-1 border rounded px-3 py-2"
             value={form.vin}
@@ -687,7 +687,7 @@ export default function WorkOrderCreation() {
           />
         </label>
         <label className="block text-sm">
-          <span className="text-gray-600">Repair/Service Type</span>
+          <span className="text-muted-foreground">Repair/Service Type</span>
           <select className="w-full mt-1 border rounded px-3 py-2" value={form.service_type_id} onChange={(e) => handleChange('service_type_id', e.target.value)}>
             <option value="">Select service type...</option>
             {serviceTypes.map((s) => (
@@ -698,15 +698,15 @@ export default function WorkOrderCreation() {
           </select>
         </label>
         <label className="block text-sm">
-          <span className="text-gray-600">Mileage in KM</span>
+          <span className="text-muted-foreground">Mileage in KM</span>
           <input className="w-full mt-1 border rounded px-3 py-2" value={form.mileage_in_km} onChange={(e) => handleChange('mileage_in_km', e.target.value)} />
         </label>
         <label className="block text-sm">
-          <span className="text-gray-600">Opening Date</span>
+          <span className="text-muted-foreground">Opening Date</span>
           <input type="date" className="w-full mt-1 border rounded px-3 py-2" value={form.opened_date} onChange={(e) => handleChange('opened_date', e.target.value)} />
         </label>
         <label className="block text-sm">
-          <span className="text-gray-600">Exp. Finished Date</span>
+          <span className="text-muted-foreground">Exp. Finished Date</span>
           <input type="date" className="w-full mt-1 border rounded px-3 py-2" value={form.expected_finish_date} onChange={(e) => handleChange('expected_finish_date', e.target.value)} />
         </label>
         </div>
@@ -717,7 +717,7 @@ export default function WorkOrderCreation() {
   const renderOtherInfo = () => (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
       <label className="block text-sm">
-        <span className="text-gray-600">Garage Location</span>
+        <span className="text-muted-foreground">Garage Location</span>
         <select className="w-full mt-1 border rounded px-3 py-2" value={form.garage_location} onChange={(e) => handleChange('garage_location', e.target.value)}>
           <option value="">Select location...</option>
           {lookups.garageLocations.map((s) => (
@@ -726,7 +726,7 @@ export default function WorkOrderCreation() {
         </select>
       </label>
       <label className="block text-sm">
-        <span className="text-gray-600">Type of Job</span>
+        <span className="text-muted-foreground">Type of Job</span>
         <select className="w-full mt-1 border rounded px-3 py-2" value={form.type_of_job} onChange={(e) => handleChange('type_of_job', e.target.value)}>
           <option value="">Select type...</option>
           {lookups.jobTypes.map((s) => (
@@ -735,7 +735,7 @@ export default function WorkOrderCreation() {
         </select>
       </label>
       <label className="block text-sm">
-        <span className="text-gray-600">Opened For / Repair Section</span>
+        <span className="text-muted-foreground">Opened For / Repair Section</span>
         <select className="w-full mt-1 border rounded px-3 py-2" value={form.opened_for_repair_section} onChange={(e) => handleChange('opened_for_repair_section', e.target.value)}>
           <option value="">Select section...</option>
           {lookups.sections.map((s) => (
@@ -744,7 +744,7 @@ export default function WorkOrderCreation() {
         </select>
       </label>
       <label className="block text-sm">
-        <span className="text-gray-600">Received By</span>
+        <span className="text-muted-foreground">Received By</span>
         <select className="w-full mt-1 border rounded px-3 py-2" value={form.received_by} onChange={(e) => handleChange('received_by', e.target.value)}>
           <option value="">Select receiver...</option>
           {lookups.receivers.map((s) => (
@@ -758,7 +758,7 @@ export default function WorkOrderCreation() {
         </select>
       </label>
       <label className="block text-sm lg:col-span-2">
-        <span className="text-gray-600">Vehicle Class</span>
+        <span className="text-muted-foreground">Vehicle Class</span>
         <select className="w-full mt-1 border rounded px-3 py-2" value={form.vehicle_class} onChange={(e) => handleChange('vehicle_class', e.target.value)}>
           <option value="">Select class...</option>
           {lookups.vehicleClass.map((s) => (
@@ -771,7 +771,7 @@ export default function WorkOrderCreation() {
 
   const renderInformClient = () => (
     <div className="space-y-4">
-      <p className="text-sm text-gray-600">
+      <p className="text-sm text-muted-foreground">
         Tick the selected checkbox, enter the address or number, then use <strong>Save</strong> on the toolbar to persist this work order.
       </p>
       {[
@@ -789,14 +789,14 @@ export default function WorkOrderCreation() {
                 type="checkbox"
                 checked={enabled}
                 onChange={(e) => setNotifyClient((p) => ({ ...p, [enabledKey]: e.target.checked }))}
-                className="rounded border-gray-300"
+                className="rounded border-border"
               />
-              <span className="text-sm font-medium text-gray-800">{row.label}</span>
+              <span className="text-sm font-medium text-foreground">{row.label}</span>
             </label>
             <label className="flex flex-1 flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 min-w-[240px]">
-              <span className="text-xs text-gray-500 w-28 shrink-0">{row.inputLabel}</span>
+              <span className="text-xs text-muted-foreground w-28 shrink-0">{row.inputLabel}</span>
               <input
-                className="flex-1 border rounded px-3 py-2 text-sm disabled:bg-gray-100 disabled:text-gray-400"
+                className="flex-1 border rounded px-3 py-2 text-sm disabled:bg-muted disabled:text-muted-foreground/75"
                 disabled={!enabled}
                 value={notifyClient[row.field] || ''}
                 onChange={(e) => setNotifyClient((p) => ({ ...p, [row.field]: e.target.value }))}
@@ -810,12 +810,12 @@ export default function WorkOrderCreation() {
 
   const renderRepairDetails = () => (
     <div className="space-y-4">
-      <p className="text-sm text-gray-600">
+      <p className="text-sm text-muted-foreground">
         Capture customer complaint and repair analysis. Click <strong>Save</strong> on the toolbar to persist with this work order.
       </p>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <label className="block text-sm lg:col-span-2">
-          <span className="text-gray-600">Customer Complaint</span>
+          <span className="text-muted-foreground">Customer Complaint</span>
           <textarea
             className="w-full mt-1 border rounded px-3 py-2 min-h-[90px]"
             value={repairDetails.complaint}
@@ -824,7 +824,7 @@ export default function WorkOrderCreation() {
           />
         </label>
         <label className="block text-sm lg:col-span-2">
-          <span className="text-gray-600">Requested Repair</span>
+          <span className="text-muted-foreground">Requested Repair</span>
           <textarea
             className="w-full mt-1 border rounded px-3 py-2 min-h-[80px]"
             value={repairDetails.requested_repair}
@@ -833,7 +833,7 @@ export default function WorkOrderCreation() {
           />
         </label>
         <label className="block text-sm">
-          <span className="text-gray-600">Urgency</span>
+          <span className="text-muted-foreground">Urgency</span>
           <select
             className="w-full mt-1 border rounded px-3 py-2"
             value={repairDetails.urgency}
@@ -845,7 +845,7 @@ export default function WorkOrderCreation() {
           </select>
         </label>
         <label className="block text-sm">
-          <span className="text-gray-600">Parts / Area To Check</span>
+          <span className="text-muted-foreground">Parts / Area To Check</span>
           <input
             className="w-full mt-1 border rounded px-3 py-2"
             value={repairDetails.parts_to_check}
@@ -854,7 +854,7 @@ export default function WorkOrderCreation() {
           />
         </label>
         <label className="block text-sm lg:col-span-2">
-          <span className="text-gray-600">Initial Diagnosis / Technician Notes</span>
+          <span className="text-muted-foreground">Initial Diagnosis / Technician Notes</span>
           <textarea
             className="w-full mt-1 border rounded px-3 py-2 min-h-[100px]"
             value={repairDetails.diagnosis}
@@ -869,18 +869,18 @@ export default function WorkOrderCreation() {
   const renderJobTextCharge = () => (
     <div className="space-y-6">
       <div className="border rounded-lg p-4 bg-slate-50/80">
-        <h3 className="text-sm font-semibold text-gray-800 mb-2">Import job text &amp; standard hour from text file</h3>
-        <p className="text-xs text-gray-600 mb-3">
+        <h3 className="text-sm font-semibold text-foreground mb-2">Import job text &amp; standard hour from text file</h3>
+        <p className="text-xs text-muted-foreground mb-3">
           Use a UTF-8 CSV export (Excel &quot;Save As CSV&quot;). Header row example:{' '}
           <code className="bg-white px-1 rounded">labor_type_id,hours_worked,mfc_hours,repair_option,price_list_type,is_charged,remark,charge_code</code>
         </p>
         <div className="flex flex-wrap items-end gap-3">
           <label className="text-sm">
-            <span className="text-gray-600 block mb-1">File</span>
+            <span className="text-muted-foreground block mb-1">File</span>
             <input type="file" accept=".csv,.txt,text/csv" onChange={handleImportLaborFile} disabled={!form.job_order_id} className="text-sm" />
           </label>
           <label className="text-sm">
-            <span className="text-gray-600 block mb-1">No. of rows (max)</span>
+            <span className="text-muted-foreground block mb-1">No. of rows (max)</span>
             <input
               type="number"
               min={1}
@@ -903,12 +903,12 @@ export default function WorkOrderCreation() {
             Show all labour charge codes
           </label>
         </div>
-        <p className="text-xs text-gray-600 mb-2">
+        <p className="text-xs text-muted-foreground mb-2">
           Select the charge code, adjust standard hours, then click <strong>Add</strong> to append a line to the grid.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-2 items-end border rounded-md p-3 bg-white">
           <label className="text-xs md:col-span-2">
-            <span className="text-gray-600">Charge / OP code</span>
+            <span className="text-muted-foreground">Charge / OP code</span>
             <input
               className="w-full mt-1 border rounded px-2 py-1 text-sm"
               placeholder="Filter…"
@@ -930,19 +930,19 @@ export default function WorkOrderCreation() {
             </select>
           </label>
           <label className="text-xs md:col-span-2">
-            <span className="text-gray-600">Charge / operation description</span>
+            <span className="text-muted-foreground">Charge / operation description</span>
             <input className="w-full mt-1 border rounded px-2 py-1 text-sm" value={jtDraft.description} onChange={(e) => setJtDraft((d) => ({ ...d, description: e.target.value }))} />
           </label>
           <label className="text-xs">
-            <span className="text-gray-600">Std hour</span>
+            <span className="text-muted-foreground">Std hour</span>
             <input className="w-full mt-1 border rounded px-2 py-1 text-sm" value={jtDraft.std_hour} onChange={(e) => setJtDraft((d) => ({ ...d, std_hour: e.target.value }))} />
           </label>
           <label className="text-xs">
-            <span className="text-gray-600">MFC hour</span>
+            <span className="text-muted-foreground">MFC hour</span>
             <input className="w-full mt-1 border rounded px-2 py-1 text-sm" value={jtDraft.mfc_hour} onChange={(e) => setJtDraft((d) => ({ ...d, mfc_hour: e.target.value }))} />
           </label>
           <label className="text-xs">
-            <span className="text-gray-600">Repair option</span>
+            <span className="text-muted-foreground">Repair option</span>
             <select className="w-full mt-1 border rounded px-2 py-1 text-sm" value={jtDraft.repair_option} onChange={(e) => setJtDraft((d) => ({ ...d, repair_option: e.target.value }))}>
               {REPAIR_OPTIONS.map((o) => (
                 <option key={o || 'none'} value={o}>{o || '—'}</option>
@@ -950,7 +950,7 @@ export default function WorkOrderCreation() {
             </select>
           </label>
           <label className="text-xs">
-            <span className="text-gray-600">Price list type</span>
+            <span className="text-muted-foreground">Price list type</span>
             <input className="w-full mt-1 border rounded px-2 py-1 text-sm" value={jtDraft.pl_type} onChange={(e) => setJtDraft((d) => ({ ...d, pl_type: e.target.value }))} />
           </label>
           <label className="flex items-center gap-2 text-xs pb-1">
@@ -965,7 +965,7 @@ export default function WorkOrderCreation() {
 
       <div className="overflow-x-auto border rounded-md">
         <table className="min-w-full text-sm">
-          <thead className="bg-gray-100 text-left text-xs uppercase text-gray-600">
+          <thead className="bg-muted text-left text-xs uppercase text-muted-foreground">
             <tr>
               <th className="px-2 py-2">Charge code</th>
               <th className="px-2 py-2">Description</th>
@@ -980,7 +980,7 @@ export default function WorkOrderCreation() {
           <tbody>
             {laborCharges.length === 0 ? (
               <tr>
-                <td colSpan={8} className="px-3 py-6 text-center text-gray-500">
+                <td colSpan={8} className="px-3 py-6 text-center text-muted-foreground">
                   {form.job_order_id ? (laborLoading ? 'Loading…' : 'No labor lines yet.') : 'Save the work order to add lines.'}
                 </td>
               </tr>
@@ -1009,7 +1009,7 @@ export default function WorkOrderCreation() {
   )
 
   const renderPlaceholder = (title) => (
-    <div className="p-4 border rounded bg-gray-50 text-sm text-gray-700">
+    <div className="p-4 border rounded bg-muted/35 text-sm text-foreground/90">
       {title} tab: use <strong>Job Order Detail</strong> for full repair / QC / inventory workflows. This screen focuses on opening the order, client contact prefs, and labor job text.
     </div>
   )
@@ -1026,7 +1026,7 @@ export default function WorkOrderCreation() {
           <div className="rounded-lg border border-slate-200 bg-slate-50 p-3 text-sm text-slate-700">
             This page is used to review all actions performed for this job by authorized user.
           </div>
-          <p className="text-sm text-gray-700">Open the full job order page for operational history and actions.</p>
+          <p className="text-sm text-foreground/90">Open the full job order page for operational history and actions.</p>
           <Button type="button" variant="outline" onClick={() => navigate(`/job-orders/${form.job_order_id}`)}>
             Open Job Order Detail
           </Button>
@@ -1036,7 +1036,7 @@ export default function WorkOrderCreation() {
           <div className="rounded-lg border border-slate-200 bg-slate-50 p-3 text-sm text-slate-700">
             This page is used to review all actions performed for this job by authorized user.
           </div>
-          <p className="text-sm text-gray-600">Save the work order first to view activity details.</p>
+          <p className="text-sm text-muted-foreground">Save the work order first to view activity details.</p>
         </div>
       )
     }
@@ -1047,8 +1047,8 @@ export default function WorkOrderCreation() {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-semibold text-gray-900">Work Order Creation</h1>
-          <p className="text-sm text-gray-600">Manual-style data entry for opening and maintaining job orders.</p>
+          <h1 className="text-2xl font-semibold text-foreground">Work Order Creation</h1>
+          <p className="text-sm text-muted-foreground">Manual-style data entry for opening and maintaining job orders.</p>
         </div>
         <div className="flex items-center gap-2">
           <span className="text-sm text-blue-700 hidden sm:inline">Ready</span>
@@ -1085,7 +1085,7 @@ export default function WorkOrderCreation() {
                 type="button"
                 onClick={() => setActiveTab(tab)}
                 className={`px-3 py-2 text-sm border rounded-t ${
-                  activeTab === tab ? 'bg-white border-gray-300 text-gray-900' : 'bg-gray-100 border-gray-200 text-gray-600'
+                  activeTab === tab ? 'bg-white border-border text-foreground' : 'bg-muted border-border text-muted-foreground'
                 }`}
               >
                 {tab}
@@ -1093,7 +1093,7 @@ export default function WorkOrderCreation() {
             ))}
           </div>
         </div>
-        <div className="p-4">{loading ? <p className="text-sm text-gray-500">Loading...</p> : renderTabContent()}</div>
+        <div className="p-4">{loading ? <p className="text-sm text-muted-foreground">Loading...</p> : renderTabContent()}</div>
       </div>
     </div>
   )

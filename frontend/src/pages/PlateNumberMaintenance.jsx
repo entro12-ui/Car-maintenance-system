@@ -1,7 +1,31 @@
 import { useEffect, useMemo, useState } from 'react'
+import { Car, Pencil, Plus, Printer, RefreshCw, Trash2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
+import { Card, CardContent } from '@/components/ui/card'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
 import SetupScreenFrame from './SetupScreenFrame'
 import { systemSettingsApi } from '../services/api'
+import { SortableTableHead, TableSearchBar } from '@/components/ui/sortable-table'
+import { useClientTableSortFilter } from '@/lib/tableSortFilter'
+import { cn } from '@/lib/utils'
 
 const CATEGORY = 'company_vehicle_plate_number'
 
@@ -67,10 +91,48 @@ export default function PlateNumberMaintenance() {
     load()
   }, [])
 
-  const sortedRows = useMemo(
-    () => [...rows].sort((a, b) => String(a.plate_number).localeCompare(String(b.plate_number))),
-    [rows]
+  const searchFields = useMemo(
+    () => [
+      (row) =>
+        [
+          row.plate_number,
+          row.owner_name,
+          row.department,
+          row.account_number,
+          row.created_by,
+          row.created_ws,
+          row.use_diesel_fuel ? 'diesel yes' : 'diesel no',
+          row.is_active ? 'active' : 'inactive',
+          row.created_on ? String(row.created_on).slice(0, 10) : '',
+        ]
+          .filter(Boolean)
+          .join(' '),
+    ],
+    []
   )
+
+  const sortAccessors = useMemo(
+    () => ({
+      plate: (r) => r.plate_number || '',
+      owner: (r) => r.owner_name || '',
+      department: (r) => r.department || '',
+      diesel: (r) => !!r.use_diesel_fuel,
+      account: (r) => r.account_number || '',
+      active: (r) => !!r.is_active,
+      createdBy: (r) => r.created_by || '',
+      createdOn: (r) => (r.created_on ? String(r.created_on).slice(0, 10) : ''),
+      ws: (r) => r.created_ws || '',
+    }),
+    []
+  )
+
+  const { query, setQuery, sort, toggleSort, items: displayRows } = useClientTableSortFilter(
+    rows,
+    searchFields,
+    sortAccessors
+  )
+
+  const isEditMode = Boolean(form.setting_id)
 
   const startNew = () => {
     setForm({ ...EMPTY_FORM, created_on: today(), created_ws: 'USER-PC' })
@@ -80,10 +142,17 @@ export default function PlateNumberMaintenance() {
   }
 
   const startEdit = (row) => {
-    setForm(row)
+    setForm({
+      ...row,
+      created_on: row.created_on ? String(row.created_on).slice(0, 10) : today(),
+    })
     setEditing(true)
     setError('')
     setSuccess('')
+  }
+
+  const closeDialog = () => {
+    setEditing(false)
   }
 
   const save = async (e) => {
@@ -126,7 +195,7 @@ export default function PlateNumberMaintenance() {
           description: payload.owner_name,
         })
       }
-      setEditing(false)
+      closeDialog()
       setForm(EMPTY_FORM)
       setSuccess('Saved.')
       await load()
@@ -156,126 +225,308 @@ export default function PlateNumberMaintenance() {
     <SetupScreenFrame
       hubTo="/maintenance-hub"
       hubLabel="Maintenance"
-      title="Company Vehicles Plate Number Setup"
+      title="Company Vehicles"
       subtitle="Record vehicles owned by the company. Internal vehicles can be treated differently for spare parts, labour costs, and standard invoice printing."
       actions={
         <>
-          <Button type="button" variant="outline" onClick={startNew}>
-            Add New Record
+          <Button type="button" className="gap-2 shadow-md shadow-primary/15" onClick={startNew}>
+            <Plus className="h-4 w-4" />
+            Add record
           </Button>
-          <Button type="button" variant="outline" onClick={() => window.print()}>
-            Print Preview
+          <Button type="button" variant="outline" className="gap-2" onClick={() => window.print()}>
+            <Printer className="h-4 w-4" />
+            Print preview
           </Button>
-          <Button type="button" variant="outline" onClick={load}>
+          <Button type="button" variant="outline" className="gap-2" onClick={load} disabled={loading}>
+            <RefreshCw className={cn('h-4 w-4', loading && 'animate-spin')} />
             Refresh
           </Button>
-          <span className="text-sm font-semibold text-blue-700 self-center">Ready</span>
         </>
       }
     >
-      <div className="space-y-4">
-        <div className="rounded-lg border border-sky-200 bg-sky-50 p-4 text-sm text-sky-900">
-          This page is used to record vehicles that belong to the company. These vehicles are treated as internal,
-          owned by the company, where standard customer invoices may not be printed and spare-parts/labor cost
-          treatment can differ from external customer vehicles.
+      <div className="space-y-6">
+        <div className="rounded-xl border border-primary/20 bg-gradient-to-br from-primary/[0.07] via-transparent to-teal-500/[0.05] p-4 text-sm leading-relaxed text-foreground/90 shadow-sm sm:p-5">
+          <p className="font-medium text-foreground">Company-owned vehicles</p>
+          <p className="mt-2 text-muted-foreground">
+            Use this list for internal fleet plates. Billing and parts/labour rules can differ from external customer
+            vehicles.
+          </p>
         </div>
-        {error && <div className="rounded border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">{error}</div>}
-        {success && (
-          <div className="rounded border border-green-200 bg-green-50 px-3 py-2 text-sm text-green-700">{success}</div>
-        )}
 
-        <div className="bg-white border rounded-lg shadow-sm overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="min-w-full text-sm">
-              <thead className="bg-gray-50 text-xs text-gray-600">
-                <tr>
-                  <th className="px-3 py-2 text-left">No</th>
-                  <th className="px-3 py-2 text-left">Plate Number</th>
-                  <th className="px-3 py-2 text-left">Owned By</th>
-                  <th className="px-3 py-2 text-left">Department</th>
-                  <th className="px-3 py-2 text-center">Diesel</th>
-                  <th className="px-3 py-2 text-left">Account Number</th>
-                  <th className="px-3 py-2 text-center">Active</th>
-                  <th className="px-3 py-2 text-left">Created By</th>
-                  <th className="px-3 py-2 text-left">Created On</th>
-                  <th className="px-3 py-2 text-left">Created WS</th>
-                  <th className="px-3 py-2 text-right">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {sortedRows.length === 0 ? (
-                  <tr>
-                    <td colSpan={11} className="px-3 py-6 text-center text-gray-500">
-                      {loading ? 'Loading...' : 'No company vehicle plate numbers found.'}
-                    </td>
-                  </tr>
+        {error ? (
+          <div
+            role="alert"
+            className="rounded-xl border border-destructive/35 bg-destructive/10 px-4 py-3 text-sm text-destructive"
+          >
+            {error}
+          </div>
+        ) : null}
+        {success ? (
+          <div
+            role="status"
+            className="rounded-xl border border-emerald-300/50 bg-emerald-50/90 px-4 py-3 text-sm text-emerald-900"
+          >
+            {success}
+          </div>
+        ) : null}
+
+        <Card className="overflow-hidden shadow-none hover:translate-y-0">
+          <CardContent className="p-0 sm:p-1">
+            <div className="px-3 pt-3 sm:px-4">
+              <TableSearchBar
+                value={query}
+                onChange={setQuery}
+                placeholder="Filter by plate, owner, department, account…"
+                className="max-w-none"
+              />
+            </div>
+            <Table shell="embed">
+              <TableHeader>
+                <TableRow className="hover:bg-transparent">
+                  <TableHead className="w-12">No</TableHead>
+                  <SortableTableHead columnKey="plate" sort={sort} onSort={toggleSort}>
+                    Plate number
+                  </SortableTableHead>
+                  <SortableTableHead columnKey="owner" sort={sort} onSort={toggleSort}>
+                    Owner
+                  </SortableTableHead>
+                  <SortableTableHead columnKey="department" sort={sort} onSort={toggleSort}>
+                    Department
+                  </SortableTableHead>
+                  <SortableTableHead columnKey="diesel" sort={sort} onSort={toggleSort} className="text-center">
+                    Diesel
+                  </SortableTableHead>
+                  <SortableTableHead columnKey="account" sort={sort} onSort={toggleSort}>
+                    Account / COA
+                  </SortableTableHead>
+                  <SortableTableHead columnKey="active" sort={sort} onSort={toggleSort} className="text-center">
+                    Active
+                  </SortableTableHead>
+                  <SortableTableHead columnKey="createdBy" sort={sort} onSort={toggleSort}>
+                    Created by
+                  </SortableTableHead>
+                  <SortableTableHead columnKey="createdOn" sort={sort} onSort={toggleSort}>
+                    Created on
+                  </SortableTableHead>
+                  <SortableTableHead columnKey="ws" sort={sort} onSort={toggleSort}>
+                    WS
+                  </SortableTableHead>
+                  <TableHead className="text-right">Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {displayRows.length === 0 ? (
+                  <TableRow>
+                    <TableCell colSpan={11} className="py-12 text-center text-muted-foreground">
+                      {loading
+                        ? 'Loading…'
+                        : rows.length === 0
+                          ? 'No company vehicle plate numbers yet. Add a record to begin.'
+                          : 'No matching records.'}
+                    </TableCell>
+                  </TableRow>
                 ) : (
-                  sortedRows.map((row, idx) => (
-                    <tr key={row.setting_id} className="border-t">
-                      <td className="px-3 py-2">{idx + 1}</td>
-                      <td className="px-3 py-2 font-medium">{row.plate_number}</td>
-                      <td className="px-3 py-2">{row.owner_name || '-'}</td>
-                      <td className="px-3 py-2">{row.department || '-'}</td>
-                      <td className="px-3 py-2 text-center">{row.use_diesel_fuel ? 'Yes' : 'No'}</td>
-                      <td className="px-3 py-2">{row.account_number || '-'}</td>
-                      <td className="px-3 py-2 text-center">{row.is_active ? 'Yes' : 'No'}</td>
-                      <td className="px-3 py-2">{row.created_by || '-'}</td>
-                      <td className="px-3 py-2">{row.created_on || '-'}</td>
-                      <td className="px-3 py-2">{row.created_ws || '-'}</td>
-                      <td className="px-3 py-2 text-right">
-                        <button type="button" className="text-indigo-600 hover:text-indigo-800 text-xs mr-3" onClick={() => startEdit(row)}>
-                          Edit
-                        </button>
-                        <button type="button" className="text-red-600 hover:text-red-800 text-xs" onClick={() => remove(row)}>
-                          Delete
-                        </button>
-                      </td>
-                    </tr>
+                  displayRows.map((row, idx) => (
+                    <TableRow key={row.setting_id}>
+                      <TableCell className="tabular-nums text-muted-foreground">{idx + 1}</TableCell>
+                      <TableCell className="font-semibold">{row.plate_number}</TableCell>
+                      <TableCell>{row.owner_name || '—'}</TableCell>
+                      <TableCell>{row.department || '—'}</TableCell>
+                      <TableCell className="text-center">
+                        <Badge variant={row.use_diesel_fuel ? 'secondary' : 'outline'}>
+                          {row.use_diesel_fuel ? 'Yes' : 'No'}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="font-mono text-xs">{row.account_number || '—'}</TableCell>
+                      <TableCell className="text-center">
+                        <Badge variant={row.is_active ? 'success' : 'secondary'}>
+                          {row.is_active ? 'Yes' : 'No'}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>{row.created_by || '—'}</TableCell>
+                      <TableCell className="tabular-nums text-muted-foreground">
+                        {row.created_on ? String(row.created_on).slice(0, 10) : '—'}
+                      </TableCell>
+                      <TableCell className="text-muted-foreground">{row.created_ws || '—'}</TableCell>
+                      <TableCell className="text-right">
+                        <div className="flex justify-end gap-1">
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            className="h-8 gap-1 text-primary"
+                            onClick={() => startEdit(row)}
+                          >
+                            <Pencil className="h-3.5 w-3.5" />
+                            Edit
+                          </Button>
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            className="h-8 gap-1 text-destructive hover:bg-destructive/10 hover:text-destructive"
+                            onClick={() => remove(row)}
+                          >
+                            <Trash2 className="h-3.5 w-3.5" />
+                            Delete
+                          </Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
                   ))
                 )}
-              </tbody>
-            </table>
-          </div>
-        </div>
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
 
-        {editing && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4" role="dialog">
-            <form onSubmit={save} className="w-full max-w-4xl rounded-lg bg-white shadow-xl border">
-              <div className="flex items-center justify-between border-b px-4 py-3">
-                <h2 className="font-semibold text-gray-900">{form.setting_id ? 'Edit Plate No Setup' : 'Add Plate No Setup'}</h2>
-                <button type="button" className="text-gray-500 hover:text-gray-800" onClick={() => setEditing(false)}>
-                  Close
-                </button>
+        <Dialog
+          open={editing}
+          onOpenChange={(open) => {
+            if (!open) closeDialog()
+          }}
+        >
+          <DialogContent
+            className={cn(
+              'flex max-h-[min(92vh,760px)] max-w-[calc(100vw-2rem)] flex-col gap-0 overflow-hidden p-0 sm:max-w-xl',
+              '[&>button]:text-muted-foreground [&>button]:hover:bg-muted'
+            )}
+          >
+            <DialogHeader className="shrink-0 space-y-2 border-b border-border/60 bg-muted/[0.35] px-6 pb-4 pt-7 pr-14">
+              <DialogTitle className="flex items-center gap-2 text-left font-display text-xl tracking-tight">
+                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/15 text-primary">
+                  <Car className="h-5 w-5" aria-hidden />
+                </span>
+                {isEditMode ? 'Edit company vehicle' : 'Add company vehicle'}
+              </DialogTitle>
+              <DialogDescription className="text-left">
+                Plate number cannot be changed after save. Optional COA and diesel flag support internal billing rules.
+              </DialogDescription>
+            </DialogHeader>
+
+            <form onSubmit={save} className="flex min-h-0 flex-1 flex-col">
+              <div className="min-h-0 flex-1 space-y-6 overflow-y-auto px-6 py-5">
+                <div className="space-y-4">
+                  <p className="text-[11px] font-semibold uppercase tracking-wide text-primary">Vehicle</p>
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <div className="space-y-2 sm:col-span-2">
+                      <Label htmlFor="plate-no">
+                        Plate number <span className="text-destructive">*</span>
+                      </Label>
+                      <Input
+                        id="plate-no"
+                        value={form.plate_number}
+                        disabled={!!form.setting_id}
+                        onChange={(e) => setForm((p) => ({ ...p, plate_number: e.target.value }))}
+                        placeholder="e.g. AA-12345"
+                        autoComplete="off"
+                      />
+                      {isEditMode ? (
+                        <p className="text-xs text-muted-foreground">Locked while editing this record.</p>
+                      ) : null}
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="owner-name">Owner name</Label>
+                      <Input
+                        id="owner-name"
+                        value={form.owner_name}
+                        onChange={(e) => setForm((p) => ({ ...p, owner_name: e.target.value }))}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="dept">Department</Label>
+                      <Input
+                        id="dept"
+                        value={form.department}
+                        onChange={(e) => setForm((p) => ({ ...p, department: e.target.value }))}
+                      />
+                    </div>
+                    <div className="space-y-2 sm:col-span-2">
+                      <Label htmlFor="account-coa">Account no. / COA</Label>
+                      <Input
+                        id="account-coa"
+                        value={form.account_number}
+                        onChange={(e) => setForm((p) => ({ ...p, account_number: e.target.value }))}
+                        className="font-mono text-sm"
+                      />
+                    </div>
+                  </div>
+                  <div className="flex flex-wrap gap-3">
+                    <label className="flex cursor-pointer items-center gap-3 rounded-xl border border-border/55 bg-muted/25 px-4 py-3 text-sm font-medium shadow-sm transition hover:bg-muted/40">
+                      <input
+                        type="checkbox"
+                        className="h-4 w-4 rounded border-input text-primary focus:ring-teal-500/35"
+                        checked={!!form.use_diesel_fuel}
+                        onChange={(e) => setForm((p) => ({ ...p, use_diesel_fuel: e.target.checked }))}
+                      />
+                      Use diesel fuel
+                    </label>
+                    <label className="flex cursor-pointer items-center gap-3 rounded-xl border border-border/55 bg-muted/25 px-4 py-3 text-sm font-medium shadow-sm transition hover:bg-muted/40">
+                      <input
+                        type="checkbox"
+                        className="h-4 w-4 rounded border-input text-primary focus:ring-teal-500/35"
+                        checked={!!form.is_active}
+                        onChange={(e) => setForm((p) => ({ ...p, is_active: e.target.checked }))}
+                      />
+                      Active
+                    </label>
+                  </div>
+                </div>
+
+                <div className="space-y-4 rounded-xl border border-border/50 bg-muted/20 p-4">
+                  <p className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
+                    System metadata
+                  </p>
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <div className="space-y-2">
+                      <Label htmlFor="created-by">Created by</Label>
+                      <Input
+                        id="created-by"
+                        value={form.created_by}
+                        onChange={(e) => setForm((p) => ({ ...p, created_by: e.target.value }))}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="created-on">Created on</Label>
+                      <Input
+                        id="created-on"
+                        type="date"
+                        value={form.created_on || ''}
+                        onChange={(e) => setForm((p) => ({ ...p, created_on: e.target.value }))}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="created-ws">Created WS</Label>
+                      <Input
+                        id="created-ws"
+                        value={form.created_ws}
+                        onChange={(e) => setForm((p) => ({ ...p, created_ws: e.target.value }))}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="modified-by">Modified by</Label>
+                      <Input
+                        id="modified-by"
+                        value={form.modified_by}
+                        onChange={(e) => setForm((p) => ({ ...p, modified_by: e.target.value }))}
+                        placeholder="Optional"
+                      />
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div className="p-5 grid grid-cols-1 md:grid-cols-[160px_minmax(0,1fr)] gap-x-4 gap-y-3">
-                <label className="text-sm md:text-right md:pt-1.5">Plate Number:</label>
-                <input className="border rounded px-2 py-1 text-sm" value={form.plate_number} disabled={!!form.setting_id} onChange={(e) => setForm((p) => ({ ...p, plate_number: e.target.value }))} />
-                <label className="text-sm md:text-right md:pt-1.5">Owner Name:</label>
-                <input className="border rounded px-2 py-1 text-sm" value={form.owner_name} onChange={(e) => setForm((p) => ({ ...p, owner_name: e.target.value }))} />
-                <label className="text-sm md:text-right md:pt-1.5">Department:</label>
-                <input className="border rounded px-2 py-1 text-sm" value={form.department} onChange={(e) => setForm((p) => ({ ...p, department: e.target.value }))} />
-                <label className="text-sm md:text-right">Use Diesel Fuel:</label>
-                <input type="checkbox" className="justify-self-start" checked={!!form.use_diesel_fuel} onChange={(e) => setForm((p) => ({ ...p, use_diesel_fuel: e.target.checked }))} />
-                <label className="text-sm md:text-right md:pt-1.5">Account No/COA:</label>
-                <input className="border rounded px-2 py-1 text-sm" value={form.account_number} onChange={(e) => setForm((p) => ({ ...p, account_number: e.target.value }))} />
-                <label className="text-sm md:text-right">Is Active:</label>
-                <input type="checkbox" className="justify-self-start" checked={!!form.is_active} onChange={(e) => setForm((p) => ({ ...p, is_active: e.target.checked }))} />
-                <label className="text-sm md:text-right md:pt-1.5">Created By:</label>
-                <input className="border rounded px-2 py-1 text-sm" value={form.created_by} onChange={(e) => setForm((p) => ({ ...p, created_by: e.target.value }))} />
-                <label className="text-sm md:text-right md:pt-1.5">Created On:</label>
-                <input type="date" className="border rounded px-2 py-1 text-sm" value={form.created_on || ''} onChange={(e) => setForm((p) => ({ ...p, created_on: e.target.value }))} />
-                <label className="text-sm md:text-right md:pt-1.5">Created WS:</label>
-                <input className="border rounded px-2 py-1 text-sm" value={form.created_ws} onChange={(e) => setForm((p) => ({ ...p, created_ws: e.target.value }))} />
-                <label className="text-sm md:text-right md:pt-1.5">Modified By:</label>
-                <input className="border rounded px-2 py-1 text-sm" value={form.modified_by} onChange={(e) => setForm((p) => ({ ...p, modified_by: e.target.value }))} />
-              </div>
-              <div className="flex justify-end gap-2 border-t px-4 py-3">
-                <Button type="submit" disabled={saving}>{saving ? 'Saving...' : form.setting_id ? 'Update' : 'Save'}</Button>
-                <Button type="button" variant="outline" onClick={() => setEditing(false)}>Cancel</Button>
-              </div>
+
+              <DialogFooter className="shrink-0 gap-2 border-t border-border/60 bg-muted/25 px-6 py-4 sm:gap-3">
+                <Button type="button" variant="outline" onClick={closeDialog} disabled={saving}>
+                  Cancel
+                </Button>
+                <Button type="submit" disabled={saving} className="min-w-[7rem]">
+                  {saving ? 'Saving…' : isEditMode ? 'Update' : 'Save'}
+                </Button>
+              </DialogFooter>
             </form>
-          </div>
-        )}
+          </DialogContent>
+        </Dialog>
       </div>
     </SetupScreenFrame>
   )

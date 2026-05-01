@@ -1,17 +1,18 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { Link } from 'react-router-dom'
 import { customersApi } from '../services/api'
-import { Plus, Search, Edit, Eye } from 'lucide-react'
+import { Plus, Edit, Eye } from 'lucide-react'
 import CustomerModal from '../components/CustomerModal'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import { PageHeader, PageLoading } from '@/components/PageChrome'
+import { SortableTableHead, TableSearchBar } from '@/components/ui/sortable-table'
+import { useClientTableSortFilter } from '@/lib/tableSortFilter'
 
 export default function Customers() {
-  const [searchTerm, setSearchTerm] = useState('')
   const [selectedCustomer, setSelectedCustomer] = useState(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const queryClient = useQueryClient()
@@ -20,6 +21,34 @@ export default function Customers() {
     queryKey: ['customers'],
     queryFn: () => customersApi.getAll(),
   })
+
+  const searchFields = useMemo(
+    () => [
+      (c) => `${c.first_name || ''} ${c.last_name || ''}`,
+      (c) => c.email,
+      (c) => c.phone,
+      (c) => c.city,
+    ],
+    []
+  )
+
+  const sortAccessors = useMemo(
+    () => ({
+      name: (c) => `${c.first_name || ''} ${c.last_name || ''}`.trim(),
+      email: (c) => c.email || '',
+      phone: (c) => c.phone || '',
+      city: (c) => c.city || '',
+      status: (c) => (c.is_active ? 'Active' : 'Inactive'),
+    }),
+    []
+  )
+
+  const rowData = customers?.data || []
+  const { query, setQuery, sort, toggleSort, items: filteredCustomers } = useClientTableSortFilter(
+    rowData,
+    searchFields,
+    sortAccessors
+  )
 
   const createMutation = useMutation({
     mutationFn: customersApi.create,
@@ -38,63 +67,64 @@ export default function Customers() {
     },
   })
 
-  const filteredCustomers = customers?.data?.filter((customer) =>
-    `${customer.first_name} ${customer.last_name}`.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    customer.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    customer.phone.includes(searchTerm)
-  ) || []
-
   if (isLoading) {
-    return <div className="flex justify-center items-center h-64">Loading...</div>
+    return <PageLoading label="Loading customers…" />
   }
 
   return (
-    <div>
-      <div className="flex justify-between items-center mb-6 flex-wrap gap-3">
-        <h1 className="text-3xl font-semibold tracking-tight">Customers</h1>
-        <div className="flex flex-wrap gap-2">
-          <Button type="button" variant="outline" asChild>
-            <Link to="/customers/creation">New customer (full)</Link>
-          </Button>
-          <Button
-            type="button"
-            onClick={() => {
-              setSelectedCustomer(null)
-              setIsModalOpen(true)
-            }}
-          >
-            <Plus size={20} />
-            <span>Add customer (quick)</span>
-          </Button>
-        </div>
-      </div>
+    <div className="space-y-8">
+      <PageHeader
+        eyebrow="CRM"
+        title="Customers"
+        description="Search accounts, open profiles, or create customers via quick modal or full registration flow."
+        actions={
+          <>
+            <Button type="button" variant="outline" asChild>
+              <Link to="/customers/creation">New customer (full)</Link>
+            </Button>
+            <Button
+              type="button"
+              onClick={() => {
+                setSelectedCustomer(null)
+                setIsModalOpen(true)
+              }}
+            >
+              <Plus size={20} />
+              <span>Add customer (quick)</span>
+            </Button>
+          </>
+        }
+      />
 
       <Card>
         <CardHeader className="pb-4">
           <CardTitle className="text-base">Customer List</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="mb-4">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={18} />
-              <Input
-                type="text"
-                placeholder="Search customers..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-9"
-              />
-            </div>
-          </div>
+          <TableSearchBar
+            value={query}
+            onChange={setQuery}
+            placeholder="Filter by name, email, phone, city…"
+          />
 
-          <Table>
+          <Table shell="embed">
             <TableHeader>
-              <TableRow>
-                <TableHead>Name</TableHead>
-                <TableHead>Email</TableHead>
-                <TableHead>Phone</TableHead>
-                <TableHead>City</TableHead>
-                <TableHead>Status</TableHead>
+              <TableRow className="hover:bg-transparent">
+                <SortableTableHead columnKey="name" sort={sort} onSort={toggleSort}>
+                  Name
+                </SortableTableHead>
+                <SortableTableHead columnKey="email" sort={sort} onSort={toggleSort}>
+                  Email
+                </SortableTableHead>
+                <SortableTableHead columnKey="phone" sort={sort} onSort={toggleSort}>
+                  Phone
+                </SortableTableHead>
+                <SortableTableHead columnKey="city" sort={sort} onSort={toggleSort}>
+                  City
+                </SortableTableHead>
+                <SortableTableHead columnKey="status" sort={sort} onSort={toggleSort}>
+                  Status
+                </SortableTableHead>
                 <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
@@ -128,12 +158,7 @@ export default function Customers() {
                       >
                         <Edit size={18} />
                       </Button>
-                      <Button
-                        asChild
-                        variant="ghost"
-                        size="icon"
-                        aria-label="View customer"
-                      >
+                      <Button asChild variant="ghost" size="icon" aria-label="View customer">
                         <Link to={`/admin/customers/${customer.customer_id}`}>
                           <Eye size={18} />
                         </Link>
@@ -166,4 +191,3 @@ export default function Customers() {
     </div>
   )
 }
-

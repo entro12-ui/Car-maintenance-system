@@ -113,11 +113,11 @@ export default function CreateAppointmentModal({ isOpen, onClose }) {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
-        <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center">
-          <h2 className="text-2xl font-bold text-gray-800">Create New Appointment</h2>
+        <div className="sticky top-0 bg-white border-b border-border px-6 py-4 flex justify-between items-center">
+          <h2 className="text-2xl font-bold text-foreground">Create New Appointment</h2>
           <button
             onClick={handleClose}
-            className="text-gray-500 hover:text-gray-700 transition-colors"
+            className="text-muted-foreground hover:text-foreground transition-colors"
           >
             <X size={24} />
           </button>
@@ -126,7 +126,7 @@ export default function CreateAppointmentModal({ isOpen, onClose }) {
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
           {/* Customer Selection */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-foreground/90 mb-2">
               Customer <span className="text-red-500">*</span>
             </label>
             <select
@@ -134,7 +134,7 @@ export default function CreateAppointmentModal({ isOpen, onClose }) {
               value={formData.customer_id}
               onChange={handleChange}
               className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 ${
-                errors.customer_id ? 'border-red-500' : 'border-gray-300'
+                errors.customer_id ? 'border-red-500' : 'border-border'
               }`}
             >
               <option value="">Select a customer...</option>
@@ -151,7 +151,7 @@ export default function CreateAppointmentModal({ isOpen, onClose }) {
 
           {/* Vehicle Selection */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-foreground/90 mb-2">
               Vehicle <span className="text-red-500">*</span>
             </label>
             <select
@@ -160,8 +160,8 @@ export default function CreateAppointmentModal({ isOpen, onClose }) {
               onChange={handleChange}
               disabled={!formData.customer_id}
               className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 ${
-                errors.vehicle_id ? 'border-red-500' : 'border-gray-300'
-              } ${!formData.customer_id ? 'bg-gray-100 cursor-not-allowed' : ''}`}
+                errors.vehicle_id ? 'border-red-500' : 'border-border'
+              } ${!formData.customer_id ? 'bg-muted cursor-not-allowed' : ''}`}
             >
               <option value="">
                 {formData.customer_id ? 'Select a vehicle...' : 'Select a customer first...'}
@@ -184,7 +184,7 @@ export default function CreateAppointmentModal({ isOpen, onClose }) {
 
           {/* Service Type */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-foreground/90 mb-2">
               Service Type <span className="text-red-500">*</span>
             </label>
             <select
@@ -192,7 +192,7 @@ export default function CreateAppointmentModal({ isOpen, onClose }) {
               value={formData.service_type_id}
               onChange={handleChange}
               className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 ${
-                errors.service_type_id ? 'border-red-500' : 'border-gray-300'
+                errors.service_type_id ? 'border-red-500' : 'border-border'
               }`}
             >
               <option value="">Select a service type...</option>
@@ -210,7 +210,7 @@ export default function CreateAppointmentModal({ isOpen, onClose }) {
           {/* Date and Time */}
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-foreground/90 mb-2">
                 Scheduled Date <span className="text-red-500">*</span>
               </label>
               <input
@@ -220,7 +220,7 @@ export default function CreateAppointmentModal({ isOpen, onClose }) {
                 onChange={handleChange}
                 min={new Date().toISOString().split('T')[0]}
                 className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 ${
-                  errors.scheduled_date ? 'border-red-500' : 'border-gray-300'
+                  errors.scheduled_date ? 'border-red-500' : 'border-border'
                 }`}
               />
               {errors.scheduled_date && (
@@ -228,7 +228,7 @@ export default function CreateAppointmentModal({ isOpen, onClose }) {
               )}
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-foreground/90 mb-2">
                 Scheduled Time <span className="text-red-500">*</span>
               </label>
               <input
@@ -237,7 +237,7 @@ export default function CreateAppointmentModal({ isOpen, onClose }) {
                 value={formData.scheduled_time}
                 onChange={handleChange}
                 className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 ${
-                  errors.scheduled_time ? 'border-red-500' : 'border-gray-300'
+                  errors.scheduled_time ? 'border-red-500' : 'border-border'
                 }`}
               />
               {errors.scheduled_time && (
@@ -248,7 +248,7 @@ export default function CreateAppointmentModal({ isOpen, onClose }) {
 
           {/* Estimated Duration */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-foreground/90 mb-2">
               Estimated Duration (minutes)
             </label>
             <input
@@ -258,13 +258,13 @@ export default function CreateAppointmentModal({ isOpen, onClose }) {
               onChange={handleChange}
               min="15"
               step="15"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+              className="w-full px-4 py-2 border border-border rounded-lg focus:ring-2 focus:ring-primary-500"
             />
           </div>
 
           {/* Notes */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-foreground/90 mb-2">
               Notes
             </label>
             <textarea
@@ -272,7 +272,7 @@ export default function CreateAppointmentModal({ isOpen, onClose }) {
               value={formData.notes}
               onChange={handleChange}
               rows={4}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+              className="w-full px-4 py-2 border border-border rounded-lg focus:ring-2 focus:ring-primary-500"
               placeholder="Additional notes or special instructions..."
             />
           </div>
@@ -285,11 +285,11 @@ export default function CreateAppointmentModal({ isOpen, onClose }) {
           )}
 
           {/* Actions */}
-          <div className="flex justify-end space-x-4 pt-4 border-t border-gray-200">
+          <div className="flex justify-end space-x-4 pt-4 border-t border-border">
             <button
               type="button"
               onClick={handleClose}
-              className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
+              className="px-6 py-2 border border-border rounded-lg text-foreground/90 hover:bg-muted/45 transition-colors"
             >
               Cancel
             </button>

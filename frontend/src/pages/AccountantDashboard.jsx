@@ -1,8 +1,15 @@
 import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { accountantApi } from '../services/api'
-import { DollarSign, CheckCircle, XCircle, Clock, Filter, Search } from 'lucide-react'
+import { DollarSign, CheckCircle, Clock, Filter, Search } from 'lucide-react'
 import { format } from 'date-fns'
+import StatCard from '@/components/StatCard'
+import { Card, CardContent } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
+import LoadingSpinner from '@/components/LoadingSpinner'
+import { cn } from '@/lib/utils'
 
 export default function AccountantDashboard() {
   const [paymentStatusFilter, setPaymentStatusFilter] = useState('')
@@ -47,7 +54,7 @@ export default function AccountantDashboard() {
 
   const paymentsList = payments?.data || []
   const filteredPayments = paymentsList.filter((payment) => {
-    const matchesSearch = 
+    const matchesSearch =
       payment.customer_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       payment.customer_email.toLowerCase().includes(searchTerm.toLowerCase()) ||
       payment.vehicle_info.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -56,186 +63,198 @@ export default function AccountantDashboard() {
   })
 
   if (isLoading) {
-    return <div className="flex justify-center items-center h-64">Loading...</div>
+    return (
+      <div className="flex min-h-[420px] flex-col items-center justify-center gap-4 rounded-2xl border border-dashed border-border/80 bg-card/50 py-16">
+        <LoadingSpinner size="lg" />
+        <p className="text-sm font-medium text-muted-foreground">Loading payments…</p>
+      </div>
+    )
   }
 
+  const summaryCards =
+    summary &&
+    [
+      {
+        title: 'Total revenue',
+        value: `ETB ${(summary.total_revenue || 0).toLocaleString()}`,
+        subtitle: `${summary.paid_count || 0} paid services`,
+        icon: DollarSign,
+        tone: 'emerald',
+      },
+      {
+        title: 'Pending amount',
+        value: `ETB ${(summary.pending_amount || 0).toLocaleString()}`,
+        subtitle: `${summary.pending_count || 0} pending`,
+        icon: Clock,
+        tone: 'amber',
+      },
+      {
+        title: 'Partial amount',
+        value: `ETB ${(summary.partial_amount || 0).toLocaleString()}`,
+        subtitle: `${summary.partial_count || 0} partial`,
+        icon: DollarSign,
+        tone: 'teal',
+      },
+      {
+        title: 'Total services',
+        value: summary.total_services || 0,
+        subtitle: 'All recorded services',
+        icon: CheckCircle,
+        tone: 'slate',
+      },
+    ]
+
   return (
-    <div>
-      <h1 className="text-3xl font-bold text-gray-800 mb-6">Payment Management</h1>
+    <div className="animate-fade-in space-y-8">
+      <header className="border-b border-border/60 pb-6">
+        <p className="text-xs font-semibold uppercase tracking-wider text-primary">Finance</p>
+        <h1 className="font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+          Payment management
+        </h1>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Track collections, pending balances, and payment status in one place.
+        </p>
+      </header>
 
-      {/* Summary Cards */}
-      {summary && (
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-          <div className="bg-white rounded-lg shadow-md p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-600">Total Revenue</p>
-                <p className="text-2xl font-bold text-green-600">
-                  ETB {(summary.total_revenue || 0).toLocaleString()}
-                </p>
-              </div>
-              <DollarSign className="text-green-600" size={32} />
-            </div>
-            <p className="text-xs text-gray-500 mt-2">{summary.paid_count || 0} paid services</p>
-          </div>
-
-          <div className="bg-white rounded-lg shadow-md p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-600">Pending Amount</p>
-                <p className="text-2xl font-bold text-yellow-600">
-                  ETB {(summary.pending_amount || 0).toLocaleString()}
-                </p>
-              </div>
-              <Clock className="text-yellow-600" size={32} />
-            </div>
-            <p className="text-xs text-gray-500 mt-2">{summary.pending_count || 0} pending services</p>
-          </div>
-
-          <div className="bg-white rounded-lg shadow-md p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-600">Partial Amount</p>
-                <p className="text-2xl font-bold text-blue-600">
-                  ETB {(summary.partial_amount || 0).toLocaleString()}
-                </p>
-              </div>
-              <DollarSign className="text-blue-600" size={32} />
-            </div>
-            <p className="text-xs text-gray-500 mt-2">{summary.partial_count || 0} partial payments</p>
-          </div>
-
-          <div className="bg-white rounded-lg shadow-md p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-600">Total Services</p>
-                <p className="text-2xl font-bold text-gray-800">
-                  {summary.total_services || 0}
-                </p>
-              </div>
-              <CheckCircle className="text-gray-600" size={32} />
-            </div>
-            <p className="text-xs text-gray-500 mt-2">All services</p>
-          </div>
+      {summaryCards ? (
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
+          {summaryCards.map((c) => (
+            <StatCard
+              key={c.title}
+              title={c.title}
+              value={c.value}
+              subtitle={c.subtitle}
+              icon={c.icon}
+              tone={c.tone}
+            />
+          ))}
         </div>
-      )}
+      ) : null}
 
-      {/* Filters */}
-      <div className="bg-white rounded-lg shadow-md p-4 mb-6">
-        <div className="flex flex-col md:flex-row gap-4">
-          <div className="flex-1">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
-              <input
-                type="text"
-                placeholder="Search by customer, email, vehicle, or reference number..."
+      <Card className="overflow-hidden">
+        <CardContent className="p-4 sm:p-6">
+          <div className="flex flex-col gap-4 md:flex-row md:items-center">
+            <div className="relative min-w-0 flex-1">
+              <Search
+                className="pointer-events-none absolute left-3.5 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-muted-foreground"
+                aria-hidden
+              />
+              <Input
+                type="search"
+                placeholder="Search customer, email, vehicle, or reference…"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+                className="pl-10"
               />
             </div>
+            <div className="flex shrink-0 items-center gap-2">
+              <Filter className="h-5 w-5 text-muted-foreground" aria-hidden />
+              <select
+                value={paymentStatusFilter}
+                onChange={(e) => setPaymentStatusFilter(e.target.value)}
+                className={cn(
+                  'h-11 rounded-xl border border-input bg-background px-4 text-sm font-medium shadow-sm',
+                  'transition-colors hover:border-primary/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500/25'
+                )}
+              >
+                <option value="">All statuses</option>
+                <option value="Pending">Pending</option>
+                <option value="Partial">Partial</option>
+                <option value="Paid">Paid</option>
+                <option value="Free Service">Free service</option>
+              </select>
+            </div>
           </div>
-          <div className="flex items-center space-x-2">
-            <Filter size={20} className="text-gray-600" />
-            <select
-              value={paymentStatusFilter}
-              onChange={(e) => setPaymentStatusFilter(e.target.value)}
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
-            >
-              <option value="">All Statuses</option>
-              <option value="Pending">Pending</option>
-              <option value="Partial">Partial</option>
-              <option value="Paid">Paid</option>
-              <option value="Free Service">Free Service</option>
-            </select>
-          </div>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
 
-      {/* Payments Table */}
-      <div className="bg-white rounded-lg shadow-md overflow-hidden">
+      <Card className="overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead className="bg-gray-100">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-                  Service Date
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-border/80 bg-muted/40 text-left">
+                <th className="whitespace-nowrap px-5 py-3.5 font-semibold text-muted-foreground">
+                  Service date
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                <th className="whitespace-nowrap px-5 py-3.5 font-semibold text-muted-foreground">
                   Customer
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                <th className="whitespace-nowrap px-5 py-3.5 font-semibold text-muted-foreground">
                   Vehicle
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-                  Service Type
+                <th className="whitespace-nowrap px-5 py-3.5 font-semibold text-muted-foreground">
+                  Service type
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                <th className="whitespace-nowrap px-5 py-3.5 font-semibold text-muted-foreground">
                   Reference
                 </th>
-                <th className="px-6 py-3 text-right text-xs font-medium text-gray-700 uppercase tracking-wider">
+                <th className="whitespace-nowrap px-5 py-3.5 text-right font-semibold text-muted-foreground">
                   Amount
                 </th>
-                <th className="px-6 py-3 text-center text-xs font-medium text-gray-700 uppercase tracking-wider">
+                <th className="whitespace-nowrap px-5 py-3.5 text-center font-semibold text-muted-foreground">
                   Status
                 </th>
-                <th className="px-6 py-3 text-center text-xs font-medium text-gray-700 uppercase tracking-wider">
+                <th className="whitespace-nowrap px-5 py-3.5 text-center font-semibold text-muted-foreground">
                   Actions
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
+            <tbody className="divide-y divide-border/70">
               {filteredPayments.map((payment) => (
-                <tr key={payment.service_id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                <tr key={payment.service_id} className="bg-card transition-colors hover:bg-muted/25">
+                  <td className="whitespace-nowrap px-5 py-4 text-foreground">
                     {format(new Date(payment.service_date), 'MMM dd, yyyy')}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm font-medium text-gray-900">{payment.customer_name}</div>
-                    <div className="text-sm text-gray-500">{payment.customer_email}</div>
+                  <td className="whitespace-nowrap px-5 py-4">
+                    <div className="font-medium text-foreground">{payment.customer_name}</div>
+                    <div className="text-muted-foreground">{payment.customer_email}</div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {payment.vehicle_info}
+                  <td className="whitespace-nowrap px-5 py-4 text-foreground">{payment.vehicle_info}</td>
+                  <td className="whitespace-nowrap px-5 py-4 text-foreground">{payment.service_type}</td>
+                  <td className="whitespace-nowrap px-5 py-4 text-muted-foreground">
+                    {payment.reference_number || '—'}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {payment.service_type}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {payment.reference_number || '-'}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-semibold text-gray-900">
+                  <td className="whitespace-nowrap px-5 py-4 text-right font-semibold text-foreground">
                     ETB {payment.grand_total.toLocaleString()}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-center">
-                    <span
-                      className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                  <td className="whitespace-nowrap px-5 py-4 text-center">
+                    <Badge
+                      variant={
                         payment.payment_status === 'Paid'
-                          ? 'bg-green-100 text-green-800'
+                          ? 'success'
                           : payment.payment_status === 'Free Service'
-                          ? 'bg-purple-100 text-purple-800'
-                          : payment.payment_status === 'Partial'
-                          ? 'bg-blue-100 text-blue-800'
-                          : 'bg-yellow-100 text-yellow-800'
-                      }`}
+                            ? 'secondary'
+                            : payment.payment_status === 'Partial'
+                              ? 'default'
+                              : 'outline'
+                      }
+                      className={cn(
+                        payment.payment_status === 'Pending' && 'border-amber-200 bg-amber-50 text-amber-900',
+                        payment.payment_status === 'Partial' && 'border-teal-200 bg-teal-50 text-teal-900',
+                        payment.payment_status === 'Free Service' && 'border-violet-200 bg-violet-50 text-violet-900'
+                      )}
                     >
                       {payment.payment_status}
-                    </span>
+                    </Badge>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-center text-sm">
+                  <td className="whitespace-nowrap px-5 py-4 text-center">
                     {payment.payment_status === 'Pending' && (
-                      <button
+                      <Button
+                        size="sm"
                         onClick={() => handleUpdatePayment(payment.service_id, 'Paid')}
                         disabled={updatePaymentMutation.isLoading}
-                        className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 disabled:bg-gray-400 font-semibold"
                       >
-                        Mark as Paid
-                      </button>
+                        Mark paid
+                      </Button>
                     )}
                     {payment.payment_status === 'Paid' && (
-                      <span className="text-green-600 font-semibold">✓ Paid</span>
+                      <span className="text-sm font-semibold text-emerald-600">Paid</span>
                     )}
                     {payment.payment_status === 'Free Service' && (
-                      <span className="text-purple-600 font-semibold">Free</span>
+                      <span className="text-sm font-semibold text-violet-600">Free</span>
+                    )}
+                    {payment.payment_status === 'Partial' && (
+                      <span className="text-sm font-medium text-muted-foreground">Partial</span>
                     )}
                   </td>
                 </tr>
@@ -245,12 +264,11 @@ export default function AccountantDashboard() {
         </div>
 
         {filteredPayments.length === 0 && (
-          <div className="text-center py-12">
-            <p className="text-gray-500">No payments found</p>
+          <div className="border-t border-border/60 py-14 text-center">
+            <p className="text-sm font-medium text-muted-foreground">No payments match your filters.</p>
           </div>
         )}
-      </div>
+      </Card>
     </div>
   )
 }
-

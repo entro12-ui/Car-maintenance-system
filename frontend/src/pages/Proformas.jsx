@@ -1,16 +1,17 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
-import { proformasApi, customersApi } from '../services/api'
+import { proformasApi } from '../services/api'
 import { format } from 'date-fns'
-import { Plus, FileText, Printer, Edit, Trash2, Eye, Search, Filter } from 'lucide-react'
+import { Plus, Printer, Edit, Trash2, Eye, Search, Filter } from 'lucide-react'
 import { Button } from '../components/ui/button'
 import { Badge } from '../components/ui/badge'
+import { SortableTh } from '@/components/ui/sortable-table'
+import { useClientTableSortFilter } from '@/lib/tableSortFilter'
 
 export default function Proformas() {
   const navigate = useNavigate()
   const queryClient = useQueryClient()
-  const [searchTerm, setSearchTerm] = useState('')
   const [statusFilter, setStatusFilter] = useState('')
 
   const { data: proformas, isLoading } = useQuery({
@@ -43,24 +44,45 @@ export default function Proformas() {
     navigate(`/proformas/${id}/print`)
   }
 
-  const filteredProformas = proformas?.data?.filter((proforma) => {
-    const matchesSearch = 
-      proforma.proforma_number?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      proforma.customer_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      proforma.vehicle_info?.toLowerCase().includes(searchTerm.toLowerCase())
-    return matchesSearch
-  }) || []
+  const proformaRows = proformas?.data || []
+
+  const searchFields = useMemo(
+    () => [
+      (p) =>
+        `${p.proforma_number || ''} ${p.customer_name || ''} ${p.vehicle_info || ''} ${p.status || ''} ${p.grand_total ?? ''}`,
+    ],
+    []
+  )
+
+  const sortAccessors = useMemo(
+    () => ({
+      number: (p) => p.proforma_number || '',
+      customer: (p) => p.customer_name || '',
+      vehicle: (p) => p.vehicle_info || '',
+      total: (p) => Number(p.grand_total) || 0,
+      status: (p) => p.status || '',
+      created: (p) => p.created_at || '',
+      validUntil: (p) => p.valid_until || '',
+    }),
+    []
+  )
+
+  const { query, setQuery, sort, toggleSort, items: displayRows } = useClientTableSortFilter(
+    proformaRows,
+    searchFields,
+    sortAccessors
+  )
 
   const getStatusBadge = (status) => {
     const colors = {
-      Draft: 'bg-gray-500',
+      Draft: 'bg-muted/350',
       Sent: 'bg-blue-500',
       Approved: 'bg-green-500',
       Converted: 'bg-purple-500',
       Cancelled: 'bg-red-500',
     }
     return (
-      <Badge className={`${colors[status] || 'bg-gray-500'} text-white`}>
+      <Badge className={`${colors[status] || 'bg-muted/350'} text-white`}>
         {status}
       </Badge>
     )
@@ -73,7 +95,7 @@ export default function Proformas() {
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold text-gray-800">Proforma Invoices</h1>
+        <h1 className="text-3xl font-bold text-foreground">Proforma Invoices</h1>
         <Button onClick={() => navigate('/proformas/new')}>
           <Plus className="w-4 h-4 mr-2" />
           Create Proforma
@@ -84,21 +106,22 @@ export default function Proformas() {
       <div className="bg-white rounded-lg shadow-md p-4 mb-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground/75 w-4 h-4" />
             <input
-              type="text"
+              type="search"
               placeholder="Search by number, customer, or vehicle..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              className="w-full pl-10 pr-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              autoComplete="off"
             />
           </div>
           <div className="relative">
-            <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+            <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground/75 w-4 h-4" />
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full pl-10 pr-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="">All Statuses</option>
               <option value="Draft">Draft</option>
@@ -115,28 +138,42 @@ export default function Proformas() {
       <div className="bg-white rounded-lg shadow-md overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-gray-50">
+            <thead className="bg-muted/35">
               <tr>
-                <th className="text-left py-3 px-4 font-semibold text-gray-700">Proforma #</th>
-                <th className="text-left py-3 px-4 font-semibold text-gray-700">Customer Name</th>
-                <th className="text-left py-3 px-4 font-semibold text-gray-700">Vehicle / Car Model</th>
-                <th className="text-left py-3 px-4 font-semibold text-gray-700">Total</th>
-                <th className="text-left py-3 px-4 font-semibold text-gray-700">Status</th>
-                <th className="text-left py-3 px-4 font-semibold text-gray-700">Created</th>
-                <th className="text-left py-3 px-4 font-semibold text-gray-700">Valid Until</th>
-                <th className="text-left py-3 px-4 font-semibold text-gray-700">Actions</th>
+                <SortableTh columnKey="number" sort={sort} onSort={toggleSort} className="text-foreground/90">
+                  Proforma #
+                </SortableTh>
+                <SortableTh columnKey="customer" sort={sort} onSort={toggleSort} className="text-foreground/90">
+                  Customer Name
+                </SortableTh>
+                <SortableTh columnKey="vehicle" sort={sort} onSort={toggleSort} className="text-foreground/90">
+                  Vehicle / Car Model
+                </SortableTh>
+                <SortableTh columnKey="total" sort={sort} onSort={toggleSort} className="text-foreground/90">
+                  Total
+                </SortableTh>
+                <SortableTh columnKey="status" sort={sort} onSort={toggleSort} className="text-foreground/90">
+                  Status
+                </SortableTh>
+                <SortableTh columnKey="created" sort={sort} onSort={toggleSort} className="text-foreground/90">
+                  Created
+                </SortableTh>
+                <SortableTh columnKey="validUntil" sort={sort} onSort={toggleSort} className="text-foreground/90">
+                  Valid Until
+                </SortableTh>
+                <th className="text-left py-3 px-4 font-semibold text-foreground/90">Actions</th>
               </tr>
             </thead>
             <tbody>
-              {filteredProformas.length === 0 ? (
+              {displayRows.length === 0 ? (
                 <tr>
-                  <td colSpan="8" className="text-center py-8 text-gray-500">
-                    No proformas found
+                  <td colSpan="8" className="text-center py-8 text-muted-foreground">
+                    {proformaRows.length === 0 ? 'No proformas found' : 'No matching proformas'}
                   </td>
                 </tr>
               ) : (
-                filteredProformas.map((proforma) => (
-                  <tr key={proforma.proforma_id} className="border-b border-gray-200 hover:bg-gray-50">
+                displayRows.map((proforma) => (
+                  <tr key={proforma.proforma_id} className="border-b border-border hover:bg-muted/45">
                     <td className="py-3 px-4">
                       <span className="font-medium text-blue-600">{proforma.proforma_number}</span>
                     </td>
@@ -149,10 +186,10 @@ export default function Proformas() {
                       }).format(proforma.grand_total)}
                     </td>
                     <td className="py-3 px-4">{getStatusBadge(proforma.status)}</td>
-                    <td className="py-3 px-4 text-sm text-gray-600">
+                    <td className="py-3 px-4 text-sm text-muted-foreground">
                       {format(new Date(proforma.created_at), 'MMM dd, yyyy')}
                     </td>
-                    <td className="py-3 px-4 text-sm text-gray-600">
+                    <td className="py-3 px-4 text-sm text-muted-foreground">
                       {proforma.valid_until ? format(new Date(proforma.valid_until), 'MMM dd, yyyy') : 'N/A'}
                     </td>
                     <td className="py-3 px-4">

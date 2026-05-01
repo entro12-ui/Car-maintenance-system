@@ -186,11 +186,11 @@ export default function AddServiceForCustomer() {
       <div className="flex items-center space-x-4 mb-6">
         <button
           onClick={() => navigate(`/admin/customers/${id}`)}
-          className="text-gray-600 hover:text-gray-800"
+          className="text-muted-foreground hover:text-foreground"
         >
           <ArrowLeft size={24} />
         </button>
-        <h1 className="text-3xl font-bold text-gray-800">Add Service</h1>
+        <h1 className="text-3xl font-bold text-foreground">Add Service</h1>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
@@ -199,14 +199,14 @@ export default function AddServiceForCustomer() {
           
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-foreground/90 mb-2">
                 Vehicle
               </label>
               <select
                 value={formData.vehicle_id}
                 onChange={(e) => setFormData({ ...formData, vehicle_id: e.target.value })}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                className="w-full px-4 py-2 border border-border rounded-lg"
               >
                 <option value="">Select Vehicle</option>
                 {customer?.data?.vehicles?.map(v => (
@@ -216,21 +216,21 @@ export default function AddServiceForCustomer() {
                 ))}
               </select>
               {selectedVehicle && (
-                <p className="text-sm text-gray-500 mt-1">
+                <p className="text-sm text-muted-foreground mt-1">
                   Current Mileage: {selectedVehicle.current_mileage.toLocaleString()} km
                 </p>
               )}
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-foreground/90 mb-2">
                 Service Type
               </label>
               <select
                 value={formData.service_type_id}
                 onChange={(e) => setFormData({ ...formData, service_type_id: e.target.value })}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                className="w-full px-4 py-2 border border-border rounded-lg"
               >
                 <option value="">Select Service Type</option>
                 {serviceTypes?.data?.map(st => (
@@ -244,26 +244,26 @@ export default function AddServiceForCustomer() {
           </div>
 
           <div className="mt-4">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-foreground/90 mb-2">
               Mechanic Notes
             </label>
             <textarea
               value={formData.mechanic_notes}
               onChange={(e) => setFormData({ ...formData, mechanic_notes: e.target.value })}
               rows="3"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+              className="w-full px-4 py-2 border border-border rounded-lg"
             />
           </div>
         </div>
 
         {/* Service Record Details - Matching Image Format */}
         <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
-          <h2 className="text-xl font-semibold mb-4 text-gray-800">Service Record Details</h2>
+          <h2 className="text-xl font-semibold mb-4 text-foreground">Service Record Details</h2>
           
           {/* Service Date and Mileage Section */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-foreground/90 mb-2">
                 Date
               </label>
               <input
@@ -271,11 +271,11 @@ export default function AddServiceForCustomer() {
                 value={formData.service_date}
                 onChange={(e) => setFormData({ ...formData, service_date: e.target.value })}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                className="w-full px-4 py-2 border border-border rounded-lg"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-foreground/90 mb-2">
                 Service Date
               </label>
               <input
@@ -283,11 +283,11 @@ export default function AddServiceForCustomer() {
                 value={formData.service_date}
                 onChange={(e) => setFormData({ ...formData, service_date: e.target.value })}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                className="w-full px-4 py-2 border border-border rounded-lg"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-foreground/90 mb-2">
                 Kilometer (Current) *
               </label>
               <input
@@ -312,10 +312,10 @@ export default function AddServiceForCustomer() {
                 min={selectedVehicle?.current_mileage || 0}
                 step="1"
                 placeholder="e.g., 20000"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                className="w-full px-4 py-2 border border-border rounded-lg"
               />
               {selectedVehicle && (
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-muted-foreground mt-1">
                   Vehicle Current: {selectedVehicle.current_mileage.toLocaleString()} km
                   {formData.mileage_at_service && parseFloat(formData.mileage_at_service) < selectedVehicle.current_mileage && (
                     <span className="text-red-600 ml-2">⚠ Must be ≥ {selectedVehicle.current_mileage.toLocaleString()} km</span>
@@ -324,7 +324,7 @@ export default function AddServiceForCustomer() {
               )}
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-foreground/90 mb-2">
                 Next Service KM
               </label>
               <input
@@ -347,7 +347,7 @@ export default function AddServiceForCustomer() {
                 })()}
                 readOnly
                 placeholder="Auto-calculated"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100"
+                className="w-full px-4 py-2 border border-border rounded-lg bg-muted"
               />
               {formData.service_type_id && formData.mileage_at_service && (() => {
                 const serviceType = serviceTypes?.data?.find(st => st.service_type_id === parseInt(formData.service_type_id))
@@ -356,7 +356,7 @@ export default function AddServiceForCustomer() {
                   ? parseFloat(serviceType.mileage_interval) 
                   : (serviceType.mileage_interval || 0)
                 return (
-                  <p className="text-xs text-gray-500 mt-1">
+                  <p className="text-xs text-muted-foreground mt-1">
                     Service Interval: +{interval.toLocaleString()} km
                   </p>
                 )
@@ -367,7 +367,7 @@ export default function AddServiceForCustomer() {
           {/* Oil Type and Notes Section */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-foreground/90 mb-2">
                 Oil Type
               </label>
               <input
@@ -375,11 +375,11 @@ export default function AddServiceForCustomer() {
                 value={formData.oil_type}
                 onChange={(e) => setFormData({ ...formData, oil_type: e.target.value })}
                 placeholder="e.g., 10 Tul 9000"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                className="w-full px-4 py-2 border border-border rounded-lg"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-foreground/90 mb-2">
                 Note
               </label>
               <input
@@ -387,7 +387,7 @@ export default function AddServiceForCustomer() {
                 value={formData.service_note}
                 onChange={(e) => setFormData({ ...formData, service_note: e.target.value })}
                 placeholder="e.g., 1st Service completed"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                className="w-full px-4 py-2 border border-border rounded-lg"
               />
             </div>
           </div>
@@ -395,7 +395,7 @@ export default function AddServiceForCustomer() {
           {/* Reference, Branch, and Serviced By Section */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-foreground/90 mb-2">
                 Reference Number
               </label>
               <input
@@ -403,11 +403,11 @@ export default function AddServiceForCustomer() {
                 value={formData.reference_number}
                 onChange={(e) => setFormData({ ...formData, reference_number: e.target.value })}
                 placeholder="e.g., 0006601"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                className="w-full px-4 py-2 border border-border rounded-lg"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-foreground/90 mb-2">
                 Branch
               </label>
               <input
@@ -415,11 +415,11 @@ export default function AddServiceForCustomer() {
                 value={formData.branch}
                 onChange={(e) => setFormData({ ...formData, branch: e.target.value })}
                 placeholder="e.g., YEKA BRANCH"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                className="w-full px-4 py-2 border border-border rounded-lg"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-foreground/90 mb-2">
                 Serviced By Name
               </label>
               <input
@@ -427,7 +427,7 @@ export default function AddServiceForCustomer() {
                 value={formData.serviced_by_name}
                 onChange={(e) => setFormData({ ...formData, serviced_by_name: e.target.value })}
                 placeholder="Mechanic name"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                className="w-full px-4 py-2 border border-border rounded-lg"
               />
             </div>
           </div>
@@ -440,17 +440,17 @@ export default function AddServiceForCustomer() {
             <div className="overflow-x-auto">
               <table className="w-full border-collapse">
                 <thead>
-                  <tr className="bg-gray-100">
-                    <th className="border border-gray-300 px-4 py-3 text-left font-semibold text-gray-700">
+                  <tr className="bg-muted">
+                    <th className="border border-border px-4 py-3 text-left font-semibold text-foreground/90">
                       Item
                     </th>
-                    <th className="border border-gray-300 px-4 py-3 text-center font-semibold text-gray-700 w-32">
+                    <th className="border border-border px-4 py-3 text-center font-semibold text-foreground/90 w-32">
                       CHECKED
                     </th>
-                    <th className="border border-gray-300 px-4 py-3 text-center font-semibold text-gray-700 w-32">
+                    <th className="border border-border px-4 py-3 text-center font-semibold text-foreground/90 w-32">
                       CHANGED
                     </th>
-                    <th className="border border-gray-300 px-4 py-3 text-left font-semibold text-gray-700">
+                    <th className="border border-border px-4 py-3 text-left font-semibold text-foreground/90">
                       Parts
                     </th>
                   </tr>
@@ -459,16 +459,16 @@ export default function AddServiceForCustomer() {
                   {checklist.data.map((item) => {
                     const status = getChecklistStatus(item.checklist_id)
                     return (
-                      <tr key={item.checklist_id} className="hover:bg-gray-50">
-                        <td className="border border-gray-300 px-4 py-3">
+                      <tr key={item.checklist_id} className="hover:bg-muted/45">
+                        <td className="border border-border px-4 py-3">
                           <div>
-                            <p className="font-medium text-gray-800">{item.item_name}</p>
+                            <p className="font-medium text-foreground">{item.item_name}</p>
                             {item.item_description && (
-                              <p className="text-xs text-gray-500 mt-1">{item.item_description}</p>
+                              <p className="text-xs text-muted-foreground mt-1">{item.item_description}</p>
                             )}
                           </div>
                         </td>
-                        <td className="border border-gray-300 px-4 py-3 text-center">
+                        <td className="border border-border px-4 py-3 text-center">
                           <label className="flex items-center justify-center cursor-pointer">
                             <input
                               type="checkbox"
@@ -478,7 +478,7 @@ export default function AddServiceForCustomer() {
                             />
                           </label>
                         </td>
-                        <td className="border border-gray-300 px-4 py-3 text-center">
+                        <td className="border border-border px-4 py-3 text-center">
                           <label className="flex items-center justify-center cursor-pointer">
                             <input
                               type="checkbox"
@@ -489,14 +489,14 @@ export default function AddServiceForCustomer() {
                             />
                           </label>
                         </td>
-                        <td className="border border-gray-300 px-4 py-3">
+                        <td className="border border-border px-4 py-3">
                           {item.related_parts && item.related_parts.length > 0 ? (
                             <div className="space-y-2">
                               {item.related_parts.map((part) => (
-                                <div key={part.part_id} className="flex items-center justify-between p-2 bg-gray-50 rounded text-sm">
+                                <div key={part.part_id} className="flex items-center justify-between p-2 bg-muted/35 rounded text-sm">
                                   <div className="flex-1">
-                                    <p className="font-medium text-gray-800">{part.part_name}</p>
-                                    <p className="text-xs text-gray-600">
+                                    <p className="font-medium text-foreground">{part.part_name}</p>
+                                    <p className="text-xs text-muted-foreground">
                                       {part.part_code} • ETB {part.unit_price.toLocaleString()}
                                     </p>
                                   </div>
@@ -508,7 +508,7 @@ export default function AddServiceForCustomer() {
                                         onChange={() => handlePartToggle(part.part_id, item.checklist_id, false)}
                                         className="w-4 h-4 text-primary-600 rounded"
                                       />
-                                      <span className="text-xs text-gray-600">Insp</span>
+                                      <span className="text-xs text-muted-foreground">Insp</span>
                                     </label>
                                     <label className="flex items-center space-x-1 cursor-pointer">
                                       <input
@@ -524,7 +524,7 @@ export default function AddServiceForCustomer() {
                               ))}
                             </div>
                           ) : (
-                            <span className="text-gray-400 text-sm">No parts available</span>
+                            <span className="text-muted-foreground/75 text-sm">No parts available</span>
                           )}
                         </td>
                       </tr>
@@ -540,7 +540,7 @@ export default function AddServiceForCustomer() {
           <button
             type="button"
             onClick={() => navigate(`/admin/customers/${id}`)}
-            className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50"
+            className="px-6 py-2 border border-border rounded-lg text-foreground/90 hover:bg-muted/45"
           >
             Cancel
           </button>

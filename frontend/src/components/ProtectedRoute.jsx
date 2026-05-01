@@ -1,11 +1,17 @@
 import { Navigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
+import LoadingSpinner from '@/components/LoadingSpinner'
 
 export default function ProtectedRoute({ children, requireAdmin = false, requireAccountant = false }) {
   const { isAuthenticated, isAdmin, isAccountant, loading } = useAuth()
 
   if (loading) {
-    return <div className="flex justify-center items-center h-screen">Loading...</div>
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-background">
+        <LoadingSpinner size="lg" />
+        <p className="text-sm text-muted-foreground">Checking your session…</p>
+      </div>
+    )
   }
 
   if (!isAuthenticated) {

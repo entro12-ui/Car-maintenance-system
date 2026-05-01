@@ -22,6 +22,7 @@ class JobOrderSubletOrderDecision(BaseModel):
 
 class JobOrderSubletOrderReceive(BaseModel):
     delivery_order_number: str
+    post_charge_to_job: bool = True
 
 
 class JobOrderSubletOrderResponse(BaseModel):

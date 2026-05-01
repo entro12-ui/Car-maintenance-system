@@ -42,29 +42,29 @@ export default function GarageCancelReturnInvoice() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Cancel / Return Invoice</h1>
-        <p className="text-gray-600">Cancel or return an issued invoice with a reason and letter reference.</p>
+        <h1 className="text-2xl font-bold text-foreground">Cancel / Return Invoice</h1>
+        <p className="text-muted-foreground">Cancel or return an issued invoice with a reason and letter reference.</p>
       </div>
 
       <Card className="p-4 space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="text-sm font-medium text-gray-700">Invoice ID</label>
+            <label className="text-sm font-medium text-foreground/90">Invoice ID</label>
             <Input className="mt-1" value={invoiceId} onChange={(e) => setInvoiceId(e.target.value)} placeholder="e.g. 10" />
           </div>
           <div>
-            <label className="text-sm font-medium text-gray-700">Action</label>
+            <label className="text-sm font-medium text-foreground/90">Action</label>
             <select className="mt-1 w-full border rounded-md px-3 py-2" value={action} onChange={(e) => setAction(e.target.value)}>
               <option value="cancel">Cancel</option>
               <option value="return">Return</option>
             </select>
           </div>
           <div className="md:col-span-2">
-            <label className="text-sm font-medium text-gray-700">Reason</label>
+            <label className="text-sm font-medium text-foreground/90">Reason</label>
             <Input className="mt-1" value={reason} onChange={(e) => setReason(e.target.value)} placeholder="Reason" />
           </div>
           <div className="md:col-span-2">
-            <label className="text-sm font-medium text-gray-700">Letter Reference (optional)</label>
+            <label className="text-sm font-medium text-foreground/90">Letter Reference (optional)</label>
             <Input className="mt-1" value={letterRef} onChange={(e) => setLetterRef(e.target.value)} placeholder="Letter reference" />
           </div>
         </div>
@@ -83,11 +83,11 @@ export default function GarageCancelReturnInvoice() {
       </Card>
 
       <Card className="p-4">
-        <div className="text-sm font-semibold text-gray-800 mb-3">Issued Invoices</div>
+        <div className="text-sm font-semibold text-foreground mb-3">Issued Invoices</div>
         {isLoading ? (
-          <div className="text-sm text-gray-500">Loading...</div>
+          <div className="text-sm text-muted-foreground">Loading...</div>
         ) : invoices.length === 0 ? (
-          <div className="text-sm text-gray-500">No issued invoices.</div>
+          <div className="text-sm text-muted-foreground">No issued invoices.</div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">

@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { PageHeader } from '@/components/PageChrome'
 import { TRANSACTION_MENU, transactionPath } from './TransactionSidebarMenu'
 
 const GROUP_TITLE = {
@@ -37,13 +38,16 @@ export default function TransactionHub() {
 
   return (
     <div className="space-y-8">
-      <div className="space-y-2 max-w-3xl">
-        <h1 className="text-2xl font-semibold tracking-tight text-foreground">Transaction</h1>
-        <p className="text-sm text-muted-foreground leading-relaxed">
-          HillMaster-style <strong>Transaction</strong> menu for item issue, charge entry, returns, and sublet order
-          workflow. Existing application screens are reused where available.
-        </p>
-      </div>
+      <PageHeader
+        eyebrow="Garage"
+        title="Transaction"
+        description={
+          <>
+            HillMaster-style <strong>Transaction</strong> menu for item issue, charge entry, returns, and sublet order
+            workflow. Existing application screens are reused where available.
+          </>
+        }
+      />
 
       <div className="space-y-8">
         {groups.map((group) => {

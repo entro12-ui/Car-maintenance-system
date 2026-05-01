@@ -58,3 +58,74 @@ These links are for general education; your vehicle’s manual and your technici
 
 - [How often should you service your car?](https://www.youtube.com/watch?v=0T1tvq5ZCjM)
 - [Car maintenance checklist basics](https://www.youtube.com/watch?v=nKgPu_6ClAI)
+
+## Maintenance hub — staff setup menus
+
+The **Maintenance** navigator groups workshop setup: parameters, job orders, customers/vehicles, charge catalogs, sublets, and control screens. Open **`/maintenance-hub`** for the hub, then choose a tile.
+
+Typical routes (paths shown as **In-app**):
+
+**Parameters**
+
+- Global Parameters — **`/global-parameters`**
+- Name Value Parameter — **`/name-value-parameter`**
+
+**Job order**
+
+- Job Order list/detail — **`/job-orders`**
+- Open job from appointment — **`/work-order-creation`**
+
+**Customer and vehicle**
+
+- Customer maintenance — **`/customers`**
+- Plate number (fleet plates / billing flags) — **`/plate-number-maintenance`**
+- Canceled jobs registry — **`/canceled-jobs-registry`**
+
+**Charges and sublet**
+
+- Labour types — **`/job-orders/labor-types`**
+- Other charge setup — **`/job-orders/additional-charges/other-charge-setup`**
+- Lubricants and fuel — **`/job-orders/additional-charges/lubricants-and-fuel`**
+- Miscellaneous charges — **`/job-orders/additional-charges/miscellaneous-charges`**
+- Sublet work type — **`/job-orders/additional-charges/sublet-work-type`**
+- Consumable charge setup — **`/consumable-charge-setup`**
+- Sublet supplier maintenance — **`/sublet-supplier-maintenance`**
+
+**Control**
+
+- Block / release job order — **`/block-release-job-order`**
+- Register sold vehicle — **`/vehicles`** (vehicle registration workflow)
+
+**Vehicle and job type**
+
+- Vehicle model setup — **`/vehicle-model-setup`**
+- Job type per hour rate — **`/job-type-hourly-rate`**
+
+Use these paths when explaining where to configure labor rates, extra charges, or fleet plates.
+
+## Reports hub — staff navigation
+
+Staff open **`/reports-hub`** for the Reports navigator. Standard tiles redirect into **Garage reports**:
+
+- Listing reports — **`/garage-reports-hub/listing`**
+- Sales reports — **`/garage-reports-hub/sales`**
+- Productivity reports — **`/garage-reports-hub/productivity`**
+- Other reports — **`/garage-reports-hub/others`**
+
+The hub shortcut **`/garage-reports-hub`** opens the garage reports dashboard.
+
+**Custom reporting**
+
+- Custom report — **`/reports-hub/custom-report`** (runs Custom Reports tooling where configured)
+- User defined report — **`/reports-hub/user-defined-report`**
+- Edit user defined report — **`/reports-hub/edit-user-defined-report`**
+
+**Tips for running reports**
+
+- Choose a **date range** first (period/month/quarter) when the screen offers filters.
+- **Listing** reports usually answer “what happened” (jobs, stock moves, transactions).
+- **Sales** reports focus on revenue, discounts, and invoice-level summaries.
+- **Productivity** ties to labor hours, throughput, or technician-oriented metrics (wording depends on deployment).
+- Export or print from the report run screen when your browser allows; exact buttons vary by report page.
+
+The AI assistant cannot execute reports or read live totals — only explain menus and typical interpretation.

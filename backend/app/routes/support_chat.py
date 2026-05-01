@@ -9,6 +9,8 @@ from pathlib import Path
 from typing import Literal
 
 import httpx
+
+AssistantMode = Literal["support", "maintenance", "reports"]
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, Field
 
@@ -65,6 +67,7 @@ class ChatMessageIn(BaseModel):
 
 class SupportChatRequest(BaseModel):
     messages: list[ChatMessageIn] = Field(..., min_length=1, max_length=40)
+    assistant_mode: AssistantMode = "support"
 
 
 class CitationOut(BaseModel):
@@ -228,13 +231,32 @@ async def support_chat(
             last_user = m.content
             break
 
+    mode_boost = ""
+    if body.assistant_mode == "maintenance":
+        mode_boost = (
+            " workshop maintenance setup parameters job order labour labor charges "
+            "vehicle plate sublet fuel lubricant consumable customer "
+        )
+    elif body.assistant_mode == "reports":
+        mode_boost = (
+            " reports hub listing sales productivity garage export filters "
+            "date range invoice job custom user defined "
+        )
+    retrieval_query = (last_user + mode_boost).strip() or last_user
+
     kb = _load_knowledge_base()
-    picked = _select_sections(kb, last_user, top_k=5)
+    picked = _select_sections(kb, retrieval_query, top_k=6)
 
     async with httpx.AsyncClient() as client:
         yt_results: list[dict] = []
         if yt_key:
-            q = last_user or "car maintenance service scheduling"
+            q = last_user or (
+                "automotive workshop preventive maintenance"
+                if body.assistant_mode == "maintenance"
+                else "garage management reporting dashboard"
+                if body.assistant_mode == "reports"
+                else "car maintenance service scheduling"
+            )
             yt_results = await _youtube_search(client, q, yt_key, max_results=3)
 
         ref_rows: list[dict] = []
@@ -305,21 +327,49 @@ async def support_chat(
             for r in ref_rows
         )
 
-        system = (
-            "You are a professional support assistant for the Car Service Management System "
-            "(garage / workshop software). "
-            "Answer clearly and helpfully for customers and staff. "
-            "Ground your answer in the SOURCES below when they are relevant. "
-            "When you give steps or how-to instructions, start with one short friendly sentence "
-            "that acknowledges the question. "
-            "Use inline citations like [1] or [2] that match ONLY the numeric ids from SOURCES. "
-            "Prefer citing a source that has a real URL when the user needs further reading or a video. "
-            "If SOURCES do not cover the question, say what is unknown, avoid guessing account-specific "
-            "facts, and suggest contacting the garage or system administrator. "
-            "Do not invent URLs. "
-            'Respond with a single JSON object: {"answer": string, "cited_reference_ids": number[]}. '
-            "cited_reference_ids must list every source id you relied on (order does not matter)."
-        )
+        if body.assistant_mode == "maintenance":
+            system = (
+                "You are an expert assistant for **automotive workshop maintenance** — both "
+                "(A) **vehicle and fleet care** (intervals, fluids, tires, brakes, warnings, safety) and "
+                "(B) **using this software’s Maintenance hub** (parameters, job setup, charges, plates, sublets). "
+                "For vehicle advice: be practical and conservative; state that the owner’s manual and a qualified "
+                "technician beat generic guidance; never claim to diagnose a specific vehicle from text alone. "
+                "For software: ground answers in SOURCES when relevant; suggest the right in-app paths from SOURCES. "
+                "Use inline citations like [1] matching ONLY numeric ids from SOURCES. "
+                "You cannot see live jobs, inventory, or customer data. "
+                "Do not invent URLs. "
+                'Respond with a single JSON object: {"answer": string, "cited_reference_ids": number[]}. '
+                "cited_reference_ids must list every source id you relied on."
+            )
+        elif body.assistant_mode == "reports":
+            system = (
+                "You help garage staff with **report generation and interpretation** in the "
+                "Car Service Management System. "
+                "Explain which report area fits a business question (e.g. revenue trends → sales reports; "
+                "technician output → productivity). Mention typical inputs: date ranges, outlets, statuses. "
+                "Outline steps to run or export when SOURCES describe them; otherwise give sensible generic guidance "
+                "without pretending you executed a report. "
+                "Ground answers in SOURCES; cite [id] only for ids from SOURCES. "
+                "You cannot access live numbers or databases. Do not invent URLs. "
+                'Respond with a single JSON object: {"answer": string, "cited_reference_ids": number[]}. '
+                "cited_reference_ids must list every source id you relied on."
+            )
+        else:
+            system = (
+                "You are a professional support assistant for the Car Service Management System "
+                "(garage / workshop software). "
+                "Answer clearly and helpfully for customers and staff. "
+                "Ground your answer in the SOURCES below when they are relevant. "
+                "When you give steps or how-to instructions, start with one short friendly sentence "
+                "that acknowledges the question. "
+                "Use inline citations like [1] or [2] that match ONLY the numeric ids from SOURCES. "
+                "Prefer citing a source that has a real URL when the user needs further reading or a video. "
+                "If SOURCES do not cover the question, say what is unknown, avoid guessing account-specific "
+                "facts, and suggest contacting the garage or system administrator. "
+                "Do not invent URLs. "
+                'Respond with a single JSON object: {"answer": string, "cited_reference_ids": number[]}. '
+                "cited_reference_ids must list every source id you relied on (order does not matter)."
+            )
 
         oa_messages = [
             {"role": "system", "content": f"{system}\n\nSOURCES:\n{sources_block}"},

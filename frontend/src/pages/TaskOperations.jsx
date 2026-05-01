@@ -133,8 +133,8 @@ export default function TaskOperations() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-semibold text-gray-800">Task Operations</h1>
-      <p className="text-sm text-gray-600">
+      <h1 className="text-2xl font-semibold text-foreground">Task Operations</h1>
+      <p className="text-sm text-muted-foreground">
         Manual sections: dispatch/receive job, clock in/out, technician enquiry, end-of-day checkout.
       </p>
 
@@ -202,21 +202,21 @@ export default function TaskOperations() {
           <h3 className="font-semibold mb-2">Free Technicians</h3>
           <ul className="text-sm space-y-1">
             {freeTechs.map((t) => <li key={t.employee_id}>{t.employee_code} - {t.first_name} {t.last_name}</li>)}
-            {freeTechs.length === 0 && <li className="text-gray-500">None</li>}
+            {freeTechs.length === 0 && <li className="text-muted-foreground">None</li>}
           </ul>
         </div>
         <div className="bg-white shadow rounded-lg p-4">
           <h3 className="font-semibold mb-2">Clocked-in Jobs</h3>
           <ul className="text-sm space-y-1">
             {clockedInJobs.map((j) => <li key={j.job_clock_id}>{j.job_order_number} - {j.technician_name || '-'}</li>)}
-            {clockedInJobs.length === 0 && <li className="text-gray-500">None</li>}
+            {clockedInJobs.length === 0 && <li className="text-muted-foreground">None</li>}
           </ul>
         </div>
         <div className="bg-white shadow rounded-lg p-4">
           <h3 className="font-semibold mb-2">Dispatched Jobs</h3>
           <ul className="text-sm space-y-1">
             {dispatchedJobs.map((j) => <li key={j.job_order_id}>{j.job_order_number} - {j.dispatched_section || '-'}</li>)}
-            {dispatchedJobs.length === 0 && <li className="text-gray-500">None</li>}
+            {dispatchedJobs.length === 0 && <li className="text-muted-foreground">None</li>}
           </ul>
         </div>
       </div>

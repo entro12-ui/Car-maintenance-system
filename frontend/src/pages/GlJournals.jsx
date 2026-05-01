@@ -142,7 +142,7 @@ function GlJournals() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-semibold text-gray-800">GL Journals</h1>
+        <h1 className="text-2xl font-semibold text-foreground">GL Journals</h1>
       </div>
 
       <div className="bg-white shadow rounded-lg p-4 space-y-4">
@@ -155,7 +155,7 @@ function GlJournals() {
         <form onSubmit={handleCreateJournal} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div>
-              <label className="text-xs font-medium text-gray-500 block mb-1">
+              <label className="text-xs font-medium text-muted-foreground block mb-1">
                 Date
               </label>
               <input
@@ -168,7 +168,7 @@ function GlJournals() {
               />
             </div>
             <div>
-              <label className="text-xs font-medium text-gray-500 block mb-1">
+              <label className="text-xs font-medium text-muted-foreground block mb-1">
                 Source type
               </label>
               <input
@@ -182,7 +182,7 @@ function GlJournals() {
               />
             </div>
             <div>
-              <label className="text-xs font-medium text-gray-500 block mb-1">
+              <label className="text-xs font-medium text-muted-foreground block mb-1">
                 Source ID
               </label>
               <input
@@ -195,7 +195,7 @@ function GlJournals() {
               />
             </div>
             <div>
-              <label className="text-xs font-medium text-gray-500 block mb-1">
+              <label className="text-xs font-medium text-muted-foreground block mb-1">
                 Description
               </label>
               <input
@@ -211,18 +211,18 @@ function GlJournals() {
 
           <div className="border rounded-md overflow-hidden">
             <table className="min-w-full text-sm">
-              <thead className="bg-gray-50">
+              <thead className="bg-muted/35">
                 <tr>
-                  <th className="px-2 py-2 text-left text-xs font-medium text-gray-500">
+                  <th className="px-2 py-2 text-left text-xs font-medium text-muted-foreground">
                     Account
                   </th>
-                  <th className="px-2 py-2 text-left text-xs font-medium text-gray-500">
+                  <th className="px-2 py-2 text-left text-xs font-medium text-muted-foreground">
                     Description
                   </th>
-                  <th className="px-2 py-2 text-right text-xs font-medium text-gray-500">
+                  <th className="px-2 py-2 text-right text-xs font-medium text-muted-foreground">
                     Debit
                   </th>
-                  <th className="px-2 py-2 text-right text-xs font-medium text-gray-500">
+                  <th className="px-2 py-2 text-right text-xs font-medium text-muted-foreground">
                     Credit
                   </th>
                 </tr>
@@ -282,8 +282,8 @@ function GlJournals() {
                     </td>
                   </tr>
                 ))}
-                <tr className="border-t bg-gray-50">
-                  <td className="px-2 py-1 text-xs text-gray-600" colSpan={2}>
+                <tr className="border-t bg-muted/35">
+                  <td className="px-2 py-1 text-xs text-muted-foreground" colSpan={2}>
                     <button
                       type="button"
                       onClick={addLine}
@@ -314,7 +314,7 @@ function GlJournals() {
               >
                 {isBalanced ? 'Balanced' : 'Not balanced'}
               </span>{' '}
-              <span className="text-gray-500">
+              <span className="text-muted-foreground">
                 (Debit = {totalDebit.toFixed(2)}, Credit ={' '}
                 {totalCredit.toFixed(2)})
               </span>
@@ -332,7 +332,7 @@ function GlJournals() {
       <div className="bg-white shadow rounded-lg overflow-hidden">
         <div className="px-4 py-2 border-b flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <h2 className="text-sm font-semibold text-gray-700">
+            <h2 className="text-sm font-semibold text-foreground/90">
               Journals ({journals.length})
             </h2>
             <select
@@ -355,31 +355,31 @@ function GlJournals() {
               <option value="Posted">Posted</option>
             </select>
           </div>
-          {loading && <span className="text-xs text-gray-500">Loading...</span>}
+          {loading && <span className="text-xs text-muted-foreground">Loading...</span>}
         </div>
         <div className="overflow-x-auto">
           <table className="min-w-full text-sm">
-            <thead className="bg-gray-50">
+            <thead className="bg-muted/35">
               <tr>
-                <th className="px-3 py-2 text-left font-medium text-gray-500">
+                <th className="px-3 py-2 text-left font-medium text-muted-foreground">
                   Number / Date
                 </th>
-                <th className="px-3 py-2 text-left font-medium text-gray-500">
+                <th className="px-3 py-2 text-left font-medium text-muted-foreground">
                   Source
                 </th>
-                <th className="px-3 py-2 text-left font-medium text-gray-500">
+                <th className="px-3 py-2 text-left font-medium text-muted-foreground">
                   Description
                 </th>
-                <th className="px-3 py-2 text-right font-medium text-gray-500">
+                <th className="px-3 py-2 text-right font-medium text-muted-foreground">
                   Debit
                 </th>
-                <th className="px-3 py-2 text-right font-medium text-gray-500">
+                <th className="px-3 py-2 text-right font-medium text-muted-foreground">
                   Credit
                 </th>
-                <th className="px-3 py-2 text-left font-medium text-gray-500">
+                <th className="px-3 py-2 text-left font-medium text-muted-foreground">
                   Status
                 </th>
-                <th className="px-3 py-2 text-right font-medium text-gray-500">
+                <th className="px-3 py-2 text-right font-medium text-muted-foreground">
                   Actions
                 </th>
               </tr>
@@ -387,7 +387,7 @@ function GlJournals() {
             <tbody>
               {journals.length === 0 && !loading && (
                 <tr>
-                  <td colSpan={7} className="px-3 py-4 text-center text-gray-500">
+                  <td colSpan={7} className="px-3 py-4 text-center text-muted-foreground">
                     No journals found.
                   </td>
                 </tr>
@@ -396,17 +396,17 @@ function GlJournals() {
                 <tr key={j.journal_id} className="border-t align-top">
                   <td className="px-3 py-2 text-xs">
                     <div className="font-mono">{j.journal_number}</div>
-                    <div className="text-gray-500">
+                    <div className="text-muted-foreground">
                       {j.journal_date}
                     </div>
                   </td>
-                  <td className="px-3 py-2 text-xs text-gray-600">
+                  <td className="px-3 py-2 text-xs text-muted-foreground">
                     {j.source_type || '-'}
                     {j.source_id ? ` #${j.source_id}` : ''}
                   </td>
-                  <td className="px-3 py-2 text-xs text-gray-700">
+                  <td className="px-3 py-2 text-xs text-foreground/90">
                     {j.description || ''}
-                    <div className="mt-1 text-[11px] text-gray-500">
+                    <div className="mt-1 text-[11px] text-muted-foreground">
                       {j.lines.map((l) => (
                         <div key={l.journal_line_id}>
                           {l.account_code} {l.debit > 0 ? `Dr ${l.debit}` : ''}

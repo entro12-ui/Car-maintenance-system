@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom'
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { PageHeader } from '@/components/PageChrome'
+import AiAssistantPromo from '@/components/AiAssistantPromo'
 import { MAINTENANCE_MENU, maintenancePath } from './MaintenanceSidebarMenu'
 
 const GROUP_TITLE = {
@@ -37,13 +39,27 @@ export default function MaintenanceHub() {
 
   return (
     <div className="space-y-8">
-      <div className="space-y-2 max-w-3xl">
-        <h1 className="text-2xl font-semibold tracking-tight text-foreground">Maintenance</h1>
-        <p className="text-sm text-muted-foreground leading-relaxed">
-          HillMaster-style <strong>Maintenance</strong> menu for parameters, job order setup, customers, vehicles,
-          charge catalogues, sublet suppliers, and control entries.
-        </p>
-      </div>
+      <PageHeader
+        eyebrow="Garage"
+        title="Maintenance"
+        description={
+          <>
+            HillMaster-style <strong>Maintenance</strong> menu for parameters, job order setup, customers, vehicles,
+            charge catalogues, sublet suppliers, and control entries.
+          </>
+        }
+      />
+
+      <AiAssistantPromo
+        mode="maintenance"
+        title="Maintenance assistant"
+        description="Ask about vehicle upkeep or where to configure labor, charges, plates, and parameters in this system."
+        examples={[
+          'When should I change transmission fluid on a modern sedan?',
+          'Where do I set up lubricant charges?',
+          'What is the difference between Labour Types and job-type hourly rates?',
+        ]}
+      />
 
       <div className="space-y-8">
         {groups.map((group) => {

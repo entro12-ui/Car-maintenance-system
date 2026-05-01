@@ -16,8 +16,8 @@ export default function GarageReportListingBase({ title, subtitle, reports }) {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold text-gray-800">{title}</h1>
-        <p className="text-sm text-gray-600">{subtitle}</p>
+        <h1 className="text-2xl font-semibold text-foreground">{title}</h1>
+        <p className="text-sm text-muted-foreground">{subtitle}</p>
       </div>
 
       <Card>
@@ -49,7 +49,7 @@ export default function GarageReportListingBase({ title, subtitle, reports }) {
               <tbody>
                 {filtered.length === 0 ? (
                   <tr>
-                    <td className="py-4 text-sm text-gray-500" colSpan={3}>No reports found.</td>
+                    <td className="py-4 text-sm text-muted-foreground" colSpan={3}>No reports found.</td>
                   </tr>
                 ) : (
                   filtered.map((r, idx) => (

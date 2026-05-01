@@ -265,6 +265,7 @@ class JobOrderFuelLubricantChargeCreate(BaseModel):
     fuel_lubricant_id: int
     quantity: float
     remark: Optional[str] = None
+    odometer_km: Optional[float] = None
 
 
 class JobOrderFuelLubricantChargeResponse(BaseModel):
@@ -275,11 +276,18 @@ class JobOrderFuelLubricantChargeResponse(BaseModel):
     unit_price: float
     amount: float
     remark: Optional[str] = None
+    odometer_km: Optional[float] = None
     recorded_by_employee_id: Optional[int] = None
     created_at: datetime
 
     class Config:
         from_attributes = True
+
+
+class JobOrderFuelLubricantChargeOdometerPatch(BaseModel):
+    """Partial update for Fuel Issue KM Editing."""
+
+    odometer_km: Optional[float] = None
 
 
 class JobOrderSubletWorkChargeCreate(BaseModel):

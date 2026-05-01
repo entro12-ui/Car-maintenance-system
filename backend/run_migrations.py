@@ -118,6 +118,7 @@ def main():
         "database/migration_add_job_order_additional_charges.sql",
         "database/migration_add_job_order_sublet_orders.sql",
         "database/migration_add_garage_invoices.sql",
+        "database/migration_add_fuel_charge_odometer_km.sql",
     ]
 
     # Only run migrations that exist on disk (keeps output clean and avoids

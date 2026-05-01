@@ -29,7 +29,7 @@ export default function CustomerAppointments() {
     'In Progress': 'bg-yellow-100 text-yellow-800',
     Completed: 'bg-green-100 text-green-800',
     Cancelled: 'bg-red-100 text-red-800',
-    'No Show': 'bg-gray-100 text-gray-800',
+    'No Show': 'bg-muted text-foreground',
   }
 
   // Filter appointments by search term and status
@@ -61,7 +61,7 @@ export default function CustomerAppointments() {
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold text-gray-800">My Appointments</h1>
+        <h1 className="text-3xl font-bold text-foreground">My Appointments</h1>
         <button 
           onClick={() => setIsModalOpen(true)}
           disabled={!vehicles?.data || vehicles.data.length === 0}
@@ -92,22 +92,22 @@ export default function CustomerAppointments() {
         <div className="flex flex-col md:flex-row gap-4">
           <div className="flex-1">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground/75" size={20} />
               <input
                 type="text"
                 placeholder="Search by vehicle or service type..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+                className="w-full pl-10 pr-4 py-2 border border-border rounded-lg focus:ring-2 focus:ring-primary-500"
               />
             </div>
           </div>
           <div className="flex items-center space-x-2">
-            <Filter size={20} className="text-gray-600" />
+            <Filter size={20} className="text-muted-foreground" />
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+              className="px-4 py-2 border border-border rounded-lg focus:ring-2 focus:ring-primary-500"
             >
               <option value="">All Statuses</option>
               <option value="Scheduled">Scheduled</option>
@@ -141,23 +141,23 @@ export default function CustomerAppointments() {
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-gray-200 bg-gray-50">
-                  <th className="text-left py-3 px-4 font-semibold text-gray-700">Vehicle</th>
-                  <th className="text-left py-3 px-4 font-semibold text-gray-700">Service</th>
-                  <th className="text-left py-3 px-4 font-semibold text-gray-700">Date</th>
-                  <th className="text-left py-3 px-4 font-semibold text-gray-700">Time</th>
-                  <th className="text-left py-3 px-4 font-semibold text-gray-700">Status</th>
-                  <th className="text-left py-3 px-4 font-semibold text-gray-700">Duration</th>
+                <tr className="border-b border-border bg-muted/35">
+                  <th className="text-left py-3 px-4 font-semibold text-foreground/90">Vehicle</th>
+                  <th className="text-left py-3 px-4 font-semibold text-foreground/90">Service</th>
+                  <th className="text-left py-3 px-4 font-semibold text-foreground/90">Date</th>
+                  <th className="text-left py-3 px-4 font-semibold text-foreground/90">Time</th>
+                  <th className="text-left py-3 px-4 font-semibold text-foreground/90">Status</th>
+                  <th className="text-left py-3 px-4 font-semibold text-foreground/90">Duration</th>
                 </tr>
               </thead>
               <tbody>
                 {upcomingAppointments.map((apt) => (
-                  <tr key={apt.appointment_id} className="border-b border-gray-100 hover:bg-gray-50">
+                  <tr key={apt.appointment_id} className="border-b border-border/60 hover:bg-muted/45">
                     <td className="py-3 px-4">
-                      <div className="font-medium text-gray-900">
+                      <div className="font-medium text-foreground">
                         {apt.vehicle?.make} {apt.vehicle?.model}
                       </div>
-                      <div className="text-sm text-gray-500">{apt.vehicle?.license_plate}</div>
+                      <div className="text-sm text-muted-foreground">{apt.vehicle?.license_plate}</div>
                     </td>
                     <td className="py-3 px-4">{apt.service_type?.type_name || '-'}</td>
                     <td className="py-3 px-4">
@@ -165,14 +165,14 @@ export default function CustomerAppointments() {
                     </td>
                     <td className="py-3 px-4">
                       <div className="flex items-center space-x-2">
-                        <Clock size={16} className="text-gray-400" />
+                        <Clock size={16} className="text-muted-foreground/75" />
                         <span>
                           {apt.scheduled_time ? (typeof apt.scheduled_time === 'string' ? apt.scheduled_time.substring(0, 5) : apt.scheduled_time.substring(0, 5)) : '-'}
                         </span>
                       </div>
                     </td>
                     <td className="py-3 px-4">
-                      <span className={`px-2 py-1 rounded-full text-xs font-semibold ${statusColors[apt.status] || 'bg-gray-100 text-gray-800'}`}>
+                      <span className={`px-2 py-1 rounded-full text-xs font-semibold ${statusColors[apt.status] || 'bg-muted text-foreground'}`}>
                         {apt.status}
                       </span>
                     </td>
@@ -191,28 +191,28 @@ export default function CustomerAppointments() {
       {pastAppointments.length > 0 && (
         <div className="bg-white rounded-lg shadow-md p-6">
           <h2 className="text-xl font-semibold mb-4 flex items-center space-x-2">
-            <CheckCircle className="text-gray-600" size={24} />
+            <CheckCircle className="text-muted-foreground" size={24} />
             <span>Past Appointments</span>
           </h2>
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-gray-200 bg-gray-50">
-                  <th className="text-left py-3 px-4 font-semibold text-gray-700">Vehicle</th>
-                  <th className="text-left py-3 px-4 font-semibold text-gray-700">Service</th>
-                  <th className="text-left py-3 px-4 font-semibold text-gray-700">Date</th>
-                  <th className="text-left py-3 px-4 font-semibold text-gray-700">Time</th>
-                  <th className="text-left py-3 px-4 font-semibold text-gray-700">Status</th>
+                <tr className="border-b border-border bg-muted/35">
+                  <th className="text-left py-3 px-4 font-semibold text-foreground/90">Vehicle</th>
+                  <th className="text-left py-3 px-4 font-semibold text-foreground/90">Service</th>
+                  <th className="text-left py-3 px-4 font-semibold text-foreground/90">Date</th>
+                  <th className="text-left py-3 px-4 font-semibold text-foreground/90">Time</th>
+                  <th className="text-left py-3 px-4 font-semibold text-foreground/90">Status</th>
                 </tr>
               </thead>
               <tbody>
                 {pastAppointments.map((apt) => (
-                  <tr key={apt.appointment_id} className="border-b border-gray-100 hover:bg-gray-50">
+                  <tr key={apt.appointment_id} className="border-b border-border/60 hover:bg-muted/45">
                     <td className="py-3 px-4">
-                      <div className="font-medium text-gray-900">
+                      <div className="font-medium text-foreground">
                         {apt.vehicle?.make} {apt.vehicle?.model}
                       </div>
-                      <div className="text-sm text-gray-500">{apt.vehicle?.license_plate}</div>
+                      <div className="text-sm text-muted-foreground">{apt.vehicle?.license_plate}</div>
                     </td>
                     <td className="py-3 px-4">{apt.service_type?.type_name || '-'}</td>
                     <td className="py-3 px-4">
@@ -222,7 +222,7 @@ export default function CustomerAppointments() {
                       {apt.scheduled_time ? (typeof apt.scheduled_time === 'string' ? apt.scheduled_time.substring(0, 5) : apt.scheduled_time.substring(0, 5)) : '-'}
                     </td>
                     <td className="py-3 px-4">
-                      <span className={`px-2 py-1 rounded-full text-xs font-semibold ${statusColors[apt.status] || 'bg-gray-100 text-gray-800'}`}>
+                      <span className={`px-2 py-1 rounded-full text-xs font-semibold ${statusColors[apt.status] || 'bg-muted text-foreground'}`}>
                         {apt.status}
                       </span>
                     </td>
@@ -237,9 +237,9 @@ export default function CustomerAppointments() {
       {/* Empty State */}
       {!isLoading && filteredAppointments.length === 0 && (
         <div className="bg-white rounded-lg shadow-md p-12 text-center">
-          <Calendar className="mx-auto text-gray-400 mb-4" size={48} />
-          <p className="text-gray-500 text-lg font-medium">No appointments found</p>
-          <p className="text-gray-400 text-sm mt-2">
+          <Calendar className="mx-auto text-muted-foreground/75 mb-4" size={48} />
+          <p className="text-muted-foreground text-lg font-medium">No appointments found</p>
+          <p className="text-muted-foreground/75 text-sm mt-2">
             {vehicles?.data && vehicles.data.length > 0
               ? 'Schedule your first appointment to get started.'
               : 'Add a vehicle first, then schedule an appointment.'}
@@ -249,7 +249,7 @@ export default function CustomerAppointments() {
 
       {isLoading && (
         <div className="flex justify-center items-center h-64">
-          <div className="text-gray-500">Loading appointments...</div>
+          <div className="text-muted-foreground">Loading appointments...</div>
         </div>
       )}
     </div>

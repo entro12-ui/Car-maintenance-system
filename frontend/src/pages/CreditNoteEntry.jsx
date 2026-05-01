@@ -43,8 +43,8 @@ export default function CreditNoteEntry() {
 
   return (
     <div className="space-y-4">
-      <h1 className="text-2xl font-semibold text-gray-800">Credit Note Entry</h1>
-      <p className="text-sm text-gray-600">
+      <h1 className="text-2xl font-semibold text-foreground">Credit Note Entry</h1>
+      <p className="text-sm text-muted-foreground">
         Uses the existing cancel/return invoice flow to issue a credit note-like reversal.
       </p>
       <input
@@ -56,7 +56,7 @@ export default function CreditNoteEntry() {
       {error && <div className="text-sm text-red-600">{error}</div>}
       <div className="bg-white shadow rounded-lg overflow-x-auto">
         <table className="min-w-full text-sm">
-          <thead className="bg-gray-50">
+          <thead className="bg-muted/35">
             <tr>
               <th className="px-3 py-2 text-left">Invoice</th>
               <th className="px-3 py-2 text-left">Type</th>
@@ -82,7 +82,7 @@ export default function CreditNoteEntry() {
             ))}
             {!loading && invoices.length === 0 && (
               <tr>
-                <td className="px-3 py-4 text-center text-gray-500" colSpan={4}>No invoices found.</td>
+                <td className="px-3 py-4 text-center text-muted-foreground" colSpan={4}>No invoices found.</td>
               </tr>
             )}
           </tbody>

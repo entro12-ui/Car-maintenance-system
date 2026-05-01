@@ -45,7 +45,7 @@ function MiniCalculator() {
       <button
         key={k}
         type="button"
-        className="rounded border bg-white py-2 text-sm hover:bg-gray-100"
+        className="rounded border bg-white py-2 text-sm hover:bg-muted/70"
         onClick={() => append(k)}
       >
         {k}
@@ -53,7 +53,7 @@ function MiniCalculator() {
     ))
 
   return (
-    <div className="max-w-xs border rounded-lg p-4 bg-gray-50 shadow-sm">
+    <div className="max-w-xs border rounded-lg p-4 bg-muted/35 shadow-sm">
       <div className="mb-3 rounded bg-white border px-3 py-2 text-right font-mono text-lg min-h-[2.5rem]">{display}</div>
       <div className="grid grid-cols-4 gap-2">
         <button type="button" className="col-span-4 rounded bg-red-100 py-2 text-sm font-medium" onClick={clear}>
@@ -62,16 +62,16 @@ function MiniCalculator() {
         {digitRow(['7', '8', '9', '/'])}
         {digitRow(['4', '5', '6', '*'])}
         {digitRow(['1', '2', '3', '-'])}
-        <button type="button" className="col-span-2 rounded border bg-white py-2 text-sm hover:bg-gray-100" onClick={() => append('0')}>
+        <button type="button" className="col-span-2 rounded border bg-white py-2 text-sm hover:bg-muted/70" onClick={() => append('0')}>
           0
         </button>
-        <button type="button" className="rounded border bg-white py-2 text-sm hover:bg-gray-100" onClick={() => append('.')}>
+        <button type="button" className="rounded border bg-white py-2 text-sm hover:bg-muted/70" onClick={() => append('.')}>
           .
         </button>
         <button type="button" className="rounded bg-emerald-600 text-white py-2 text-sm font-medium hover:bg-emerald-700" onClick={equals}>
           =
         </button>
-        <button type="button" className="col-span-4 rounded border bg-white py-2 text-sm hover:bg-gray-100" onClick={() => append('+')}>
+        <button type="button" className="col-span-4 rounded border bg-white py-2 text-sm hover:bg-muted/70" onClick={() => append('+')}>
           +
         </button>
       </div>
@@ -133,14 +133,14 @@ export default function UtilitiesToolPage() {
   if (slug === 'calculator') {
     return (
       <div className="space-y-4">
-        <div className="flex items-center gap-2 text-sm text-gray-600">
+        <div className="flex items-center gap-2 text-sm text-muted-foreground">
           <Link to="/utilities" className="text-indigo-600 hover:underline">
             Utilities
           </Link>
           <span>/</span>
-          <span className="text-gray-900 font-medium">{label}</span>
+          <span className="text-foreground font-medium">{label}</span>
         </div>
-        <h1 className="text-2xl font-semibold text-gray-900">{label}</h1>
+        <h1 className="text-2xl font-semibold text-foreground">{label}</h1>
         <MiniCalculator />
       </div>
     )
@@ -148,15 +148,15 @@ export default function UtilitiesToolPage() {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center gap-2 text-sm text-gray-600">
+      <div className="flex items-center gap-2 text-sm text-muted-foreground">
         <Link to="/utilities" className="text-indigo-600 hover:underline">
           Utilities
         </Link>
         <span>/</span>
-        <span className="text-gray-900 font-medium">{label}</span>
+        <span className="text-foreground font-medium">{label}</span>
       </div>
-      <h1 className="text-2xl font-semibold text-gray-900">{label}</h1>
-      <p className="text-sm text-gray-600 max-w-2xl">
+      <h1 className="text-2xl font-semibold text-foreground">{label}</h1>
+      <p className="text-sm text-muted-foreground max-w-2xl">
         This utility matches the HillMaster <strong>Job Order → Utilities</strong> menu. Full workflow wiring (close,
         reopen, deliver, copy/split/pair, check sheet, etc.) is done from{' '}
         <Link to="/job-orders" className="text-indigo-600 font-medium hover:underline">
@@ -168,13 +168,13 @@ export default function UtilitiesToolPage() {
       <div className="flex flex-wrap gap-2">
         <Link
           to="/job-orders"
-          className="inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium hover:bg-gray-50"
+          className="inline-flex items-center rounded-md border border-border bg-white px-4 py-2 text-sm font-medium hover:bg-muted/45"
         >
           Open Job Orders
         </Link>
         <Link
           to="/utilities"
-          className="inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium hover:bg-gray-50"
+          className="inline-flex items-center rounded-md border border-border bg-white px-4 py-2 text-sm font-medium hover:bg-muted/45"
         >
           All utilities
         </Link>

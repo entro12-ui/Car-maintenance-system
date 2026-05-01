@@ -297,7 +297,7 @@ export default function SubletSupplierMaintenance() {
       <div className="bg-white border rounded-lg shadow-sm p-4 space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           <label className="text-sm space-y-1">
-            <div className="text-gray-700 font-medium">Supplier</div>
+            <div className="text-foreground/90 font-medium">Supplier</div>
             <select
               className="w-full border rounded-md px-3 py-2 text-sm"
               value={supplierId}
@@ -313,43 +313,43 @@ export default function SubletSupplierMaintenance() {
             </select>
           </label>
           <label className="text-sm space-y-1">
-            <div className="text-gray-700 font-medium">Supplier name</div>
+            <div className="text-foreground/90 font-medium">Supplier name</div>
             <Input value={form.supplier_name} onChange={(e) => setForm({ ...form, supplier_name: e.target.value })} />
           </label>
           <label className="text-sm space-y-1">
-            <div className="text-gray-700 font-medium">Contact person</div>
+            <div className="text-foreground/90 font-medium">Contact person</div>
             <Input value={form.contact_person} onChange={(e) => setForm({ ...form, contact_person: e.target.value })} />
           </label>
           <label className="text-sm space-y-1 md:col-span-2">
-            <div className="text-gray-700 font-medium">Address line 1</div>
+            <div className="text-foreground/90 font-medium">Address line 1</div>
             <Input value={form.address_line1} onChange={(e) => setForm({ ...form, address_line1: e.target.value })} />
           </label>
           <label className="text-sm space-y-1 md:col-span-2">
-            <div className="text-gray-700 font-medium">Address line 2</div>
+            <div className="text-foreground/90 font-medium">Address line 2</div>
             <Input value={form.address_line2} onChange={(e) => setForm({ ...form, address_line2: e.target.value })} />
           </label>
           <label className="text-sm space-y-1 md:col-span-2">
-            <div className="text-gray-700 font-medium">Address line 3</div>
+            <div className="text-foreground/90 font-medium">Address line 3</div>
             <Input value={form.address_line3} onChange={(e) => setForm({ ...form, address_line3: e.target.value })} />
           </label>
           <label className="text-sm space-y-1">
-            <div className="text-gray-700 font-medium">Email</div>
+            <div className="text-foreground/90 font-medium">Email</div>
             <Input value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
           </label>
           <label className="text-sm space-y-1">
-            <div className="text-gray-700 font-medium">P.O. Box</div>
+            <div className="text-foreground/90 font-medium">P.O. Box</div>
             <Input value={form.po_box} onChange={(e) => setForm({ ...form, po_box: e.target.value })} />
           </label>
           <label className="text-sm space-y-1">
-            <div className="text-gray-700 font-medium">Tel. No</div>
+            <div className="text-foreground/90 font-medium">Tel. No</div>
             <Input value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} />
           </label>
           <label className="text-sm space-y-1">
-            <div className="text-gray-700 font-medium">Fax. No</div>
+            <div className="text-foreground/90 font-medium">Fax. No</div>
             <Input value={form.fax_no} onChange={(e) => setForm({ ...form, fax_no: e.target.value })} />
           </label>
           <label className="text-sm space-y-1">
-            <div className="text-gray-700 font-medium">Status</div>
+            <div className="text-foreground/90 font-medium">Status</div>
             <select
               className="w-full border rounded-md px-3 py-2 text-sm"
               value={form.is_active ? 'active' : 'inactive'}
@@ -372,7 +372,7 @@ export default function SubletSupplierMaintenance() {
               type="button"
               onClick={() => setBottomTab(t.id)}
               className={`px-4 py-2.5 text-sm font-medium border-b-2 -mb-px ${
-                bottomTab === t.id ? 'border-indigo-600 text-indigo-700 bg-white' : 'border-transparent text-gray-600'
+                bottomTab === t.id ? 'border-indigo-600 text-indigo-700 bg-white' : 'border-transparent text-muted-foreground'
               }`}
             >
               {t.label}
@@ -384,19 +384,19 @@ export default function SubletSupplierMaintenance() {
           <div className="space-y-3 pt-2">
             <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_2fr] gap-2 items-end">
               <label className="text-sm space-y-1 md:col-span-1">
-                <div className="text-gray-700 font-medium">Supplier COA (row 1)</div>
+                <div className="text-foreground/90 font-medium">Supplier COA (row 1)</div>
                 <Input value={form.supplier_coa_1} onChange={(e) => setForm({ ...form, supplier_coa_1: e.target.value })} />
               </label>
               <Button type="button" variant="outline" className="h-10 px-3">
                 …
               </Button>
-              <div className="text-xs text-gray-500 flex items-center">
+              <div className="text-xs text-muted-foreground flex items-center">
                 GL browse can be wired to your chart-of-accounts lookup (placeholder).
               </div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_2fr] gap-2 items-end">
               <label className="text-sm space-y-1">
-                <div className="text-gray-700 font-medium">Supplier COA (row 2)</div>
+                <div className="text-foreground/90 font-medium">Supplier COA (row 2)</div>
                 <Input value={form.supplier_coa_2} onChange={(e) => setForm({ ...form, supplier_coa_2: e.target.value })} />
               </label>
               <Button type="button" variant="outline" className="h-10 px-3">
@@ -413,7 +413,7 @@ export default function SubletSupplierMaintenance() {
               <span>Auto Approve Order from this Supplier</span>
             </label>
             <label className="text-sm space-y-1 block">
-              <div className="text-gray-700 font-medium">Description</div>
+              <div className="text-foreground/90 font-medium">Description</div>
               <Input value={form.account_description} onChange={(e) => setForm({ ...form, account_description: e.target.value })} />
             </label>
           </div>
@@ -421,7 +421,7 @@ export default function SubletSupplierMaintenance() {
 
         {bottomTab === 'users' && (
           <div className="space-y-2 pt-2">
-            <div className="text-sm text-gray-600">
+            <div className="text-sm text-muted-foreground">
               Enter usernames allowed to work with this supplier (comma-separated). Stored as JSON in system settings.
             </div>
             <textarea
@@ -436,7 +436,7 @@ export default function SubletSupplierMaintenance() {
           <div className="pt-2 overflow-auto">
             <table className="min-w-full text-sm">
               <thead>
-                <tr className="text-left text-gray-600 border-b">
+                <tr className="text-left text-muted-foreground border-b">
                   <th className="py-2 pr-3">Supplier</th>
                   <th className="py-2 pr-3">Tel</th>
                   <th className="py-2 pr-3">Email</th>
@@ -445,7 +445,7 @@ export default function SubletSupplierMaintenance() {
               </thead>
               <tbody>
                 {suppliers.map((s) => (
-                  <tr key={s.supplier_id} className="border-b border-gray-100 hover:bg-gray-50">
+                  <tr key={s.supplier_id} className="border-b border-border/60 hover:bg-muted/45">
                     <td className="py-2 pr-3 font-medium">{s.supplier_name}</td>
                     <td className="py-2 pr-3">{s.phone || ''}</td>
                     <td className="py-2 pr-3">{s.email || ''}</td>

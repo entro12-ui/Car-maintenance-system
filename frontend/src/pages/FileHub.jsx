@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { PageHeader } from '@/components/PageChrome'
 import { FILE_MENU, fileMenuPath } from './FileSidebarMenu'
 
 const BLURBS = {
@@ -11,13 +12,16 @@ const BLURBS = {
 export default function FileHub() {
   return (
     <div className="space-y-8">
-      <div className="space-y-2 max-w-3xl">
-        <h1 className="text-2xl font-semibold tracking-tight text-foreground">File</h1>
-        <p className="text-sm text-muted-foreground leading-relaxed">
-          HillMaster-style <strong>File</strong> menu for core company setup, GL account number setup, and estimation
-          letter setup.
-        </p>
-      </div>
+      <PageHeader
+        eyebrow="Master data"
+        title="File"
+        description={
+          <>
+            HillMaster-style <strong>File</strong> menu for core company setup, GL account number setup, and estimation
+            letter setup.
+          </>
+        }
+      />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
         {FILE_MENU.map((item) => (

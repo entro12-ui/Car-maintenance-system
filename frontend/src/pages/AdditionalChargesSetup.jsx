@@ -24,8 +24,8 @@ function Checkbox({ checked, onChange, label }) {
 function SectionHeader({ title, subtitle }) {
   return (
     <div className="mb-3">
-      <div className="text-base font-semibold text-gray-800">{title}</div>
-      {subtitle ? <div className="text-xs text-gray-500">{subtitle}</div> : null}
+      <div className="text-base font-semibold text-foreground">{title}</div>
+      {subtitle ? <div className="text-xs text-muted-foreground">{subtitle}</div> : null}
     </div>
   )
 }
@@ -654,7 +654,7 @@ export default function AdditionalChargesSetup({ initialSection = 'all' }) {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold text-gray-800 mb-6">Additional Charges Setup</h1>
+      <h1 className="text-3xl font-bold text-foreground mb-6">Additional Charges Setup</h1>
 
       <div className="space-y-6">
         {showOtherSection && <Card className="p-6">
@@ -679,7 +679,7 @@ export default function AdditionalChargesSetup({ initialSection = 'all' }) {
 
           <form onSubmit={onCreateOc} className="space-y-3">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
-              <Input value={ocCode} readOnly className="bg-gray-50" placeholder="Auto Charge Code" />
+              <Input value={ocCode} readOnly className="bg-muted/35" placeholder="Auto Charge Code" />
               <Input value={ocDesc} onChange={(e) => setOcDesc(e.target.value)} placeholder="Description *" />
               <Input value={ocUom} onChange={(e) => setOcUom(e.target.value)} placeholder="Unit of Measure" />
               <div className="flex items-center gap-3">
@@ -716,7 +716,7 @@ export default function AdditionalChargesSetup({ initialSection = 'all' }) {
 
           {editingOc && (
             <div className="mt-5 border rounded-lg p-4">
-              <div className="text-sm font-semibold text-gray-700 mb-3">Edit Other Charge Type</div>
+              <div className="text-sm font-semibold text-foreground/90 mb-3">Edit Other Charge Type</div>
               <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
                 <Input value={editingOc.charge_code} onChange={(e) => setEditingOc((p) => ({ ...p, charge_code: e.target.value }))} />
                 <Input value={editingOc.description} onChange={(e) => setEditingOc((p) => ({ ...p, description: e.target.value }))} />
@@ -746,23 +746,23 @@ export default function AdditionalChargesSetup({ initialSection = 'all' }) {
           <div className="mt-5 overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-gray-200">
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Code</th>
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Description</th>
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Tax</th>
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">UOM</th>
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Price</th>
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Cost</th>
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Job Type</th>
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Section</th>
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Sub Cat</th>
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Status</th>
-                  <th className="text-right py-2 px-2 text-xs font-semibold text-gray-700">Actions</th>
+                <tr className="border-b border-border">
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Code</th>
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Description</th>
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Tax</th>
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">UOM</th>
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Price</th>
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Cost</th>
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Job Type</th>
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Section</th>
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Sub Cat</th>
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Status</th>
+                  <th className="text-right py-2 px-2 text-xs font-semibold text-foreground/90">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {(otherChargeTypes || []).map((row) => (
-                  <tr key={row.other_charge_type_id} className="border-b border-gray-100 hover:bg-gray-50">
+                  <tr key={row.other_charge_type_id} className="border-b border-border/60 hover:bg-muted/45">
                     <td className="py-2 px-2 text-sm font-mono">{row.charge_code}</td>
                     <td className="py-2 px-2 text-sm">{row.description}</td>
                     <td className="py-2 px-2 text-sm">{row.taxable ? 'Yes' : 'No'}</td>
@@ -785,7 +785,7 @@ export default function AdditionalChargesSetup({ initialSection = 'all' }) {
                 ))}
                 {!ocLoading && (otherChargeTypes || []).length === 0 && (
                   <tr>
-                    <td colSpan={11} className="py-5 px-2 text-center text-gray-500">No items</td>
+                    <td colSpan={11} className="py-5 px-2 text-center text-muted-foreground">No items</td>
                   </tr>
                 )}
               </tbody>
@@ -798,7 +798,7 @@ export default function AdditionalChargesSetup({ initialSection = 'all' }) {
 
           <form onSubmit={onCreateFl} className="space-y-3">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
-              <Input value={flCode} readOnly className="bg-gray-50" placeholder="Auto Item Code" />
+              <Input value={flCode} readOnly className="bg-muted/35" placeholder="Auto Item Code" />
               <Input value={flDesc} onChange={(e) => setFlDesc(e.target.value)} placeholder="Description *" />
               <Input value={flUom} onChange={(e) => setFlUom(e.target.value)} placeholder="Unit of Measure" />
               <div className="flex items-center gap-3">
@@ -832,7 +832,7 @@ export default function AdditionalChargesSetup({ initialSection = 'all' }) {
 
           {editingFl && (
             <div className="mt-5 border rounded-lg p-4">
-              <div className="text-sm font-semibold text-gray-700 mb-3">Edit Fuel/Lubricant</div>
+              <div className="text-sm font-semibold text-foreground/90 mb-3">Edit Fuel/Lubricant</div>
               <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
                 <Input value={editingFl.item_code} onChange={(e) => setEditingFl((p) => ({ ...p, item_code: e.target.value }))} />
                 <Input value={editingFl.description} onChange={(e) => setEditingFl((p) => ({ ...p, description: e.target.value }))} />
@@ -860,21 +860,21 @@ export default function AdditionalChargesSetup({ initialSection = 'all' }) {
           <div className="mt-5 overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-gray-200">
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Code</th>
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Description</th>
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Tax</th>
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">UOM</th>
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Price</th>
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Cost</th>
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Section</th>
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Status</th>
-                  <th className="text-right py-2 px-2 text-xs font-semibold text-gray-700">Actions</th>
+                <tr className="border-b border-border">
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Code</th>
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Description</th>
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Tax</th>
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">UOM</th>
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Price</th>
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Cost</th>
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Section</th>
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Status</th>
+                  <th className="text-right py-2 px-2 text-xs font-semibold text-foreground/90">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {(fuelItems || []).map((row) => (
-                  <tr key={row.fuel_lubricant_id} className="border-b border-gray-100 hover:bg-gray-50">
+                  <tr key={row.fuel_lubricant_id} className="border-b border-border/60 hover:bg-muted/45">
                     <td className="py-2 px-2 text-sm font-mono">{row.item_code}</td>
                     <td className="py-2 px-2 text-sm">{row.description}</td>
                     <td className="py-2 px-2 text-sm">{row.taxable ? 'Yes' : 'No'}</td>
@@ -895,7 +895,7 @@ export default function AdditionalChargesSetup({ initialSection = 'all' }) {
                 ))}
                 {!flLoading && (fuelItems || []).length === 0 && (
                   <tr>
-                    <td colSpan={9} className="py-5 px-2 text-center text-gray-500">No items</td>
+                    <td colSpan={9} className="py-5 px-2 text-center text-muted-foreground">No items</td>
                   </tr>
                 )}
               </tbody>
@@ -908,7 +908,7 @@ export default function AdditionalChargesSetup({ initialSection = 'all' }) {
 
           <form onSubmit={onCreateMc} className="space-y-3">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
-              <Input value={mcCode} readOnly className="bg-gray-50" placeholder="Auto Charge Code" />
+              <Input value={mcCode} readOnly className="bg-muted/35" placeholder="Auto Charge Code" />
               <Input value={mcDesc} onChange={(e) => setMcDesc(e.target.value)} placeholder="Description *" />
               <Input value={mcUom} onChange={(e) => setMcUom(e.target.value)} placeholder="Unit of Measure" />
               <div className="flex items-center gap-3">
@@ -945,7 +945,7 @@ export default function AdditionalChargesSetup({ initialSection = 'all' }) {
 
           {editingMc && (
             <div className="mt-5 border rounded-lg p-4">
-              <div className="text-sm font-semibold text-gray-700 mb-3">Edit Misc Charge Type</div>
+              <div className="text-sm font-semibold text-foreground/90 mb-3">Edit Misc Charge Type</div>
               <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
                 <Input value={editingMc.charge_code} onChange={(e) => setEditingMc((p) => ({ ...p, charge_code: e.target.value }))} />
                 <Input value={editingMc.description} onChange={(e) => setEditingMc((p) => ({ ...p, description: e.target.value }))} />
@@ -975,23 +975,23 @@ export default function AdditionalChargesSetup({ initialSection = 'all' }) {
           <div className="mt-5 overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-gray-200">
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Code</th>
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Description</th>
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Tax</th>
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">UOM</th>
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Price</th>
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Cost</th>
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Job Type</th>
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Section</th>
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Sub Cat</th>
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Status</th>
-                  <th className="text-right py-2 px-2 text-xs font-semibold text-gray-700">Actions</th>
+                <tr className="border-b border-border">
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Code</th>
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Description</th>
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Tax</th>
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">UOM</th>
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Price</th>
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Cost</th>
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Job Type</th>
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Section</th>
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Sub Cat</th>
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Status</th>
+                  <th className="text-right py-2 px-2 text-xs font-semibold text-foreground/90">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {(miscChargeTypes || []).map((row) => (
-                  <tr key={row.misc_charge_type_id} className="border-b border-gray-100 hover:bg-gray-50">
+                  <tr key={row.misc_charge_type_id} className="border-b border-border/60 hover:bg-muted/45">
                     <td className="py-2 px-2 text-sm font-mono">{row.charge_code}</td>
                     <td className="py-2 px-2 text-sm">{row.description}</td>
                     <td className="py-2 px-2 text-sm">{row.taxable ? 'Yes' : 'No'}</td>
@@ -1014,7 +1014,7 @@ export default function AdditionalChargesSetup({ initialSection = 'all' }) {
                 ))}
                 {!mcLoading && (miscChargeTypes || []).length === 0 && (
                   <tr>
-                    <td colSpan={11} className="py-5 px-2 text-center text-gray-500">No items</td>
+                    <td colSpan={11} className="py-5 px-2 text-center text-muted-foreground">No items</td>
                   </tr>
                 )}
               </tbody>
@@ -1044,7 +1044,7 @@ export default function AdditionalChargesSetup({ initialSection = 'all' }) {
 
           {editingSs && (
             <div className="mt-5 border rounded-lg p-4">
-              <div className="text-sm font-semibold text-gray-700 mb-3">Edit Supplier</div>
+              <div className="text-sm font-semibold text-foreground/90 mb-3">Edit Supplier</div>
               <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
                 <Input value={editingSs.supplier_name} onChange={(e) => setEditingSs((p) => ({ ...p, supplier_name: e.target.value }))} />
                 <Input value={editingSs.phone} onChange={(e) => setEditingSs((p) => ({ ...p, phone: e.target.value }))} placeholder="Phone" />
@@ -1069,18 +1069,18 @@ export default function AdditionalChargesSetup({ initialSection = 'all' }) {
           <div className="mt-5 overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-gray-200">
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Name</th>
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Phone</th>
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Email</th>
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Address</th>
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Status</th>
-                  <th className="text-right py-2 px-2 text-xs font-semibold text-gray-700">Actions</th>
+                <tr className="border-b border-border">
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Name</th>
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Phone</th>
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Email</th>
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Address</th>
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Status</th>
+                  <th className="text-right py-2 px-2 text-xs font-semibold text-foreground/90">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {(suppliers || []).map((row) => (
-                  <tr key={row.supplier_id} className="border-b border-gray-100 hover:bg-gray-50">
+                  <tr key={row.supplier_id} className="border-b border-border/60 hover:bg-muted/45">
                     <td className="py-2 px-2 text-sm">{row.supplier_name}</td>
                     <td className="py-2 px-2 text-sm">{row.phone || '-'}</td>
                     <td className="py-2 px-2 text-sm">{row.email || '-'}</td>
@@ -1098,7 +1098,7 @@ export default function AdditionalChargesSetup({ initialSection = 'all' }) {
                 ))}
                 {!ssLoading && (suppliers || []).length === 0 && (
                   <tr>
-                    <td colSpan={6} className="py-5 px-2 text-center text-gray-500">No suppliers</td>
+                    <td colSpan={6} className="py-5 px-2 text-center text-muted-foreground">No suppliers</td>
                   </tr>
                 )}
               </tbody>
@@ -1130,7 +1130,7 @@ export default function AdditionalChargesSetup({ initialSection = 'all' }) {
 
           <form onSubmit={onCreateSw} className="space-y-3">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
-              <Input value={swCode} readOnly className="bg-gray-50" placeholder="Auto Work Code" />
+              <Input value={swCode} readOnly className="bg-muted/35" placeholder="Auto Work Code" />
               <Input value={swDesc} onChange={(e) => setSwDesc(e.target.value)} placeholder="Description *" />
               <Input value={swUom} onChange={(e) => setSwUom(e.target.value)} placeholder="Unit of Measure" />
               <div className="flex items-center gap-3">
@@ -1179,7 +1179,7 @@ export default function AdditionalChargesSetup({ initialSection = 'all' }) {
 
           {editingSw && (
             <div className="mt-5 border rounded-lg p-4">
-              <div className="text-sm font-semibold text-gray-700 mb-3">Edit Sublet Work Type</div>
+              <div className="text-sm font-semibold text-foreground/90 mb-3">Edit Sublet Work Type</div>
               <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
                 <Input value={editingSw.work_code} onChange={(e) => setEditingSw((p) => ({ ...p, work_code: e.target.value }))} />
                 <Input value={editingSw.description} onChange={(e) => setEditingSw((p) => ({ ...p, description: e.target.value }))} />
@@ -1221,24 +1221,24 @@ export default function AdditionalChargesSetup({ initialSection = 'all' }) {
           <div className="mt-5 overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-gray-200">
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Code</th>
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Description</th>
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Supplier</th>
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Tax</th>
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">UOM</th>
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Price</th>
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Cost</th>
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Job Type</th>
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Section</th>
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Sub Cat</th>
-                  <th className="text-left py-2 px-2 text-xs font-semibold text-gray-700">Status</th>
-                  <th className="text-right py-2 px-2 text-xs font-semibold text-gray-700">Actions</th>
+                <tr className="border-b border-border">
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Code</th>
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Description</th>
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Supplier</th>
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Tax</th>
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">UOM</th>
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Price</th>
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Cost</th>
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Job Type</th>
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Section</th>
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Sub Cat</th>
+                  <th className="text-left py-2 px-2 text-xs font-semibold text-foreground/90">Status</th>
+                  <th className="text-right py-2 px-2 text-xs font-semibold text-foreground/90">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {(workTypes || []).map((row) => (
-                  <tr key={row.sublet_work_type_id} className="border-b border-gray-100 hover:bg-gray-50">
+                  <tr key={row.sublet_work_type_id} className="border-b border-border/60 hover:bg-muted/45">
                     <td className="py-2 px-2 text-sm font-mono">{row.work_code}</td>
                     <td className="py-2 px-2 text-sm">{row.description}</td>
                     <td className="py-2 px-2 text-sm">{row.supplier_id ? (supplierNameById.get(Number(row.supplier_id)) || `#${row.supplier_id}`) : '-'}</td>
@@ -1262,7 +1262,7 @@ export default function AdditionalChargesSetup({ initialSection = 'all' }) {
                 ))}
                 {!swLoading && (workTypes || []).length === 0 && (
                   <tr>
-                    <td colSpan={13} className="py-5 px-2 text-center text-gray-500">No work types</td>
+                    <td colSpan={13} className="py-5 px-2 text-center text-muted-foreground">No work types</td>
                   </tr>
                 )}
               </tbody>

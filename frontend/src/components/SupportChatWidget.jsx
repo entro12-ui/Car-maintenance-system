@@ -2,8 +2,30 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { MessageCircle, X, Send, Loader2, ExternalLink, BookOpen, Sparkles } from 'lucide-react'
 import { supportApi } from '@/services/api'
+import { ASSISTANT_OPEN_EVENT } from '@/components/AiAssistantPromo'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
+
+const WELCOME = {
+  support:
+    'How can we help you today? Ask about bookings, your vehicles, loyalty, or finding your way around the app. Replies can include links and videos you can open for more detail.',
+  maintenance:
+    'Ask about vehicle care (intervals, fluids, warning lights) or workshop setup — where to configure labor, charges, plates, sublets, and parameters in Maintenance. Replies use help articles and videos when relevant.',
+  reports:
+    'Ask how to choose a report, set date ranges, or read results — listing, sales, productivity, custom, or garage dashboards. I can explain menus and typical interpretation, but I cannot see your live numbers.',
+}
+
+const MODE_LABELS = {
+  support: 'Support',
+  maintenance: 'Maintenance',
+  reports: 'Reports',
+}
+
+const MODE_SUBTITLE = {
+  support: 'Product help and navigation',
+  maintenance: 'Vehicle care & Maintenance hub',
+  reports: 'Report selection & interpretation',
+}
 
 function formatAssistantText(text) {
   if (!text) return null
@@ -18,20 +40,44 @@ function formatAssistantText(text) {
 
 export default function SupportChatWidget() {
   const [open, setOpen] = useState(false)
+  const [assistantMode, setAssistantMode] = useState('support')
   const [input, setInput] = useState('')
   const [sending, setSending] = useState(false)
   const [error, setError] = useState(null)
   const [messages, setMessages] = useState([
     {
       role: 'assistant',
-      content:
-        'How can we help you today? Ask about bookings, your vehicles, loyalty, or finding your way around the app. Replies can include links and videos you can open for more detail.',
+      content: WELCOME.support,
       citations: [],
       localOnly: true,
     },
   ])
   const scrollRef = useRef(null)
   const inputRef = useRef(null)
+
+  useEffect(() => {
+    const onOpen = (e) => {
+      const mode = e.detail?.mode
+      if (mode === 'maintenance' || mode === 'reports' || mode === 'support') {
+        setAssistantMode(mode)
+        setOpen(true)
+      }
+    }
+    window.addEventListener(ASSISTANT_OPEN_EVENT, onOpen)
+    return () => window.removeEventListener(ASSISTANT_OPEN_EVENT, onOpen)
+  }, [])
+
+  useEffect(() => {
+    setMessages([
+      {
+        role: 'assistant',
+        content: WELCOME[assistantMode] || WELCOME.support,
+        citations: [],
+        localOnly: true,
+      },
+    ])
+    setError(null)
+  }, [assistantMode])
 
   useEffect(() => {
     if (!open) return
@@ -57,7 +103,7 @@ export default function SupportChatWidget() {
       const payload = nextThread
         .filter((m) => m.role === 'user' || (m.role === 'assistant' && m.content && !m.localOnly))
         .map((m) => ({ role: m.role, content: m.content }))
-      const { data } = await supportApi.chat(payload)
+      const { data } = await supportApi.chat(payload, { assistant_mode: assistantMode })
       setMessages((prev) => [
         ...prev,
         {
@@ -88,7 +134,7 @@ export default function SupportChatWidget() {
     } finally {
       setSending(false)
     }
-  }, [input, messages, sending])
+  }, [input, messages, sending, assistantMode])
 
   const onKeyDown = (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -113,30 +159,55 @@ export default function SupportChatWidget() {
               'ring-1 ring-black/5 dark:ring-white/10'
             )}
             role="dialog"
-            aria-label="Support chat"
+            aria-label="AI assistant chat"
           >
-            <header className="relative flex shrink-0 items-start justify-between gap-3 bg-gradient-to-br from-primary via-primary to-primary/85 px-4 py-3 text-primary-foreground">
-              <div className="flex items-start gap-3">
-                <div className="mt-0.5 flex h-10 w-10 items-center justify-center rounded-xl bg-white/15 ring-1 ring-white/25">
-                  <Sparkles className="h-5 w-5" aria-hidden />
+            <header className="relative flex shrink-0 flex-col gap-2 bg-gradient-to-br from-primary via-primary to-primary/85 px-4 py-3 text-primary-foreground">
+              <div className="flex items-start justify-between gap-3">
+                <div className="flex items-start gap-3">
+                  <div className="mt-0.5 flex h-10 w-10 items-center justify-center rounded-xl bg-white/15 ring-1 ring-white/25">
+                    <Sparkles className="h-5 w-5" aria-hidden />
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold tracking-tight">AI assistant</p>
+                    <p className="text-xs text-primary-foreground/85 leading-snug">
+                      {MODE_SUBTITLE[assistantMode] || MODE_SUBTITLE.support}
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-sm font-semibold tracking-tight">Help & support</p>
-                  <p className="text-xs text-primary-foreground/85 leading-snug">
-                    Ask a question — we’ll link you to the right help or videos
-                  </p>
-                </div>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon"
+                  className="h-8 w-8 shrink-0 text-primary-foreground hover:bg-white/15"
+                  onClick={() => setOpen(false)}
+                  aria-label="Close assistant chat"
+                >
+                  <X className="h-4 w-4" />
+                </Button>
               </div>
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon"
-                className="h-8 w-8 shrink-0 text-primary-foreground hover:bg-white/15"
-                onClick={() => setOpen(false)}
-                aria-label="Close support chat"
+              <div
+                className="flex flex-wrap gap-1 rounded-lg bg-black/15 p-1 ring-1 ring-white/10"
+                role="tablist"
+                aria-label="Assistant mode"
               >
-                <X className="h-4 w-4" />
-              </Button>
+                {(['support', 'maintenance', 'reports']).map((m) => (
+                  <button
+                    key={m}
+                    type="button"
+                    role="tab"
+                    aria-selected={assistantMode === m}
+                    onClick={() => setAssistantMode(m)}
+                    className={cn(
+                      'rounded-md px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide transition-colors',
+                      assistantMode === m
+                        ? 'bg-white text-primary shadow-sm'
+                        : 'text-primary-foreground/90 hover:bg-white/10'
+                    )}
+                  >
+                    {MODE_LABELS[m]}
+                  </button>
+                ))}
+              </div>
             </header>
 
             <div
@@ -294,7 +365,7 @@ export default function SupportChatWidget() {
           )}
           size="icon"
           aria-expanded={open}
-          aria-label={open ? 'Close support chat' : 'Open support chat'}
+          aria-label={open ? 'Close AI assistant' : 'Open AI assistant'}
         >
           {open ? <X className="h-6 w-6" /> : <MessageCircle className="h-6 w-6" />}
         </Button>

@@ -195,9 +195,9 @@ export default function CloseJobOrder() {
     (job.status === 'Open' || job.status === 'Received')
 
   const statusPill = useMemo(() => {
-    if (!job) return { label: 'No job loaded', className: 'text-gray-600' }
+    if (!job) return { label: 'No job loaded', className: 'text-muted-foreground' }
     if (isBlocked) return { label: 'Blocked', className: 'text-red-600 font-semibold' }
-    if (isClosed) return { label: 'Closed', className: 'text-gray-700 font-semibold' }
+    if (isClosed) return { label: 'Closed', className: 'text-foreground/90 font-semibold' }
     if (isDispatched) return { label: 'Awaiting receive from section', className: 'text-amber-700 font-semibold' }
     return { label: 'Ready', className: 'text-blue-600 font-semibold' }
   }, [job, isBlocked, isClosed, isDispatched])

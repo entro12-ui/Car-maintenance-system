@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy import func
-from typing import List
+from typing import List, Optional
 from decimal import Decimal
 
 from app.database import get_db
@@ -39,6 +39,7 @@ from app.schemas.job_order_additional_charges import (
     JobOrderMiscChargeResponse,
     JobOrderFuelLubricantChargeCreate,
     JobOrderFuelLubricantChargeResponse,
+    JobOrderFuelLubricantChargeOdometerPatch,
     JobOrderSubletWorkChargeCreate,
     JobOrderSubletWorkChargeResponse,
     JobOrderOtherChargeCreate,
@@ -782,6 +783,12 @@ def create_job_order_fuel_lubricant_charge(
     qty = Decimal(str(payload.quantity))
     amount = qty * unit_price
 
+    odometer_dec: Optional[Decimal] = None
+    if payload.odometer_km is not None:
+        if float(payload.odometer_km) < 0:
+            raise HTTPException(status_code=400, detail="odometer_km must be >= 0")
+        odometer_dec = Decimal(str(payload.odometer_km))
+
     row = JobOrderFuelLubricantCharge(
         job_order_id=job_order_id,
         fuel_lubricant_id=item.fuel_lubricant_id,
@@ -789,10 +796,52 @@ def create_job_order_fuel_lubricant_charge(
         unit_price=unit_price,
         amount=amount,
         remark=_clean_text(payload.remark) or None,
+        odometer_km=odometer_dec,
         recorded_by_employee_id=getattr(current_user, "employee_id", None),
     )
 
     db.add(row)
+    db.commit()
+    db.refresh(row)
+    return row
+
+
+@router.put(
+    "/{job_order_id}/fuel-lubricant-charges/{fuel_lubricant_entry_id}",
+    response_model=JobOrderFuelLubricantChargeResponse,
+)
+def patch_job_order_fuel_lubricant_charge_odometer(
+    job_order_id: int,
+    fuel_lubricant_entry_id: int,
+    payload: JobOrderFuelLubricantChargeOdometerPatch,
+    db: Session = Depends(get_db),
+    current_user=Depends(get_current_admin),
+):
+    """Correct odometer / KM stored on a fuel & lubricant charge line."""
+    job = db.query(JobOrder).filter(JobOrder.job_order_id == job_order_id).first()
+    if not job:
+        raise HTTPException(status_code=404, detail="Job order not found")
+    _ensure_job_open_for_charges(job)
+
+    updates = payload.model_dump(exclude_unset=True)
+    if not updates:
+        raise HTTPException(status_code=400, detail="No fields supplied")
+
+    row = (
+        db.query(JobOrderFuelLubricantCharge)
+        .filter(JobOrderFuelLubricantCharge.job_order_id == job_order_id)
+        .filter(JobOrderFuelLubricantCharge.fuel_lubricant_entry_id == fuel_lubricant_entry_id)
+        .first()
+    )
+    if not row:
+        raise HTTPException(status_code=404, detail="Fuel/lubricant charge entry not found")
+
+    if "odometer_km" in updates:
+        v = updates["odometer_km"]
+        if v is not None and float(v) < 0:
+            raise HTTPException(status_code=400, detail="odometer_km must be >= 0")
+        row.odometer_km = Decimal(str(v)) if v is not None else None
+
     db.commit()
     db.refresh(row)
     return row

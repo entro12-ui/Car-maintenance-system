@@ -201,20 +201,20 @@ export default function AdvancedBooking() {
   return (
     <div className="space-y-4">
       <div className="border-b pb-2">
-        <h1 className="text-2xl font-semibold text-gray-800">Service Advance Booking</h1>
+        <h1 className="text-2xl font-semibold text-foreground">Service Advance Booking</h1>
       </div>
 
       <div className="bg-white border rounded p-2 flex flex-wrap items-center gap-3 text-sm">
-        <button type="button" className="text-gray-700 hover:text-gray-900" onClick={onAddNew}>
+        <button type="button" className="text-muted-foreground hover:text-foreground" onClick={onAddNew}>
           Add New
         </button>
-        <button type="button" className="text-gray-700 hover:text-gray-900" onClick={onSave} disabled={saving}>
+        <button type="button" className="text-muted-foreground hover:text-foreground" onClick={onSave} disabled={saving}>
           {saving ? 'Saving...' : 'Save'}
         </button>
-        <button type="button" className="text-gray-700 hover:text-gray-900" onClick={() => window.print()}>
+        <button type="button" className="text-muted-foreground hover:text-foreground" onClick={() => window.print()}>
           Print Preview
         </button>
-        <button type="button" className="text-gray-700 hover:text-gray-900" onClick={onRefresh}>
+        <button type="button" className="text-muted-foreground hover:text-foreground" onClick={onRefresh}>
           Refresh
         </button>
         <span className="text-blue-700 font-semibold">Ready</span>
@@ -230,9 +230,9 @@ export default function AdvancedBooking() {
       <div className="bg-white border rounded p-3 space-y-3">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-3">
           <label className="text-sm md:col-span-4">
-            <span className="text-gray-700">Appointment No.:</span>
+            <span className="text-foreground/90">Appointment No.:</span>
             <input
-              className="w-full mt-1 border rounded px-2 py-1.5 bg-gray-50"
+              className="w-full mt-1 border rounded px-2 py-1.5 bg-muted/35"
               readOnly
               value={form.appointment_id ? nextApNo : ''}
             />
@@ -246,7 +246,7 @@ export default function AdvancedBooking() {
             SA
           </label>
           <label className="text-sm md:col-span-3">
-            <span className="text-gray-700">Date:</span>
+            <span className="text-foreground/90">Date:</span>
             <input
               type="date"
               className="w-full mt-1 border rounded px-2 py-1.5"
@@ -255,7 +255,7 @@ export default function AdvancedBooking() {
             />
           </label>
           <label className="text-sm md:col-span-4">
-            <span className="text-gray-700">Appointment Date:</span>
+            <span className="text-foreground/90">Appointment Date:</span>
             <input
               type="date"
               className="w-full mt-1 border rounded px-2 py-1.5"
@@ -265,7 +265,7 @@ export default function AdvancedBooking() {
           </label>
 
           <label className="text-sm md:col-span-4">
-            <span className="text-gray-700">Plate No:</span>
+            <span className="text-foreground/90">Plate No:</span>
             <input
               type="text"
               className="w-full mt-1 border rounded px-2 py-1.5"
@@ -276,7 +276,7 @@ export default function AdvancedBooking() {
             />
           </label>
           <label className="text-sm md:col-span-8">
-            <span className="text-gray-700">Chassis/VIN/Frame #</span>
+            <span className="text-foreground/90">Chassis/VIN/Frame #</span>
             <input
               type="text"
               className="w-full mt-1 border rounded px-2 py-1.5"
@@ -287,7 +287,7 @@ export default function AdvancedBooking() {
           </label>
 
           <label className="text-sm md:col-span-4">
-            <span className="text-gray-700">Model Code:</span>
+            <span className="text-foreground/90">Model Code:</span>
             <input
               type="text"
               className="w-full mt-1 border rounded px-2 py-1.5"
@@ -297,7 +297,7 @@ export default function AdvancedBooking() {
             />
           </label>
           <label className="text-sm md:col-span-8">
-            <span className="text-gray-700">Customer Name:</span>
+            <span className="text-foreground/90">Customer Name:</span>
             <input
               type="text"
               className="w-full mt-1 border rounded px-2 py-1.5"
@@ -308,7 +308,7 @@ export default function AdvancedBooking() {
           </label>
 
           <label className="text-sm md:col-span-5">
-            <span className="text-gray-700">Telephone No.:</span>
+            <span className="text-foreground/90">Telephone No.:</span>
             <input
               type="text"
               className="w-full mt-1 border rounded px-2 py-1.5"
@@ -318,7 +318,7 @@ export default function AdvancedBooking() {
             />
           </label>
           <label className="text-sm md:col-span-4">
-            <span className="text-gray-700">Time:</span>
+            <span className="text-foreground/90">Time:</span>
             <input
               type="time"
               className="w-full mt-1 border rounded px-2 py-1.5"
@@ -327,7 +327,7 @@ export default function AdvancedBooking() {
             />
           </label>
           <label className="text-sm md:col-span-3">
-            <span className="text-gray-700">Repair type:</span>
+            <span className="text-foreground/90">Repair type:</span>
             <input
               type="text"
               className="w-full mt-1 border rounded px-2 py-1.5"
@@ -338,7 +338,7 @@ export default function AdvancedBooking() {
           </label>
 
           <label className="text-sm md:col-span-12">
-            <span className="text-gray-700">Notes (optional):</span>
+            <span className="text-foreground/90">Notes (optional):</span>
             <input
               type="text"
               className="w-full mt-1 border rounded px-2 py-1.5"
@@ -356,7 +356,7 @@ export default function AdvancedBooking() {
             <span className="font-medium">From Scheduled Service Reminder</span>
           </label>
         </div>
-        <p className="text-xs text-gray-500">
+        <p className="text-xs text-muted-foreground">
           All main fields are free text. Save still requires the plate to match a registered vehicle and repair type to
           match a service type name. Leaving a field blank after typing a known plate may auto-fill from master data when
           you leave the Plate field.
@@ -365,7 +365,7 @@ export default function AdvancedBooking() {
 
       <div className="bg-white border rounded overflow-x-auto">
         <table className="min-w-full text-sm">
-          <thead className="bg-gray-50">
+          <thead className="bg-muted/35">
             <tr>
               <th className="px-2 py-2 text-left">No</th>
               <th className="px-2 py-2 text-left">Appointment No</th>
@@ -384,7 +384,7 @@ export default function AdvancedBooking() {
           <tbody>
             {rows.length === 0 && !loading && (
               <tr>
-                <td className="px-2 py-3 text-center text-gray-500" colSpan={12}>
+                <td className="px-2 py-3 text-center text-muted-foreground" colSpan={12}>
                   No bookings found.
                 </td>
               </tr>

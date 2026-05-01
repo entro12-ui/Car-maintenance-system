@@ -1,4 +1,6 @@
 import { Link } from 'react-router-dom'
+import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { PageHeader } from '@/components/PageChrome'
 
 /** Matches HillMaster Job Order → Utilities menu; each item opens its utility screen. */
 export const UTILITIES_MENU = [
@@ -24,21 +26,24 @@ export const UTILITIES_MENU = [
 
 export default function UtilitiesHub() {
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold text-gray-900">Utilities</h1>
-        <p className="text-sm text-gray-600 mt-1">
-          HillMaster-style job order utilities. Choose a tool below (same list as in the sidebar).
-        </p>
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+    <div className="space-y-8">
+      <PageHeader
+        eyebrow="Job order"
+        title="Utilities"
+        description="HillMaster-style job order utilities. Each card opens the same screen linked from the sidebar."
+      />
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {UTILITIES_MENU.map((item) => (
-          <Link
-            key={item.slug}
-            to={`/utilities/${item.slug}`}
-            className="block rounded-lg border border-gray-200 bg-white px-4 py-3 text-sm font-medium text-gray-800 hover:border-indigo-300 hover:bg-indigo-50/50 transition"
-          >
-            {item.label}
+          <Link key={item.slug} to={`/utilities/${item.slug}`} className="group block h-full">
+            <Card className="h-full transition-all border-border/80 shadow-sm hover:border-primary/40 hover:shadow-md hover:bg-gradient-to-br hover:from-primary/[0.03] hover:to-transparent">
+              <CardHeader className="space-y-2 py-4">
+                <CardTitle className="text-sm font-semibold leading-snug text-foreground group-hover:text-primary transition-colors">
+                  {item.label}
+                </CardTitle>
+                <CardDescription className="text-xs leading-relaxed">Open workflow →</CardDescription>
+                <span className="text-xs font-medium text-primary pt-0.5 group-hover:underline">Launch →</span>
+              </CardHeader>
+            </Card>
           </Link>
         ))}
       </div>
