@@ -5,7 +5,7 @@ from datetime import date
 from app.database import get_db
 from app.models.employee import Employee
 
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, ConfigDict
 
 router = APIRouter()
 
@@ -55,8 +55,7 @@ class EmployeeResponse(EmployeeBase):
   is_active: bool
   supervisor_name: Optional[str] = None
 
-  class Config:
-    orm_mode = True
+  model_config = ConfigDict(from_attributes=True)
 
 
 @router.get("/")

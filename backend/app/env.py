@@ -1,20 +1,37 @@
 from __future__ import annotations
 
+import os
 from pathlib import Path
-from dotenv import load_dotenv
+
+from dotenv import dotenv_values, load_dotenv
 
 
 def load_backend_env() -> Path | None:
-    """Load `.env` from the backend folder regardless of current working directory.
+    """Load and merge `.env` files from this package directory upward.
 
-    Searches upwards from this file's directory for the first `.env` and loads it.
-    Does not override already-set environment variables.
+    Older behavior stopped at the **first** `.env` found (often `backend/app/.env`),
+    so secrets defined only in `backend/.env` were never loaded.
+
+    All `.env` files along the parent chain are merged. The path **closest** to this
+    package wins on duplicate keys. Values are applied only when the process env var
+    is missing or blank, so a non-empty ``OPENAI_API_KEY`` from the host/Docker still
+    wins over files.
     """
-    for parent in Path(__file__).resolve().parents:
-        candidate = parent / ".env"
-        if candidate.exists():
-            load_dotenv(dotenv_path=candidate, override=False)
-            return candidate
-
-    load_dotenv(override=False)
-    return None
+    chain = list(Path(__file__).resolve().parents)
+    candidates = [p / ".env" for p in chain if (p / ".env").is_file()]
+    if not candidates:
+        load_dotenv(override=False)
+        return None
+    merged: dict[str, str] = {}
+    for path in reversed(candidates):
+        for key, val in dotenv_values(path).items():
+            if val is None:
+                continue
+            s = str(val).strip().strip('"').strip("'")
+            if s:
+                merged[key] = s
+    for key, val in merged.items():
+        cur = os.environ.get(key)
+        if cur is None or (isinstance(cur, str) and not cur.strip()):
+            os.environ[key] = val
+    return candidates[0]

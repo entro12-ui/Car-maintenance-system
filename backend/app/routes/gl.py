@@ -2,7 +2,7 @@ from datetime import date, datetime
 from typing import List, Optional
 
 from fastapi import APIRouter, Depends, HTTPException, Query
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 from sqlalchemy.orm import Session
 from sqlalchemy import func
 
@@ -37,8 +37,7 @@ class GLAccountResponse(GLAccountBase):
     account_id: int
     is_active: bool
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class JournalLinePayload(BaseModel):
@@ -68,8 +67,7 @@ class JournalLineResponse(BaseModel):
     debit: float
     credit: float
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class JournalResponse(BaseModel):
@@ -85,8 +83,7 @@ class JournalResponse(BaseModel):
     total_credit: float
     lines: List[JournalLineResponse]
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 def _generate_journal_number(db: Session) -> str:

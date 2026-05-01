@@ -415,6 +415,11 @@ export const jobOrderAdditionalChargesApi = {
   deleteOther: (jobOrderId, entryId) => api.delete(`/job-orders/${jobOrderId}/other-charges/${entryId}`),
 }
 
+// AI customer support (authenticated; requires OPENAI_API_KEY on backend)
+export const supportApi = {
+  chat: (messages) => api.post('/support/chat', { messages }),
+}
+
 // Job Order Sublet Orders (Entry + Approval + Receiving)
 export const jobOrderSubletOrdersApi = {
   // Entry (by job)

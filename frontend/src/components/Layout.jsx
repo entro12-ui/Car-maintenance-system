@@ -18,6 +18,7 @@ import { TRANSACTION_MENU, transactionPath } from '../pages/TransactionSidebarMe
 import { ENQUIRY_MENU, enquiryPath } from '../pages/EnquirySidebarMenu'
 import { MAINTENANCE_MENU, maintenancePath } from '../pages/MaintenanceSidebarMenu'
 import { FILE_MENU, fileMenuPath } from '../pages/FileSidebarMenu'
+import SupportChatWidget from '@/components/SupportChatWidget'
 
 export default function Layout({ children }) {
   const location = useLocation()
@@ -922,6 +923,7 @@ export default function Layout({ children }) {
           <div className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto w-full">{children}</div>
         </main>
       </div>
+      <SupportChatWidget />
     </div>
   )
 }

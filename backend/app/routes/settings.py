@@ -5,7 +5,7 @@ from typing import List, Optional
 from app.database import get_db
 from app.models.settings import SystemSetting
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 
 
 router = APIRouter()
@@ -39,8 +39,7 @@ class SystemSettingUpdate(BaseModel):
 class SystemSettingResponse(SystemSettingBase):
     setting_id: int
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 @router.get("/", response_model=List[SystemSettingResponse])

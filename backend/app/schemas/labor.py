@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from typing import Optional, List
 from datetime import datetime
 
@@ -43,6 +43,7 @@ class LaborTypeUpdate(BaseModel):
 
 
 class LaborTypeResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
     labor_type_id: int
     labor_code: Optional[str] = None
     labor_type_name: str
@@ -63,10 +64,6 @@ class LaborTypeResponse(BaseModel):
     is_active: bool
     created_at: datetime
 
-    class Config:
-        from_attributes = True
-
-
 class LaborPriceListCreate(BaseModel):
     pl_id: int
     description: str
@@ -83,6 +80,7 @@ class LaborPriceListUpdate(BaseModel):
 
 
 class LaborPriceListResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
     labor_price_list_id: int
     pl_id: int
     description: str
@@ -91,11 +89,8 @@ class LaborPriceListResponse(BaseModel):
     is_active: bool
     created_at: datetime
 
-    class Config:
-        from_attributes = True
-
-
 class LaborTypeModelGroupRateCreate(BaseModel):
+    model_config = ConfigDict(protected_namespaces=())
     model_group_type: str
     std_hours: float = 0
     charge_amount: float = 0
@@ -104,6 +99,7 @@ class LaborTypeModelGroupRateCreate(BaseModel):
 
 
 class LaborTypeModelGroupRateUpdate(BaseModel):
+    model_config = ConfigDict(protected_namespaces=())
     model_group_type: Optional[str] = None
     std_hours: Optional[float] = None
     charge_amount: Optional[float] = None
@@ -112,6 +108,7 @@ class LaborTypeModelGroupRateUpdate(BaseModel):
 
 
 class LaborTypeModelGroupRateResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True, protected_namespaces=())
     labor_type_model_group_rate_id: int
     labor_type_id: int
     model_group_type: str
@@ -120,10 +117,6 @@ class LaborTypeModelGroupRateResponse(BaseModel):
     mfc_hours: float
     job_comp_hours: float
     created_at: datetime
-
-    class Config:
-        from_attributes = True
-
 
 class JobOrderLaborChargeCreate(BaseModel):
     labor_type_id: int
@@ -138,6 +131,7 @@ class JobOrderLaborChargeCreate(BaseModel):
 
 
 class JobOrderLaborChargeResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
     labor_charge_id: int
     job_order_id: int
     labor_type_id: int
@@ -155,5 +149,3 @@ class JobOrderLaborChargeResponse(BaseModel):
     recorded_by_employee_id: Optional[int] = None
     created_at: datetime
 
-    class Config:
-        from_attributes = True
