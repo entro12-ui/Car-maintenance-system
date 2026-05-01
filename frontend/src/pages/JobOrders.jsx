@@ -21,6 +21,20 @@ export default function JobOrders() {
   return (
     <div>
       <h1 className="text-3xl font-bold text-gray-800 mb-6">Job Orders</h1>
+      <div className="mb-6 rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
+        <p className="font-semibold">Job Order</p>
+        <p className="mt-1">
+          New job orders are opened from this page. Use the available tabs to maintain general information, other
+          information, repair details, informing client, job text, and audit log for each job order.
+        </p>
+        <p className="mt-1">
+          For any new job, the <strong>General Info</strong> and <strong>Job Text/Charge</strong> tabs are required.
+        </p>
+        <p className="mt-1">
+          Note: Opening a job order is not allowed for vehicle plate numbers or customers that are in the blocked
+          list. Release them first from the block list.
+        </p>
+      </div>
       <div className="mb-4">
         <Link
           to="/work-order-creation"

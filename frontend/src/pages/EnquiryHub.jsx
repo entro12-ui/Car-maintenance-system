@@ -32,6 +32,16 @@ export default function EnquiryHub() {
           HillMaster-style <strong>Enquiry</strong> menu for read-only lookup screens across jobs, stock, invoices,
           appointments, journals, and audit logs.
         </p>
+        <div className="rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm text-slate-700">
+          <p>
+            The enquiry menu is used to retrieve information on jobs accepted for action. Sub menus are organized for
+            logical information retrieval.
+          </p>
+          <p className="mt-1">
+            Users with valid access privilege can open each sub menu to enquire summary or detailed transaction/job
+            data by entering a locator value or using filter criteria in the appropriate fields.
+          </p>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3">

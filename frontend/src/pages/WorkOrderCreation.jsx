@@ -445,6 +445,7 @@ export default function WorkOrderCreation() {
     setSuccess('')
     const wasEditing = Boolean(form.job_order_id)
     try {
+      const today = new Date().toISOString().slice(0, 10)
       const vid = Number(form.vehicle_id)
       await vehiclesApi.update(vid, {
         license_plate: plateTrim,
@@ -459,8 +460,8 @@ export default function WorkOrderCreation() {
         service_type_id: form.service_type_id ? Number(form.service_type_id) : null,
         invoice_type: form.invoice_type || 'Cash',
         mileage_in_km: form.mileage_in_km || null,
-        opened_date: form.opened_date || null,
-        expected_finish_date: form.expected_finish_date || null,
+        opened_date: form.opened_date || today,
+        expected_finish_date: form.expected_finish_date || today,
         notify_client: notifyClient,
         remarks: [
           stripRepairBlock(form.remarks?.trim() || ''),
@@ -604,8 +605,26 @@ export default function WorkOrderCreation() {
   }
 
   const renderGeneralInfo = () => (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-      <div className="space-y-3">
+    <div className="space-y-4">
+      <div className="rounded-lg border border-blue-200 bg-blue-50 p-4 text-sm text-blue-900">
+        <p className="font-semibold">General Information Tab Instruction</p>
+        <p className="mt-1">Use this tab to maintain core data for a newly opened job order.</p>
+        <ol className="mt-2 list-decimal pl-5 space-y-1">
+          <li>Click <strong>New</strong> to start a fresh job order, and use <strong>Refresh</strong> to reload current data.</li>
+          <li>Enter chassis/VIN, plate number, repair/service type, invoice type, customer, and mileage.</li>
+          <li>For <strong>Credit</strong> invoice type, customer selection is required; for <strong>Cash</strong> it is optional.</li>
+          <li>If opening date or expected finish date is not selected, the system saves today&apos;s date.</li>
+        </ol>
+        <p className="mt-2">
+          Additional manual fields are available in the other tabs in this screen:
+          <strong> Other Info</strong> (garage location, type of job, opened for section, received by, model/class),
+          <strong> Inform Client With</strong> (invoice-contact style details), and
+          <strong> Job Text/Charge</strong> (required charge/job text lines).
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div className="space-y-3">
         <label className="block text-sm">
           <span className="text-gray-600">Job Order No.</span>
           <input className="w-full mt-1 border rounded px-3 py-2 bg-gray-50" value={form.job_order_number || '(auto)'} disabled />
@@ -654,9 +673,9 @@ export default function WorkOrderCreation() {
           <span className="text-gray-600">Address</span>
           <input className="w-full mt-1 border rounded px-3 py-2 bg-gray-50" value={selectedCustomer?.address || ''} disabled />
         </label>
-      </div>
+        </div>
 
-      <div className="space-y-3">
+        <div className="space-y-3">
         <label className="block text-sm">
           <span className="text-gray-600">Chassis/VIN/Frame #</span>
           <input
@@ -690,6 +709,7 @@ export default function WorkOrderCreation() {
           <span className="text-gray-600">Exp. Finished Date</span>
           <input type="date" className="w-full mt-1 border rounded px-3 py-2" value={form.expected_finish_date} onChange={(e) => handleChange('expected_finish_date', e.target.value)} />
         </label>
+        </div>
       </div>
     </div>
   )
@@ -1003,13 +1023,21 @@ export default function WorkOrderCreation() {
     if (activeTab === 'Audit Log') {
       return form.job_order_id ? (
         <div className="space-y-2">
+          <div className="rounded-lg border border-slate-200 bg-slate-50 p-3 text-sm text-slate-700">
+            This page is used to review all actions performed for this job by authorized user.
+          </div>
           <p className="text-sm text-gray-700">Open the full job order page for operational history and actions.</p>
           <Button type="button" variant="outline" onClick={() => navigate(`/job-orders/${form.job_order_id}`)}>
             Open Job Order Detail
           </Button>
         </div>
       ) : (
-        <p className="text-sm text-gray-600">Save the work order first to view activity details.</p>
+        <div className="space-y-2">
+          <div className="rounded-lg border border-slate-200 bg-slate-50 p-3 text-sm text-slate-700">
+            This page is used to review all actions performed for this job by authorized user.
+          </div>
+          <p className="text-sm text-gray-600">Save the work order first to view activity details.</p>
+        </div>
       )
     }
     return renderPlaceholder(activeTab)
@@ -1028,6 +1056,21 @@ export default function WorkOrderCreation() {
           <Button type="button" variant="outline" onClick={handleRefresh} disabled={!form.job_order_id}>Refresh</Button>
           <Button type="button" onClick={handleSave} disabled={saving || loading}>{saving ? 'Saving...' : 'Save'}</Button>
         </div>
+      </div>
+
+      <div className="rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
+        <p className="font-semibold">Job Order Instruction</p>
+        <p className="mt-1">
+          Use the tabs to maintain general information, other information, repair details, informing client, job
+          text/charge, and audit log.
+        </p>
+        <p className="mt-1">
+          For a new job order, make sure <strong>General Info</strong> and <strong>Job Text/Charge</strong> are filled.
+        </p>
+        <p className="mt-1">
+          Opening a job order for blocked customers or blocked plate numbers is not allowed. Release them first from
+          the block list.
+        </p>
       </div>
 
       {error && <div className="rounded border border-red-200 bg-red-50 text-red-700 px-3 py-2 text-sm">{error}</div>}

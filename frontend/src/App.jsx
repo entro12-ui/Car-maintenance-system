@@ -232,6 +232,34 @@ function AppRoutes() {
           </Layout>
         </ProtectedRoute>
       } />
+      <Route path="/job-orders/additional-charges/other-charge-setup" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <AdditionalChargesSetup initialSection="other" />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/job-orders/additional-charges/lubricants-and-fuel" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <AdditionalChargesSetup initialSection="fuel" />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/job-orders/additional-charges/miscellaneous-charges" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <AdditionalChargesSetup initialSection="misc" />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/job-orders/additional-charges/sublet-work-type" element={
+        <ProtectedRoute requireAdmin={true}>
+          <Layout>
+            <AdditionalChargesSetup initialSection="sublet" />
+          </Layout>
+        </ProtectedRoute>
+      } />
       <Route path="/job-orders/sublet-orders/entry" element={
         <ProtectedRoute requireAdmin={true}>
           <Layout>

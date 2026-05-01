@@ -14,7 +14,7 @@ const GROUP_TITLE = {
 const BLURBS = {
   'global-parameters': 'Maintain global lookup values used across the garage module.',
   'name-value-parameter': 'Configure name/value application settings.',
-  'job-order': 'Maintain job order setup and access related job records.',
+  'job-order': 'Open new job orders and maintain general info, repair details, client info, job text, and audit log.',
   'open-job-from-appointment': 'Open or prepare work from existing appointments.',
   'customer-maintenance': 'Maintain customer master information.',
   'plate-number': 'Maintain vehicle / plate information.',

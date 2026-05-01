@@ -156,12 +156,30 @@ export default function VehicleModelSetup() {
         <div className="flex items-center gap-2">
           <span className="text-sm text-blue-700 hidden sm:inline">Ready</span>
           <Button type="button" variant="outline" onClick={() => setForm(initialForm(tab))}>Add New Record</Button>
+          <Button type="button" variant="outline" onClick={() => window.print()}>Print Preview</Button>
           <Button type="button" variant="outline" onClick={() => load(tab)}>Refresh</Button>
         </div>
       </div>
 
       {error && <div className="rounded border border-red-200 bg-red-50 text-red-700 px-3 py-2 text-sm">{error}</div>}
       {success && <div className="rounded border border-green-200 bg-green-50 text-green-700 px-3 py-2 text-sm">{success}</div>}
+
+      {tab === 'car_model' && (
+        <div className="rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm text-slate-700">
+          <p className="font-semibold text-slate-900">Model Setup Guidance</p>
+          <p className="mt-1">
+            Use this tab to maintain model codes and descriptions, then map each model to a model group and job type.
+          </p>
+        </div>
+      )}
+      {tab === 'repair_section' && (
+        <div className="rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm text-slate-700">
+          <p className="font-semibold text-slate-900">Repair Section Setup Guidance</p>
+          <p className="mt-1">
+            Use this tab to maintain repair section definitions used during job order processing and related pricing logic.
+          </p>
+        </div>
+      )}
 
       <div className="bg-white border rounded-lg shadow-sm">
         <div className="flex flex-wrap border-b bg-slate-50/80">

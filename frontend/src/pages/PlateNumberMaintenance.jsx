@@ -174,6 +174,11 @@ export default function PlateNumberMaintenance() {
       }
     >
       <div className="space-y-4">
+        <div className="rounded-lg border border-sky-200 bg-sky-50 p-4 text-sm text-sky-900">
+          This page is used to record vehicles that belong to the company. These vehicles are treated as internal,
+          owned by the company, where standard customer invoices may not be printed and spare-parts/labor cost
+          treatment can differ from external customer vehicles.
+        </div>
         {error && <div className="rounded border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">{error}</div>}
         {success && (
           <div className="rounded border border-green-200 bg-green-50 px-3 py-2 text-sm text-green-700">{success}</div>

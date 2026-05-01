@@ -19,6 +19,7 @@ function formatMoney(value) {
 export default function SubletOrderReceiving() {
   const queryClient = useQueryClient()
 
+  const [tab, setTab] = useState('to-receive')
   const [selectedId, setSelectedId] = useState(null)
   const [deliveryOrderNumber, setDeliveryOrderNumber] = useState('')
 
@@ -55,9 +56,10 @@ export default function SubletOrderReceiving() {
     return map
   }, [suppliers])
 
+  const statusFilter = tab === 'received' ? 'Received' : 'Approved'
   const { data: listData, isLoading } = useQuery({
-    queryKey: ['subletOrders', { status: 'Approved', for: 'receiving' }],
-    queryFn: () => jobOrderSubletOrdersApi.list({ status: 'Approved' }),
+    queryKey: ['subletOrders', { status: statusFilter, for: 'receiving' }],
+    queryFn: () => jobOrderSubletOrdersApi.list({ status: statusFilter }),
   })
 
   const orders = useMemo(() => listData?.data || [], [listData])
@@ -94,11 +96,37 @@ export default function SubletOrderReceiving() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <Card className="p-4">
-          <div className="text-sm font-semibold text-gray-800 mb-3">Approved Orders</div>
+          <div className="flex items-center justify-between mb-3">
+            <div className="text-sm font-semibold text-gray-800">
+              {tab === 'received' ? 'Received Sublet Orders' : 'Sublet Order To Be Received'}
+            </div>
+            <div className="inline-flex rounded border overflow-hidden">
+              <button
+                type="button"
+                onClick={() => {
+                  setTab('to-receive')
+                  setSelectedId(null)
+                }}
+                className={`px-3 py-1.5 text-xs ${tab === 'to-receive' ? 'bg-gray-900 text-white' : 'bg-white text-gray-700'}`}
+              >
+                To Be Received
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setTab('received')
+                  setSelectedId(null)
+                }}
+                className={`px-3 py-1.5 text-xs border-l ${tab === 'received' ? 'bg-gray-900 text-white' : 'bg-white text-gray-700'}`}
+              >
+                Received Sublet Order
+              </button>
+            </div>
+          </div>
           {isLoading ? (
             <div className="text-sm text-gray-500">Loading...</div>
           ) : orders.length === 0 ? (
-            <div className="text-sm text-gray-500">No approved orders.</div>
+            <div className="text-sm text-gray-500">{tab === 'received' ? 'No received orders.' : 'No approved orders.'}</div>
           ) : (
             <div className="space-y-2 max-h-[520px] overflow-auto">
               {orders.map((o) => {
@@ -112,6 +140,10 @@ export default function SubletOrderReceiving() {
                     type="button"
                     key={o.sublet_order_id}
                     onClick={() => {
+                      setSelectedId(o.sublet_order_id)
+                      setDeliveryOrderNumber('')
+                    }}
+                    onDoubleClick={() => {
                       setSelectedId(o.sublet_order_id)
                       setDeliveryOrderNumber('')
                     }}
@@ -135,7 +167,9 @@ export default function SubletOrderReceiving() {
         <Card className="p-4 space-y-3">
           <div className="text-sm font-semibold text-gray-800">Details</div>
           {!selected ? (
-            <div className="text-sm text-gray-500">Select an approved order to receive.</div>
+            <div className="text-sm text-gray-500">
+              Select {tab === 'received' ? 'a received order' : 'an approved order'} (double click supported) to view details.
+            </div>
           ) : (
             <>
               {(() => {
@@ -176,20 +210,24 @@ export default function SubletOrderReceiving() {
                 )
               })()}
 
-              <div className="space-y-1">
-                <div className="text-sm font-medium text-gray-700">Delivery Order Number</div>
-                <Input
-                  value={deliveryOrderNumber}
-                  onChange={(e) => setDeliveryOrderNumber(e.target.value)}
-                  placeholder="Supplier delivery order #"
-                />
-              </div>
+              {tab === 'to-receive' ? (
+                <>
+                  <div className="space-y-1">
+                    <div className="text-sm font-medium text-gray-700">Delivery Order Number</div>
+                    <Input
+                      value={deliveryOrderNumber}
+                      onChange={(e) => setDeliveryOrderNumber(e.target.value)}
+                      placeholder="Supplier delivery order #"
+                    />
+                  </div>
 
-              <div className="flex justify-end">
-                <Button type="button" onClick={saveReceiving} disabled={receiveMutation.isPending}>
-                  Save
-                </Button>
-              </div>
+                  <div className="flex justify-end">
+                    <Button type="button" onClick={saveReceiving} disabled={receiveMutation.isPending}>
+                      Save
+                    </Button>
+                  </div>
+                </>
+              ) : null}
             </>
           )}
         </Card>

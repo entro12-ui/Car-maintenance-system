@@ -45,12 +45,15 @@ export default function ConsumableChargeSetup() {
 
   useEffect(() => {
     const rows = jobTypesQuery.data?.data || []
-    const opts = rows
+    const opts = [
+      { code: 'ALL', name: 'All Job Types' },
+      ...rows
       .map((r) => ({
         code: (r.setting_key || '').trim(),
         name: (r.setting_value || '').trim(),
       }))
-      .filter((x) => x.code)
+      .filter((x) => x.code),
+    ]
     setJobTypes(opts)
     setJobType((cur) => {
       if (cur) return cur
@@ -212,6 +215,22 @@ export default function ConsumableChargeSetup() {
     >
       {error && <div className="rounded border border-red-200 bg-red-50 text-red-700 px-3 py-2 text-sm">{error}</div>}
       {success && <div className="rounded border border-green-200 bg-green-50 text-green-700 px-3 py-2 text-sm">{success}</div>}
+
+      <div className="rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm text-slate-700">
+        <p className="font-semibold text-slate-900">Consumable Charges Setup Guidance</p>
+        <p className="mt-1">
+          Use this page to setup charge codes for consumables (also called <strong>Small Materials (SM)</strong>)
+          that are not treated through parts issue to job.
+        </p>
+        <p className="mt-1">
+          The consumable charge is calculated as a percentage of total non-parts value on a job. Typically, the
+          percentage declines as non-parts value grows.
+        </p>
+        <p className="mt-1">
+          You can apply setup to <strong>all jobs</strong> by selecting <strong>ALL — All Job Types</strong>, or apply to a
+          specific job category by selecting a single job type.
+        </p>
+      </div>
 
       <div className="bg-white border rounded-lg shadow-sm p-4 space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 items-end">

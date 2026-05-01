@@ -209,6 +209,17 @@ export default function BlockReleaseJobOrder() {
         <div className="p-4 space-y-4">
           {tab === 'plate' && (
             <div className="space-y-3">
+              <div className="rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm text-slate-700">
+                <p className="font-semibold text-slate-900">Blocking by Plate Number</p>
+                <ul className="mt-2 list-disc pl-5 space-y-1">
+                  <li>Click <strong>Refresh</strong> to load latest data.</li>
+                  <li>Click <strong>New</strong> by starting a new block entry.</li>
+                  <li>Specify the plate number to block for job opening/closing.</li>
+                  <li>Provide customer context and reason for blocking.</li>
+                  <li>Tick the stages to block in <strong>Block/Park For</strong>.</li>
+                  <li>Click <strong>Save</strong> to apply the block and show it in the grid/history.</li>
+                </ul>
+              </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <label className="text-sm space-y-1">
                   <div className="font-medium text-gray-800">Plate No</div>
@@ -246,6 +257,17 @@ export default function BlockReleaseJobOrder() {
 
           {tab === 'customer' && (
             <div className="space-y-3">
+              <div className="rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm text-slate-700">
+                <p className="font-semibold text-slate-900">Blocking by Customer Name</p>
+                <ul className="mt-2 list-disc pl-5 space-y-1">
+                  <li>Click <strong>Refresh</strong> to load latest data.</li>
+                  <li>Click <strong>New</strong> by starting a new block entry.</li>
+                  <li>Select the customer to block for job opening/closing workflows.</li>
+                  <li>Provide reason for blocking.</li>
+                  <li>Tick the stages to block in <strong>Block/Park For</strong>.</li>
+                  <li>Click <strong>Save</strong> to apply the block and show it in the grid/history.</li>
+                </ul>
+              </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <label className="text-sm space-y-1">
                   <div className="font-medium text-gray-800">Customer</div>

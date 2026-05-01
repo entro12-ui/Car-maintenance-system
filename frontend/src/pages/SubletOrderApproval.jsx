@@ -171,6 +171,7 @@ export default function SubletOrderApproval() {
                     type="button"
                     key={o.sublet_order_id}
                     onClick={() => setSelectedId(o.sublet_order_id)}
+                    onDoubleClick={() => setSelectedId(o.sublet_order_id)}
                     className={`w-full text-left border rounded-md px-3 py-2 hover:bg-gray-50 ${active ? 'border-gray-900' : 'border-gray-200'}`}
                   >
                     <div className="flex items-center justify-between gap-2">

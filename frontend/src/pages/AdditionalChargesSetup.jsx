@@ -44,7 +44,7 @@ function nextAutoCode(rows, keyName, prefix) {
   return `${prefix}-${String(maxSeq + 1).padStart(4, '0')}`
 }
 
-export default function AdditionalChargesSetup() {
+export default function AdditionalChargesSetup({ initialSection = 'all' }) {
   const queryClient = useQueryClient()
 
   // --- Other charge types
@@ -647,16 +647,35 @@ export default function AdditionalChargesSetup() {
     return map
   }, [suppliers])
 
+  const showOtherSection = initialSection === 'all' || initialSection === 'other'
+  const showFuelSection = initialSection === 'all' || initialSection === 'fuel'
+  const showMiscSection = initialSection === 'all' || initialSection === 'misc'
+  const showSubletSection = initialSection === 'all' || initialSection === 'sublet'
+
   return (
     <div>
       <h1 className="text-3xl font-bold text-gray-800 mb-6">Additional Charges Setup</h1>
 
       <div className="space-y-6">
-        <Card className="p-6">
+        {showOtherSection && <Card className="p-6">
           <SectionHeader
             title="Other Charge Types"
             subtitle="Create and maintain other charge codes used in job orders."
           />
+
+          <div className="mb-4 rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm text-slate-700">
+            <p className="font-semibold text-slate-900">Other Charges Setup Guidance</p>
+            <ul className="mt-2 list-disc pl-5 space-y-1">
+              <li>Click <strong>New</strong> (or start a fresh row) to create a new charge type.</li>
+              <li>Assign a charge code and enter the charge description.</li>
+              <li>Tick <strong>Taxable</strong> if applicable (normally charge types are taxable).</li>
+              <li>Specify the job type where this charge type is applicable.</li>
+              <li>Select the relevant section, if required.</li>
+              <li>Provide unit of measure, unit price, and unit cost.</li>
+              <li>Select the applicable sub category.</li>
+              <li>Click <strong>Add</strong> (Save) to store the charge and show it in the grid.</li>
+            </ul>
+          </div>
 
           <form onSubmit={onCreateOc} className="space-y-3">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
@@ -772,9 +791,9 @@ export default function AdditionalChargesSetup() {
               </tbody>
             </table>
           </div>
-        </Card>
+        </Card>}
 
-        <Card className="p-6">
+        {showFuelSection && <Card className="p-6">
           <SectionHeader title="Fuel & Lubricants" subtitle="Maintain fuel/lubricant item codes used in job orders." />
 
           <form onSubmit={onCreateFl} className="space-y-3">
@@ -882,9 +901,9 @@ export default function AdditionalChargesSetup() {
               </tbody>
             </table>
           </div>
-        </Card>
+        </Card>}
 
-        <Card className="p-6">
+        {showMiscSection && <Card className="p-6">
           <SectionHeader title="Misc Charge Types" subtitle="Maintain misc charge codes used in job orders." />
 
           <form onSubmit={onCreateMc} className="space-y-3">
@@ -1001,9 +1020,9 @@ export default function AdditionalChargesSetup() {
               </tbody>
             </table>
           </div>
-        </Card>
+        </Card>}
 
-        <Card className="p-6">
+        {showSubletSection && <Card className="p-6">
           <SectionHeader title="Sublet Work Suppliers" subtitle="Maintain suppliers used for sublet work types." />
 
           <form onSubmit={onCreateSs} className="space-y-3">
@@ -1085,10 +1104,29 @@ export default function AdditionalChargesSetup() {
               </tbody>
             </table>
           </div>
-        </Card>
+        </Card>}
 
-        <Card className="p-6">
+        {showSubletSection && <Card className="p-6">
           <SectionHeader title="Sublet Work Types" subtitle="Maintain sublet work codes used in job orders." />
+
+          <div className="mb-4 rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm text-slate-700">
+            <p className="font-semibold text-slate-900">Sublet Work Type Maintenance Guidance</p>
+            <p className="mt-1">
+              Create sublet work suppliers first so they are available in the supplier selection list for sublet work
+              types.
+            </p>
+            <ul className="mt-2 list-disc pl-5 space-y-1">
+              <li>Click <strong>Refresh</strong> to reload current records.</li>
+              <li>Click <strong>New</strong> (or start a fresh row) to create a new sublet work type.</li>
+              <li>Assign a sublet work code and enter the description.</li>
+              <li>Tick <strong>Taxable</strong> if this item is taxable.</li>
+              <li>Select applicable job type and section.</li>
+              <li>Specify unit of measure, unit price, and unit cost.</li>
+              <li>Select the applicable sub category.</li>
+              <li>Select the sublet work supplier for this work type.</li>
+              <li>Click <strong>Add</strong> (Save) to add the item to the grid.</li>
+            </ul>
+          </div>
 
           <form onSubmit={onCreateSw} className="space-y-3">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
@@ -1230,7 +1268,7 @@ export default function AdditionalChargesSetup() {
               </tbody>
             </table>
           </div>
-        </Card>
+        </Card>}
       </div>
     </div>
   )

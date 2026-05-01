@@ -211,6 +211,9 @@ export default function LaborTypes() {
       actions={
         <div className="flex flex-wrap items-center gap-2">
           <span className="text-sm text-blue-700">{status}</span>
+          <Button type="button" variant="outline" onClick={() => window.print()}>
+            Print Preview
+          </Button>
           <Button
             type="button"
             variant="outline"
@@ -227,6 +230,19 @@ export default function LaborTypes() {
     >
       {error && <div className="rounded border border-red-200 bg-red-50 text-red-700 px-3 py-2 text-sm">{error}</div>}
       {success && <div className="rounded border border-green-200 bg-green-50 text-green-700 px-3 py-2 text-sm">{success}</div>}
+
+      <div className="rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm text-slate-700">
+        <p className="font-semibold text-slate-900">Labour Rate Maintenance Guidance</p>
+        <ul className="mt-2 list-disc pl-5 space-y-1">
+          <li><strong>Labor code:</strong> assign a code for the labor type/operation you create.</li>
+          <li><strong>Taxable:</strong> tick if this labor type is subject to VAT.</li>
+          <li><strong>Section:</strong> select where this labor type applies.</li>
+          <li><strong>Description:</strong> enter the labor code description.</li>
+          <li><strong>Allowed for:</strong> choose the operation/job type where this labor type can be used.</li>
+          <li><strong>Sub category:</strong> choose the related labor sub category.</li>
+          <li><strong>Rate/Hour:</strong> specify the per-hour charging rate.</li>
+        </ul>
+      </div>
 
       <div className="bg-white border rounded-lg shadow-sm p-4 space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
@@ -373,6 +389,10 @@ export default function LaborTypes() {
             </tbody>
           </table>
         </div>
+      </div>
+
+      <div className="rounded-lg border border-indigo-200 bg-indigo-50 p-4 text-sm text-indigo-900">
+        The second part is where you assign the labor code to different model groups already maintained in the system.
       </div>
 
       <div className="bg-white border rounded-lg shadow-sm p-4 space-y-3">

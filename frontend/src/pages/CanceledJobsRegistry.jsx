@@ -227,6 +227,11 @@ export default function CanceledJobsRegistry() {
       {error && <div className="rounded border border-red-200 bg-red-50 text-red-700 px-3 py-2 text-sm">{error}</div>}
       {success && <div className="rounded border border-green-200 bg-green-50 text-green-700 px-3 py-2 text-sm">{success}</div>}
 
+      <div className="mb-3 rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm text-slate-700">
+        This page is used for registering cancelled jobs for different reasons. The job should be closed before
+        registering it as a cancelled job.
+      </div>
+
       <div className="bg-white border rounded-lg shadow-sm p-4 space-y-3">
         <div className="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-3 items-end">
           <label className="text-sm space-y-1">
